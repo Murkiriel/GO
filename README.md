@@ -1,7 +1,7 @@
 ﻿#GO
 Renewal of [@GO_Robot](https://telegram.me/GO_Robot)
 
-##Support
+##News
 
 Telegram [@Murkiriel](http://telegram.me/Murkiriel)
 
