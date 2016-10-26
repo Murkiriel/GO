@@ -33,6 +33,12 @@ You may also start the bot with `php bot.php`, but then it will not restart auto
 nohup ./iniciar.sh &
 ```
 
+##Credits
+
+[krakjoe](https://github.com/krakjoe), for [pthreads](https://github.com/krakjoe/pthreads)
+
+[emiglobetrotting](https://github.com/krakjoe), for [php7_zts_pthreads.sh](https://gist.github.com/emiglobetrotting/4663ffc4484e9384a261)
+
 * * *
 
-![PHP](http://blog.continued-learning.com/wp-content/uploads/2016/06/php7.jpg)
+![PHP](https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTBH_4vDQM_B15zUpwJevkIp8aIFO6cHR54qrztVCCMAFd1os05)
