@@ -1,4 +1,6 @@
 <?php
+	$continue = false;
+
 	$dadosIdioma = carregarDados(RAIZ . 'dados/idioma.json');
 
 	$texto = explode(' ', $mensagens['message']['text']);
@@ -30,8 +32,6 @@
 		salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
-
-		die();
 	}
 
 	if($mensagens['message']['text'] == '🇬🇧 English'){
@@ -50,8 +50,6 @@
 		salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
-
-		die();
 	}
 
 	if($mensagens['message']['text'] == '🇪🇸 Español'){
@@ -70,8 +68,6 @@
 		salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
-
-		die();
 	}
 
 	if($mensagens['message']['text'] == '🇮🇹 Italiano'){
@@ -90,29 +86,6 @@
 		salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
-
-		die();
-	}
-
-	if(	strcasecmp($mensagens['message']['text'], '/stop')																					== 0 					AND
-			$mensagens['message']['chat']['type']																												== 'private'	OR
-			strcasecmp($mensagens['message']['text'], '/stop' . '@' . $dadosBot['result']['username'])	== 0					AND
-			$mensagens['message']['chat']['type']																												== 'private'	){
-		unset($dadosIdioma[$mensagens['message']['from']['id']]);
-
-		$teclado = array(
-			'hide_keyboard' => true
-		);
-
-		$replyMarkup = json_encode($teclado);
-
-		$mensagem = '<b>Stop!</b>';
-
-		salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
-
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
-
-		die();
 	}
 
 	if(isset($mensagens['message']['left_chat_member']['id'])){
@@ -120,8 +93,6 @@
 			unset($dadosIdioma[$mensagens['message']['chat']['id']]);
 
 			salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
-
-			die();
 		}
 	}
 
@@ -148,7 +119,26 @@
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
 
-		die();
+		$continue = true;
 	}
+	else if(strcasecmp($mensagens['message']['text'], '/stop')																				 == 0					AND
+										 $mensagens['message']['chat']['type']																					 == 'private'	OR
+					strcasecmp($mensagens['message']['text'], '/stop' . '@' . $dadosBot['result']['username']) == 0					AND
+										 $mensagens['message']['chat']['type']																					 == 'private'	){
+		unset($dadosIdioma[$mensagens['message']['from']['id']]);
 
-	define('IDIOMA', $dadosIdioma[$mensagens['message']['chat']['id']]['idioma']);
+		$teclado = array(
+			'hide_keyboard' => true
+		);
+
+		$replyMarkup = json_encode($teclado);
+
+		$mensagem = '<b>Stop!</b>';
+
+		salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
+
+		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
+	}
+	else{
+		$IDIOMA = $dadosIdioma[$mensagens['message']['chat']['id']]['idioma'];
+	}

@@ -1,5 +1,5 @@
 <?php
-	if(IDIOMA == 'pt'){
+	if($IDIOMA == 'pt'){
 		$mensagem = "/ajuda - Exibir esta mensagem
 /idioma - Trocar idioma
 
@@ -10,7 +10,7 @@
 /stop - Parar bot
 ";
 	}
-	else 	if(IDIOMA == 'en'){
+	else 	if($IDIOMA == 'en'){
 		$mensagem = "/help - Show this message
 /language - Change language
 
@@ -21,7 +21,7 @@
 /stop - Stop bot
 ";
 		}
-	else 	if(IDIOMA == 'es'){
+	else 	if($IDIOMA == 'es'){
 		$mensagem = "/ayuda - Mostrar este mensaje
 /lingua - Cambiar el idioma
 
@@ -32,7 +32,7 @@
 /stop - Detener bot
 ";
 	}
-	else 	if(IDIOMA == 'it'){
+	else 	if($IDIOMA == 'it'){
 		$mensagem = "/aiuto - Visualizza questo messaggio
 /lingua - Cambia lingua
 
@@ -51,13 +51,11 @@
 		$resultado = sendMessage($mensagens['message']['from']['id'], $mensagem);
 
 		if($resultado['ok'] == false){
-			$mensagem = ERROS[IDIOMA]['BOT_BLOCK'];
+			$mensagem = ERROS[$IDIOMA]['BOT_BLOCK'];
 		}
 		else{
-			$mensagem = AJUDA[IDIOMA];
+			$mensagem = AJUDA[$IDIOMA];
 		}
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
 	}
-
-	die();

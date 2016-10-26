@@ -9,7 +9,7 @@ Telegram [@Murkiriel](http://telegram.me/Murkiriel)
 
 ```bash
 # Tested on Ubuntu Gnome 16.10
-sudo apt-get install php7.0 php7.0-fpm php7.0-curl
+sudo ./php7_zts_pthreads.sh
 
 git clone https://github.com/Murkiriel/GO.git
 ```
@@ -35,4 +35,4 @@ nohup ./iniciar.sh &
 
 * * *
 
-![PHP](https://secure.php.net/images/logo.php)
+![PHP](http://blog.continued-learning.com/wp-content/uploads/2016/06/php7.jpg)
