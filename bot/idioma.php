@@ -1,5 +1,10 @@
 <?php
 	$continue = false;
+<<<<<<< HEAD
+=======
+
+	$dadosIdioma = carregarDados(RAIZ . 'dados/idioma.json');
+>>>>>>> origin/master
 
 	$texto = explode(' ', $mensagens['message']['text']);
 
@@ -76,6 +81,17 @@
 		$mensagem = SET_IDIOMA['it'];
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
+<<<<<<< HEAD
+=======
+	}
+
+	if(isset($mensagens['message']['left_chat_member']['id'])){
+		if($mensagens['message']['left_chat_member']['id'] == $dadosBot['result']['id']){
+			unset($dadosIdioma[$mensagens['message']['chat']['id']]);
+
+			salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
+		}
+>>>>>>> origin/master
 	}
 
 	if(empty($dadosIdioma[$mensagens['message']['chat']['id']])){
@@ -117,6 +133,7 @@
 
 		$mensagem = '<b>Stop!</b>';
 
+<<<<<<< HEAD
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
 	}
 	else if(isset($mensagens['message']['left_chat_member']['id'])){
@@ -124,6 +141,12 @@
 			unset($dadosIdioma[$mensagens['message']['chat']['id']]);
 		}
 	}
+=======
+		salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
+
+		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
+	}
+>>>>>>> origin/master
 	else{
 		$IDIOMA = $dadosIdioma[$mensagens['message']['chat']['id']]['idioma'];
 	}

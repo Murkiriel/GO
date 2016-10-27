@@ -9,6 +9,11 @@ Telegram [@Murkiriel](http://telegram.me/Murkiriel)
 
 ```bash
 # Tested on Ubuntu Gnome 16.10
+<<<<<<< HEAD
+=======
+sudo ./php7_zts_pthreads.sh
+
+>>>>>>> origin/master
 git clone https://github.com/Murkiriel/GO.git
 
 cd GO
@@ -39,7 +44,11 @@ nohup ./iniciar.sh &
 
 [krakjoe](https://github.com/krakjoe), for [pthreads](https://github.com/krakjoe/pthreads)
 
+<<<<<<< HEAD
 [emiglobetrotting](https://github.com/emiglobetrotting), for [php7_zts_pthreads.sh](https://gist.github.com/emiglobetrotting/4663ffc4484e9384a261)
+=======
+[emiglobetrotting](https://github.com/krakjoe), for [php7_zts_pthreads.sh](https://gist.github.com/emiglobetrotting/4663ffc4484e9384a261)
+>>>>>>> origin/master
 
 * * *
 

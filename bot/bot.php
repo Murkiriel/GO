@@ -21,7 +21,10 @@
 							 $loop = true;
 					 $updateID = 0;
 		$mensagensMinuto = 0;
+<<<<<<< HEAD
 			 	$dadosIdioma = carregarDados(RAIZ . 'dados/idioma.json');
+=======
+>>>>>>> origin/master
 			 $dadosRanking = carregarDados(RAIZ . 'dados/ranking.json');
 			 		$tituloBot = strtoupper(' 🤖  -> ' . $dadosBot['result']['first_name'] . '  (@' . $dadosBot['result']['username'] . ') ');
 						 $linhas = strlen($tituloBot) - 6;
@@ -48,9 +51,15 @@
 		public $IDIOMA;
 
 		public function run(){
+<<<<<<< HEAD
 				$dadosBot = $this->dadosBot;
 			 $mensagens = $this->mensagens;
 					$IDIOMA = $this->IDIOMA;
+=======
+			 $dadosBot = $this->dadosBot;
+			$mensagens = $this->mensagens;
+				 $IDIOMA = $this->IDIOMA;
+>>>>>>> origin/master
 
 			$texto = explode(' ', $mensagens['message']['text']);
 
@@ -59,6 +68,7 @@
 			}
 
 			switch(strtolower($texto[0])){
+<<<<<<< HEAD
 				case '/h':
 				case '/help':
 				case '/start':
@@ -83,6 +93,21 @@
 				case '/wikipedia':
 			    include(RAIZ . 'blocos/wiki.php');
 			    break;
+=======
+				case '/start':
+				case '/ajuda':
+				case '/help':
+				case '/ayuda':
+				case '/aiuto':
+		      include(RAIZ . '/blocos/ajuda.php');
+		      break;
+				case '/id':
+		      include(RAIZ . '/blocos/id.php');
+		      break;
+				case '/ranking':
+		      include(RAIZ . '/blocos/ranking.php');
+		      break;
+>>>>>>> origin/master
 			}
 
 			if(in_array($mensagens['message']['from']['id'], SUDOS)){
@@ -114,12 +139,24 @@
 				continue;
 			}
 
+			include(RAIZ . 'bot/idioma.php');
+
+			if($continue == true){
+				$updateID = $mensagens['update_id'] + 1;
+
+				continue;
+			}
+
 			include(RAIZ . 'blocos/ranking_bd.php');
 
 			$threads[$mensagens['update_id']] = new botThread($mensagens['update_id']);
 			$threads[$mensagens['update_id']]->dadosBot	 = $dadosBot;
 			$threads[$mensagens['update_id']]->mensagens = $mensagens;
+<<<<<<< HEAD
 			$threads[$mensagens['update_id']]->IDIOMA		 = $IDIOMA;
+=======
+			$threads[$mensagens['update_id']]->IDIOMA	 = $IDIOMA;
+>>>>>>> origin/master
 			$threads[$mensagens['update_id']]->start();
 
 			if(in_array($mensagens['message']['from']['id'], SUDOS)){
@@ -138,9 +175,12 @@
 				}
 			}
 
+<<<<<<< HEAD
 			salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
 			salvarDados(RAIZ . 'dados/ranking.json', $dadosRanking);
 
+=======
+>>>>>>> origin/master
 			$updateID = $mensagens['update_id'] + 1;
 		}
 	}
