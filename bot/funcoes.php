@@ -145,11 +145,6 @@
       return null;
     }
 
-<<<<<<< HEAD
-=======
-		global $_CONFIG;
-
->>>>>>> origin/master
     if(func_num_args() == 5){
       $excecao = null;
 
@@ -186,7 +181,6 @@
       $erroEncontrado = 'CAUGHT EXCEPTION';
     }
 
-<<<<<<< HEAD
     $mensagem  = '<pre>🐞 ERRO ENCONTRADO</pre>'						. "\n\n";
     $mensagem .= '<b>Tipo:</b> '			. $erroEncontrado			. "\n";
     $mensagem .= '<b>Arquivo:</b> '		. $erroArquivo				. "\n";
@@ -199,18 +193,6 @@
 		foreach(SUDOS as $sudo){
 			sendMessage($sudo, $mensagem, null, null, true);
 		}
-=======
-    $mensagem  = '<pre>🐞  ERRO ENCONTRADO</pre>'				. "\n\n";
-    $mensagem .= '<b>Tipo:</b> '				. $erroEncontrado	. "\n";
-    $mensagem .= '<b>Arquivo:</b> '		. $erroArquivo		. "\n";
-    $mensagem .= '<b>Linha:</b> '			. $erroLinha			. "\n";
-    $mensagem .= '<b>Descrição:</b> '	. $erroMensagem		. "\n";
-    $mensagem .= '<b>Data:</b> ' . date('d/m/Y H:i:s')		. "\n";
-
-    echo '🐞  ERRO: ' . $erroMensagem . ' no arquivo ' . $erroArquivo . ' (Linha ' . $erroLinha . ')' . "\n\n";
-
-		sendMessage(SUDOS['0'], $mensagem, null, null, true);
->>>>>>> origin/master
   }
 
 	set_error_handler('manipularErros');

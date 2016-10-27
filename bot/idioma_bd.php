@@ -1,9 +1,5 @@
 <?php
-<<<<<<< HEAD
 	define('SET_IDIOMA', array(
-=======
-	define('DEF_IDIOMA', array(
->>>>>>> origin/master
 			'pt' => 'Entendido! Agora eu vou falar em <b>🇧🇷 Português</b> :]'."\n\n".'Use /ajuda para continuarmos',
 			'en' => 'Okay! Now I will speak in <b>🇬🇧 English</b> :]'."\n\n".'Use /help to continue',
 			'es' => '¡Está bien! Ahora voy a hablar en <b>🇪🇸 Español</b> :]'."\n\n".'Uso /ayuda para continuar',

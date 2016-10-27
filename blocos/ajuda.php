@@ -1,10 +1,6 @@
 <?php
 	if($IDIOMA == 'pt'){
-<<<<<<< HEAD
 		$mensagem = '/ajuda - Exibir esta mensagem
-=======
-		$mensagem = "/ajuda - Exibir esta mensagem
->>>>>>> origin/master
 /idioma - Trocar idioma
 
 /calc - Calcular expressão matemática
@@ -16,11 +12,7 @@
 /stop - Parar bot';
 	}
 	else 	if($IDIOMA == 'en'){
-<<<<<<< HEAD
 		$mensagem = '/help - Show this message
-=======
-		$mensagem = "/help - Show this message
->>>>>>> origin/master
 /language - Change language
 
 /calc - Calculate mathematical expression
@@ -32,11 +24,7 @@
 /stop - Stop bot';
 		}
 	else 	if($IDIOMA == 'es'){
-<<<<<<< HEAD
 		$mensagem = '/ayuda - Mostrar este mensaje
-=======
-		$mensagem = "/ayuda - Mostrar este mensaje
->>>>>>> origin/master
 /lingua - Cambiar el idioma
 
 /calc - Calcular la expresión matemática
@@ -48,11 +36,7 @@
 /stop - Detener bot';
 	}
 	else 	if($IDIOMA == 'it'){
-<<<<<<< HEAD
 		$mensagem = '/aiuto - Visualizza questo messaggio
-=======
-		$mensagem = "/aiuto - Visualizza questo messaggio
->>>>>>> origin/master
 /lingua - Cambia lingua
 
 /calc - Calcola espressione matematica
