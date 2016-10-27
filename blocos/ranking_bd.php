@@ -25,10 +25,6 @@
 
 	if(	strcasecmp($mensagens['message']['text'], '/rkgdel')																					== 0	OR
 			strcasecmp($mensagens['message']['text'], '/rkgdel' . '@' . $dadosBot['result']['username'])	== 0	){
-		$dadosIdioma = carregarDados(RAIZ . 'dados/idioma.json');
-
-		if(isset($dadosIdioma[$mensagens['message']['chat']['id']]['idioma'])){
-			$idioma = $dadosIdioma[$mensagens['message']['chat']['id']]['idioma'];
 
 			if($mensagens['message']['chat']['type'] == 'group' OR $mensagens['message']['chat']['type'] == 'supergroup'){
 					 $rkgdel = false;
@@ -48,26 +44,23 @@
 				}
 
 				if($rkgdel == false){
-					$mensagem = RANKING[$idioma]['SMT_CRIADOR'];
+					$mensagem = RANKING[$IDIOMA]['SMT_CRIADOR'];
 				}
 			}
 			else if($mensagens['message']['chat']['type'] == 'private'){
-				$mensagem = ERROS[$idioma]['SMT_GRUPO'];
+				$mensagem = ERROS[$IDIOMA]['SMT_GRUPO'];
 			}
 
 			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
-		}
 	}
 
 	++$mensagensMinuto;
 
-	$total = microtime(true) - $inicio;
+	$totalIntervalo = microtime(true) - $inicioIntervalo;
 
-	if($total > 59){
+	if($totalIntervalo > 59){
 		$dadosRanking['MM'] = $mensagensMinuto;
 
 		$mensagensMinuto = 0;
-						 $inicio = microtime(true);
+		$inicioIntervalo = microtime(true);
 	}
-
-	salvarDados(RAIZ . 'dados/ranking.json', $dadosRanking);

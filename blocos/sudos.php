@@ -2,8 +2,8 @@
 	if(	strcasecmp($mensagens['message']['text'], '/sudos')																					== 0	OR
 			strcasecmp($mensagens['message']['text'], '/sudos' . '@' . $dadosBot['result']['username'])	== 0	){
 
-		$mensagem = '<pre>COMANDOS SUDOS</pre>'		. "\n\n"	.
-								'/reiniciar - Reiniciar bot'	. "\n"		.
+		$mensagem = '<pre>COMANDOS SUDOS</pre>'		. "\n\n" .
+								'/reiniciar - Reiniciar bot'	. "\n"	 .
 								'/status - Ver status do bot';
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
@@ -32,13 +32,11 @@
 		$mensagensMinuto = $dados['MM'];
 
 		$mensagem = '<pre>STATUS DO ' . strtoupper($dadosBot['result']['first_name']) . '</pre>' . "\n\n" .
-					'<b>Versão:</b> ' . VERSAO . "\n\n" .
-					'<b>Grupos:</b> ' . $grupos . "\n" .
-					'<b>Usuários:</b> ' . $usuarios . "\n\n" .
-					'<b>Msg / Min:</b> ' . $mensagensMinuto . ' ou ' . number_format($mensagensMinuto/60, 3, ',', '.') . ' m/s' . "\n" .
-					'<b>Mensagens:</b> ' . $totalMensagens;
+								'<b>Versão:</b> '		 . VERSAO						. "\n\n" .
+								'<b>Grupos:</b> '		 . $grupos					. "\n"	 .
+								'<b>Usuários:</b> '	 . $usuarios				. "\n\n" .
+								'<b>Msg / Min:</b> ' . $mensagensMinuto . ' ou ' . number_format($mensagensMinuto/60, 3, ',', '.') . ' m/s' . "\n" .
+								'<b>Mensagens:</b> ' . $totalMensagens;
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
 	}
-
-	die();

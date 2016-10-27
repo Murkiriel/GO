@@ -9,9 +9,11 @@ Telegram [@Murkiriel](http://telegram.me/Murkiriel)
 
 ```bash
 # Tested on Ubuntu Gnome 16.10
-sudo apt-get install php7.0 php7.0-fpm php7.0-curl
-
 git clone https://github.com/Murkiriel/GO.git
+
+cd GO
+
+sudo ./php7_zts_pthreads.sh
 ```
 
 **Before you do anything, open config.php in a text editor and make the following changes:**
@@ -33,6 +35,12 @@ You may also start the bot with `php bot.php`, but then it will not restart auto
 nohup ./iniciar.sh &
 ```
 
+##Credits
+
+[krakjoe](https://github.com/krakjoe), for [pthreads](https://github.com/krakjoe/pthreads)
+
+[emiglobetrotting](https://github.com/emiglobetrotting), for [php7_zts_pthreads.sh](https://gist.github.com/emiglobetrotting/4663ffc4484e9384a261)
+
 * * *
 
-![PHP](https://secure.php.net/images/logo.php)
+![PHP](https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcTBH_4vDQM_B15zUpwJevkIp8aIFO6cHR54qrztVCCMAFd1os05)
