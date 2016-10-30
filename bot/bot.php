@@ -7,23 +7,15 @@
 	include('funcoes.php');
 	include('config.php');
 
-	$dadosBot = getMe();
+	define('DADOS_BOT', getMe());
 
-	if($dadosBot['ok'] == true){
-		system('clear');
-		echo '+------------+' . "\n";
-		echo '| EXECUTANDO |' . "\n";
-		echo '+------------+' . "\n\n";
-		sleep(1);
-
+	if(DADOS_BOT['ok'] == true){
 		include('idioma_bd.php');
 
 							 $loop = true;
 					 $updateID = 0;
 		$mensagensMinuto = 0;
-			 	$dadosIdioma = carregarDados(RAIZ . 'dados/idioma.json');
-			 $dadosRanking = carregarDados(RAIZ . 'dados/ranking.json');
-			 		$tituloBot = strtoupper(' 🤖  -> ' . $dadosBot['result']['first_name'] . '  (@' . $dadosBot['result']['username'] . ') ');
+			 		$tituloBot = strtoupper(' 🤖  -> ' . DADOS_BOT['result']['first_name'] . '  (@' . DADOS_BOT['result']['username'] . ') ');
 						 $linhas = strlen($tituloBot) - 6;
 
 		system('clear');
@@ -43,20 +35,20 @@
 	}
 
 	class botThread extends Thread{
-		public $dadosBot;
-		public $mensagens;
-		public $IDIOMA;
+		public function __construct($mensagens) {
+			$this->mensagens = $mensagens;
+		}
 
 		public function run(){
-				$dadosBot = $this->dadosBot;
-			 $mensagens = $this->mensagens;
-					$IDIOMA = $this->IDIOMA;
+			$mensagens = $this->mensagens;
 
 			$texto = explode(' ', $mensagens['message']['text']);
 
 			if(empty($texto[1])){
-				$texto[0] = str_ireplace('@' . $dadosBot['result']['username'], '', $texto[0]);
+				$texto[0] = str_ireplace('@' . DADOS_BOT['result']['username'], '', $texto[0]);
 			}
+
+			include(RAIZ . 'bot/idioma.php');
 
 			switch(strtolower($texto[0])){
 				case '/h':
@@ -85,9 +77,7 @@
 			    break;
 			}
 
-			if(in_array($mensagens['message']['from']['id'], SUDOS)){
-				include(RAIZ . 'blocos/sudos.php');
-			}
+			include(RAIZ . 'blocos/ranking_bd.php');
 		}
 	}
 
@@ -103,45 +93,27 @@
 				unset($mensagens['edited_message']);
 			}
 			else if(empty($mensagens['message']['text'])){
-	 			$mensagens['message']['text'] = '';
-	 		}
-
-			include(RAIZ . 'bot/idioma.php');
-
-			if($continue == true){
-				$updateID = $mensagens['update_id'] + 1;
-
-				continue;
+				$mensagens['message']['text'] = '';
 			}
-
-			include(RAIZ . 'blocos/ranking_bd.php');
-
-			$threads[$mensagens['update_id']] = new botThread($mensagens['update_id']);
-			$threads[$mensagens['update_id']]->dadosBot	 = $dadosBot;
-			$threads[$mensagens['update_id']]->mensagens = $mensagens;
-			$threads[$mensagens['update_id']]->IDIOMA		 = $IDIOMA;
-			$threads[$mensagens['update_id']]->start();
 
 			if(in_array($mensagens['message']['from']['id'], SUDOS)){
-				if(	strcasecmp($mensagens['message']['text'], '/reiniciar') == 0 OR
-						strcasecmp($mensagens['message']['text'], '/reiniciar' . '@' . $dadosBot['result']['username']) == 0){
-					system('clear');
-					echo '+-------------+' . "\n";
-					echo '| REINICIANDO |' . "\n";
-					echo '+-------------+' . "\n\n";
-
-					$loop = false;
-
-					$mensagem = '<pre>Reiniciando...</pre>';
-
-					sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
-				}
+				include(RAIZ . 'blocos/sudos.php');
 			}
 
-			salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
-			salvarDados(RAIZ . 'dados/ranking.json', $dadosRanking);
+			$threads[$mensagens['update_id']] = new botThread($mensagens['update_id']);
+			$threads[$mensagens['update_id']]->mensagens = $mensagens;
+			$threads[$mensagens['update_id']]->start();
 
+			$mensagensMinuto = $mensagensMinuto + 1;
 			$updateID = $mensagens['update_id'] + 1;
+		}
+
+		if($horaCache != date('H')){
+				$horaCache = date('H');
+
+			system('rm -rf ' . CACHE_PASTA . '*');
+
+			echo '🔥  -> CACHE LIMPO!' . "\n\n";
 		}
 	}
 

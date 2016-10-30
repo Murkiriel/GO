@@ -1,4 +1,6 @@
 <?php
+	$dadosRanking = carregarDados(RAIZ . 'dados/ranking.json');
+
 	if($mensagens['message']['chat']['type'] == 'group' OR $mensagens['message']['chat']['type'] == 'supergroup'){
 		$chatID = (string)$mensagens['message']['chat']['id'];
 
@@ -24,7 +26,7 @@
 	}
 
 	if(	strcasecmp($mensagens['message']['text'], '/rkgdel')																					== 0	OR
-			strcasecmp($mensagens['message']['text'], '/rkgdel' . '@' . $dadosBot['result']['username'])	== 0	){
+			strcasecmp($mensagens['message']['text'], '/rkgdel' . '@' . DADOS_BOT['result']['username'])	== 0	){
 
 			if($mensagens['message']['chat']['type'] == 'group' OR $mensagens['message']['chat']['type'] == 'supergroup'){
 					 $rkgdel = false;
@@ -64,3 +66,5 @@
 		$mensagensMinuto = 0;
 		$inicioIntervalo = microtime(true);
 	}
+
+	salvarDados(RAIZ . 'dados/ranking.json', $dadosRanking);

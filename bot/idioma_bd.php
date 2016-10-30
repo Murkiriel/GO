@@ -14,30 +14,30 @@
 		));
 
 		define('AJUDA', array(
-			'pt' => 'Eu enviei a mensagem para o seu <a href="telegram.me/' . $dadosBot['result']['username'] . '">privado</a>!',
-			'en' => 'I sent you the message via <a href="telegram.me/' . $dadosBot['result']['username'] . '">private</a> message!',
-			'es' => 'Te envié el mensaje a través de mensaje <a href="telegram.me/' . $dadosBot['result']['username'] . '">privado</a>!',
-			'it' => 'Ti ho mandato il messaggio via messaggio <a href="telegram.me/' . $dadosBot['result']['username'] . '">privato</a>!'
+			'pt' => 'Eu enviei a mensagem para o seu <a href="telegram.me/' . DADOS_BOT['result']['username'] . '">privado</a>!',
+			'en' => 'I sent you the message via <a href="telegram.me/' . DADOS_BOT['result']['username'] . '">private</a> message!',
+			'es' => 'Te envié el mensaje a través de mensaje <a href="telegram.me/' . DADOS_BOT['result']['username'] . '">privado</a>!',
+			'it' => 'Ti ho mandato il messaggio via messaggio <a href="telegram.me/' . DADOS_BOT['result']['username'] . '">privato</a>!'
 		));
 
 		define('ERROS', array(
 			'pt' => array(
-				'BOT_BLOCK' => 'Me envie uma mensagem no <a href="telegram.me/' . $dadosBot['result']['username'] . '">privado</a>!',
+				'BOT_BLOCK' => 'Me envie uma mensagem no <a href="telegram.me/' . DADOS_BOT['result']['username'] . '">privado</a>!',
 				'SMT_GRUPO' => 'Somente em <b>grupos</b>!',
 				'SEM_RSULT' => 'Eu não encontrei resultados sobre isso :['
 			),
 			'en' => array(
-				'BOT_BLOCK' => 'Send me a message in <a href="telegram.me/' . $dadosBot['result']['username'] . '">private</a>!',
+				'BOT_BLOCK' => 'Send me a message in <a href="telegram.me/' . DADOS_BOT['result']['username'] . '">private</a>!',
 				'SMT_GRUPO' => 'Only <b>groups</b>!',
 				'SEM_RSULT' => 'I have not found results about it :['
 			),
 			'es' => array(
-				'BOT_BLOCK' => 'Envíame un mensaje en <a href="telegram.me/' . $dadosBot['result']['username'] . '">privado!</a>',
+				'BOT_BLOCK' => 'Envíame un mensaje en <a href="telegram.me/' . DADOS_BOT['result']['username'] . '">privado!</a>',
 				'SMT_GRUPO' => 'Sólo los <b>grupos</b>!',
 				'SEM_RSULT' => 'No he encontrado resultados al respecto :['
 			),
 			'it' => array(
-				'BOT_BLOCK' => 'Inviami un messaggio in <a href="telegram.me/' . $dadosBot['result']['username'] . '">privato</a>!',
+				'BOT_BLOCK' => 'Inviami un messaggio in <a href="telegram.me/' . DADOS_BOT['result']['username'] . '">privato</a>!',
 				'SMT_GRUPO' => 'Solo i <b>gruppi</b>!',
 				'SEM_RSULT' => 'Non ho trovato i risultati su di esso :['
 			)

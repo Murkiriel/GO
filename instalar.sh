@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ..
+
 apt-get update
 
 apt-get install -y \
@@ -25,6 +27,9 @@ libreadline-dev \
 libcurl4-openssl-dev
 
 rm -rf /etc/php7
+rm /usr/bin/php
+rm /usr/bin/phpize
+rm /usr/sbin/php7-fpm
 
 mkdir -p /etc/php7
 mkdir -p /etc/php7/cli
@@ -109,7 +114,7 @@ cd ../../
 # Install FPM config files
 
 cp -r php.ini-production /etc/php7/cli/php.ini
-sed -i 's/;date.timezone =.*/date.timezone = Africa\/Lagos/' /etc/php7/cli/php.ini
+sed -i 's/;date.timezone =.*/date.timezone = America\/Sao_Paulo/' /etc/php7/cli/php.ini
 
 cp /etc/php7/etc/php-fpm.conf.default /etc/php7/etc/php-fpm.conf
 
@@ -134,6 +139,8 @@ echo "extension=pthreads.so" > /etc/php7/cli/php-cli.ini
 echo "zend_extension=opcache.so" >> /etc/php7/cli/php.ini
 
 ln --symbolic /etc/php7/bin/php /usr/bin/php
+
+ln --symbolic /etc/php7/bin/phpize /usr/bin/phpize
 
 ln --symbolic /etc/php7/sbin/php-fpm /usr/sbin/php7-fpm
 

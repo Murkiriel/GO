@@ -1,43 +1,68 @@
 <?php
+	function enviarRequisicao($requisicao, $conteudoRequisicao = null){
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_URL, $requisicao);
+
+		if($conteudoRequisicao != null){
+			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($conteudoRequisicao));
+		}
+
+		return curl_exec($ch);
+	}
+
 	function getMe(){
-		return json_decode(file_get_contents(API_BOT . '/getMe', false, CONTEXTO), true);
+		$requisicao = API_BOT . '/getMe';
+
+		return json_decode(enviarRequisicao($requisicao), true);
 	}
 
 	function getUpdates($updateID){
-		return json_decode(file_get_contents(API_BOT . '/getUpdates?timeout=20&offset=' . $updateID, false, CONTEXTO), true);
+		$requisicao = API_BOT . '/getUpdates';
+
+		$conteudoRequisicao = array(
+			 'offset' => $updateID,
+			'timeout' => 20
+		);
+
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
 	function getChatAdministrators($chatID){
-		$requisicao = API_BOT . '/getChatAdministrators?';
+		$requisicao = API_BOT . '/getChatAdministrators';
 
 		$conteudoRequisicao = array(
 			'chat_id' => $chatID
 		);
 
-		$requisicao .= http_build_query($conteudoRequisicao, '', '&');
-
-		return json_decode(file_get_contents($requisicao, false, CONTEXTO), true);
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
 	function getUserProfilePhotos($userID){
-		$requisicao = API_BOT . '/getUserProfilePhotos?';
+		$requisicao = API_BOT . '/getUserProfilePhotos';
 
 		$conteudoRequisicao = array(
 			'user_id' => $userID,
 				'limit' => 1
 		);
 
-		$requisicao .= http_build_query($conteudoRequisicao, '', '&');
-
-		return json_decode(file_get_contents($requisicao, false, CONTEXTO), true);
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
 	function sendChatAction($chatID, $action){
-		return file_get_contents(API_BOT . '/sendChatAction?chat_id=' . $chatID . '&action=' . $action, false, CONTEXTO);
+		$requisicao = API_BOT . '/sendChatAction';
+
+		$conteudoRequisicao = array(
+			'chat_id' => $chatID,
+			 'action' => $action
+		);
+
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
 	function sendDocument($chatID, $document, $replyMessage = null, $replyMarkup = null, $caption = null, $disableNotification = true){
-		$requisicao = API_BOT . '/sendDocument?';
+		$requisicao = API_BOT . '/sendDocument';
 
 		$conteudoRequisicao = array(
 			 'chat_id' => $chatID,
@@ -60,13 +85,11 @@
 			$conteudoRequisicao['disable_notification'] = true;
 		}
 
-		$requisicao .= http_build_query($conteudoRequisicao, '', '&');
-
-		return json_decode(file_get_contents($requisicao, false, CONTEXTO), true);
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
 	function sendMessage($chatID, $text, $replyMessage = null, $replyMarkup = null, $parseMode = false, $disablePreview = true, $disableNotification = false){
-		$requisicao = API_BOT . '/sendMessage?';
+		$requisicao = API_BOT . '/sendMessage';
 
 		$conteudoRequisicao = array(
 			'chat_id'	=> $chatID,
@@ -93,13 +116,11 @@
 			$conteudoRequisicao['disable_notification'] = true;
 		}
 
-		$requisicao .= http_build_query($conteudoRequisicao, '', '&');
-
-		return json_decode(file_get_contents($requisicao, false, CONTEXTO), true);
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
 	function sendPhoto($chatID, $photo, $replyMessage = null, $replyMarkup = null, $caption = null, $disableNotification = false){
-		$requisicao = API_BOT . '/sendPhoto?';
+		$requisicao = API_BOT . '/sendPhoto';
 
 		$conteudoRequisicao = array(
 			'chat_id' => $chatID,
@@ -122,9 +143,7 @@
 			$conteudoRequisicao['disable_notification'] = true;
 		}
 
-		$requisicao .= http_build_query($conteudoRequisicao, '', '&');
-
-		return json_decode(file_get_contents($requisicao, false, CONTEXTO), true);
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
 	function carregarDados($arquivo){
@@ -138,6 +157,29 @@
 
 	function salvarDados($arquivo, $dados){
 		return file_put_contents($arquivo, json_encode($dados));
+	}
+
+	function verificarCache($nomeCache){
+		$chave = md5($nomeCache);
+
+		if(file_exists(CACHE_PASTA . $chave . '.json')){
+			$mensagem = carregarDados(CACHE_PASTA . $chave . '.json');
+
+			return $mensagem[0];
+		}
+		else{
+			return null;
+		}
+	}
+
+	function salvarCache($nomeCache, $mensagem){
+		$chave = md5($nomeCache);
+
+		$dados = array(
+			0 => $mensagem
+		);
+
+		salvarDados(CACHE_PASTA . $chave . '.json', $dados);
 	}
 
 	function manipularErros($erroCodigo, $erroMensagem = null, $erroArquivo = null, $erroLinha = null){

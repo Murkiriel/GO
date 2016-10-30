@@ -13,9 +13,14 @@
 		$mensagem = $mensagem . "\n\n" . 'Chat: ' . $mensagens['message']['chat']['title'] .
 																		 ' (ID: ' . $mensagens['message']['chat']['id'].')';
 
-		$dados = carregarDados(RAIZ . 'dados/ranking.json');
+					 $dados = carregarDados(RAIZ . 'dados/ranking.json');
+		$qntdMensagem = 0;
 
-		$mensagem = $mensagem . "\n" . ID[$IDIOMA]['MSGS'] . ': ' . $dados[$mensagens['message']['chat']['id']][$mensagens['message']['from']['id']]['qntd_mensagem'];
+		if(isset($dados)){
+			$qntdMensagem = $dados[$mensagens['message']['chat']['id']][$mensagens['message']['from']['id']]['qntd_mensagem'];
+		}
+
+		$mensagem = $mensagem . "\n" . ID[$IDIOMA]['MSGS'] . ': ' . $qntdMensagem;
 	}
 	else if($mensagens['message']['chat']['type'] == 'private'){
 		$mensagem = $mensagem . "\n\n" . ID[$IDIOMA]['PRVD'];

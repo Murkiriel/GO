@@ -8,12 +8,14 @@ Telegram [@Murkiriel](http://telegram.me/Murkiriel)
 ##Setup
 
 ```bash
-# Tested on Ubuntu Gnome 16.10
+# Tested on Ubuntu 16.10 x64
 git clone https://github.com/Murkiriel/GO.git
 
 cd GO
 
-sudo ./php7_zts_pthreads.sh
+sudo chmod +x *.sh
+
+sudo ./instalar.sh
 ```
 
 **Before you do anything, open config.php in a text editor and make the following changes:**

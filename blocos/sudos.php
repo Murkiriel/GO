@@ -1,6 +1,6 @@
 <?php
 	if(	strcasecmp($mensagens['message']['text'], '/sudos')																					== 0	OR
-			strcasecmp($mensagens['message']['text'], '/sudos' . '@' . $dadosBot['result']['username'])	== 0	){
+			strcasecmp($mensagens['message']['text'], '/sudos' . '@' . DADOS_BOT['result']['username'])	== 0	){
 
 		$mensagem = '<pre>COMANDOS SUDOS</pre>'		. "\n\n" .
 								'/reiniciar - Reiniciar bot'	. "\n"	 .
@@ -9,29 +9,52 @@
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
 	}
 
+	if(	strcasecmp($mensagens['message']['text'], '/reiniciar') == 0 OR
+			strcasecmp($mensagens['message']['text'], '/reiniciar' . '@' . DADOS_BOT['result']['username']) == 0){
+		echo '🔥  -> CACHE LIMPO!';
+		echo "\n\n";
+		echo '+-------------+' . "\n";
+		echo '| REINICIANDO |' . "\n";
+		echo '+-------------+' . "\n\n";
+
+		system('rm -rf ' . CACHE_PASTA . '*');
+
+		$loop = false;
+
+		$mensagem = '<pre>Reiniciando...</pre>';
+
+		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
+	}
+
 	if(	strcasecmp($mensagens['message']['text'], '/status')																					== 0	OR
-			strcasecmp($mensagens['message']['text'], '/status' . '@' . $dadosBot['result']['username'])	== 0	){
-			$dados = carregarDados(RAIZ . '/dados/idioma.json');
-		$indices = array_keys($dados);
+			strcasecmp($mensagens['message']['text'], '/status' . '@' . DADOS_BOT['result']['username'])	== 0	){
+				 $dados = carregarDados(RAIZ . '/dados/idioma.json');
+				$grupos = 0;
+			$usuarios	= 0;
 
-			$grupos = 0;
-		$usuarios	= 0;
+			if(isset($dados)){
+				 $indices = array_keys($dados);
 
-		foreach($indices as $valor){
-			if($valor < 0){
-				++$grupos;
+				foreach($indices as $valor){
+					if($valor < 0){
+						++$grupos;
+					}
+					else{
+						++$usuarios;
+					}
+				}
 			}
-			else{
-				++$usuarios;
-			}
+
+							$dados = carregarDados(RAIZ . 'dados/ranking.json');
+		 $totalMensagens = 0;
+		$mensagensMinuto = 0;
+
+		if(isset($dados)){
+			 $totalMensagens = $dados['SG'] + $dados['PG'];
+			$mensagensMinuto = $dados['MM'];
 		}
 
-		$dados = carregarDados(RAIZ . 'dados/ranking.json');
-
-		 $totalMensagens = $dados['SG'] + $dados['PG'];
-		$mensagensMinuto = $dados['MM'];
-
-		$mensagem = '<pre>STATUS DO ' . strtoupper($dadosBot['result']['first_name']) . '</pre>' . "\n\n" .
+		$mensagem = '<pre>STATUS DO ' . strtoupper(DADOS_BOT['result']['first_name']) . '</pre>' . "\n\n" .
 								'<b>Versão:</b> '		 . VERSAO						. "\n\n" .
 								'<b>Grupos:</b> '		 . $grupos					. "\n"	 .
 								'<b>Usuários:</b> '	 . $usuarios				. "\n\n" .
