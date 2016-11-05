@@ -1,8 +1,13 @@
 <?php
-	$mensagem = ID[$IDIOMA]['NOME'] . ': ' . $mensagens['message']['from']['first_name'];
+	if(isset($mensagens['message']['reply_to_message'])){
+		$mensagens['message'] = $mensagens['message']['reply_to_message'];
+		unset($mensagens['message']['reply_to_message']);
+	}
+
+	$mensagem = ID[$mensagens['IDIOMA']]['NOME'] . ': ' . $mensagens['message']['from']['first_name'];
 
 	if(isset($mensagens['message']['from']['username'])){
-		$mensagem = $mensagem . ' (@'. $mensagens['message']['from']['username'].')' ."\n".
+		$mensagem = $mensagem . ' ( @'. $mensagens['message']['from']['username'].' )' ."\n".
 									 'ID: ' .				 $mensagens['message']['from']['id'];
 	}
 	else{
@@ -17,13 +22,18 @@
 		$qntdMensagem = 0;
 
 		if(isset($dados)){
-			$qntdMensagem = $dados[$mensagens['message']['chat']['id']][$mensagens['message']['from']['id']]['qntd_mensagem'];
+			if($mensagens['message']['from']['id'] != DADOS_BOT['result']['id']){
+				$qntdMensagem = $dados[$mensagens['message']['chat']['id']][$mensagens['message']['from']['id']]['qntd_mensagem'];
+			}
+			else{
+				$qntdMensagem = '10^100';
+			}
 		}
 
-		$mensagem = $mensagem . "\n" . ID[$IDIOMA]['MSGS'] . ': ' . $qntdMensagem;
+		$mensagem = $mensagem . "\n" . ID[$mensagens['IDIOMA']]['MSGS'] . ': ' . $qntdMensagem;
 	}
 	else if($mensagens['message']['chat']['type'] == 'private'){
-		$mensagem = $mensagem . "\n\n" . ID[$IDIOMA]['PRVD'];
+		$mensagem = $mensagem . "\n\n" . ID[$mensagens['IDIOMA']]['PRVD'];
 	}
 
 	$resultado = getUserProfilePhotos($mensagens['message']['from']['id']);

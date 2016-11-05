@@ -1,5 +1,5 @@
 <?php
-	$mensagem = verificarCache($mensagens['message']['text'] . $IDIOMA);
+	$mensagem = verificarCache($mensagens['message']['text'] . $mensagens['IDIOMA']);
 
 	if($mensagem == null){
 		if(isset($texto[1])){
@@ -11,10 +11,10 @@
 
 			$mensagem = '<b>' . file_get_contents('http://api.mathjs.org/v1/?expr=' . urlencode($expressao), false, CONTEXTO) . '</b>';
 
-			salvarCache($mensagens['message']['text'] . $IDIOMA, $mensagem);
+			salvarCache($mensagens['message']['text'] . $mensagens['IDIOMA'], $mensagem);
 		}
 		else{
-			$mensagem = '<b>Ex.:</b> /calc 2+2';
+			$mensagem = '📚: /calc 2+2';
 		}
 	}
 

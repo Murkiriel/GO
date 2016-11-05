@@ -1,5 +1,5 @@
 <?php
-	$dadosIdioma = carregarDados(RAIZ . 'dados/idioma.json');
+	$continue = false;
 
 	switch(strtolower($texto[0])){
 		case '/idioma':
@@ -10,110 +10,89 @@
 
 	if($mensagens['message']['text'] == '🇧🇷 Português'){
 		$dadosIdioma[$mensagens['message']['chat']['id']] = array(
-				'idioma' => 'pt'
+				'idioma' => 'PT'
 		);
 
-		$teclado = array(
-			'hide_keyboard' => true
-		);
-
-		$replyMarkup = json_encode($teclado);
-
-		$mensagem = SET_IDIOMA['pt'];
-
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
+		$mensagens['message']['text'] = '/h';
 
 		salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
 	}
 
 	if($mensagens['message']['text'] == '🇬🇧 English'){
 		$dadosIdioma[$mensagens['message']['chat']['id']] = array(
-				'idioma' => 'en'
+				'idioma' => 'EN'
 		);
 
-		$teclado = array(
-			'hide_keyboard' => true
-		);
-
-		$replyMarkup = json_encode($teclado);
-
-		$mensagem = SET_IDIOMA['en'];
-
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
+		$mensagens['message']['text'] = '/h';
 
 		salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
 	}
 
 	if($mensagens['message']['text'] == '🇪🇸 Español'){
 		$dadosIdioma[$mensagens['message']['chat']['id']] = array(
-				'idioma' => 'es'
+				'idioma' => 'ES'
 		);
 
-		$teclado = array(
-			'hide_keyboard' => true
-		);
-
-		$replyMarkup = json_encode($teclado);
-
-		$mensagem = SET_IDIOMA['es'];
-
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
+		$mensagens['message']['text'] = '/h';
 
 		salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
 	}
 
 	if($mensagens['message']['text'] == '🇮🇹 Italiano'){
 		$dadosIdioma[$mensagens['message']['chat']['id']] = array(
-				'idioma' => 'it'
+				'idioma' => 'IT'
 		);
 
-		$teclado = array(
-			'hide_keyboard' => true
-		);
-
-		$replyMarkup = json_encode($teclado);
-
-		$mensagem = SET_IDIOMA['it'];
-
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
+		$mensagens['message']['text'] = '/h';
 
 		salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
 	}
 
-	if(empty($dadosIdioma[$mensagens['message']['chat']['id']])){
-		$teclado = array(
-			'keyboard' => array(
-				array("🇧🇷 Português", "🇬🇧 English"),
-				array(  "🇪🇸 Español", "🇮🇹 Italiano")
-			),
-			'resize_keyboard'	=> true,
-			'one_time_keyboard'	=> true
-		);
+	if(strcasecmp($mensagens['message']['text'], '/start' . '@' . DADOS_BOT['result']['username'] . ' new') == 0){
+		$continue = true;
+	}
+	else if(empty($dadosIdioma[$mensagens['message']['chat']['id']])){
+		$teclado =	[
+									'inline_keyboard'	=>	[
+																					[
+																						['text' =>  '🇧🇷 Português', 'callback_data' => '🇧🇷 Português'	],
+																						['text' =>  '🇬🇧 English'	, 'callback_data' => '🇬🇧 English'		]
+																					],
+																					[
+																						['text' =>  '🇪🇸 Español'	, 'callback_data' => '🇪🇸 Español'		],
+																						['text' =>  '🇮🇹 Italiano'	, 'callback_data' => '🇮🇹 Italiano'	]
+																					]
+																				]
+								];
 
 		$replyMarkup = json_encode($teclado);
 
 		$mensagem =
-			'<b>PT:</b> ' . TECLADO['pt'] . "\n" .
-			'——————————'									."\n".
-			'<b>EN:</b> ' . TECLADO['en'] ."\n".
-			'——————————'									."\n".
-			'<b>ES:</b> ' . TECLADO['es'] ."\n".
-			'——————————'									."\n".
-			'<b>IT:</b> ' . TECLADO['it'];
+			'<b>PT:</b> ' . TECLADO['PT'] . "\n" .
+			'----------'									."\n".
+			'<b>EN:</b> ' . TECLADO['EN'] ."\n".
+			'----------'									."\n".
+			'<b>ES:</b> ' . TECLADO['ES'] ."\n".
+			'----------'									."\n".
+			'<b>IT:</b> ' . TECLADO['IT'];
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
 
-		die();
+		$continue = true;
 	}
 	else if(strcasecmp($mensagens['message']['text'], '/stop')																				 == 0					AND
 										 $mensagens['message']['chat']['type']																					 == 'private'	OR
-					strcasecmp($mensagens['message']['text'], '/stop' . '@' . $dadosBot['result']['username']) == 0					AND
+					strcasecmp($mensagens['message']['text'], '/stop' . '@' . DADOS_BOT['result']['username']) == 0					AND
 										 $mensagens['message']['chat']['type']																					 == 'private'	){
 	unset($dadosIdioma[$mensagens['message']['from']['id']]);
 
-		$teclado = array(
-			'hide_keyboard' => true
-		);
+		$teclado =	[
+									'inline_keyboard'	=>	[
+																					[
+																						['text' =>  '🤖'	, 'callback_data' => '/start'	]
+																					]
+																				]
+								];
 
 		$replyMarkup = json_encode($teclado);
 
@@ -122,14 +101,18 @@
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
 
 		salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
+
+		$continue = true;
 	}
-	else if(isset($mensagens['message']['left_chat_member']['id'])){
-		if($mensagens['message']['left_chat_member']['id'] == $dadosBot['result']['id']){
+	else if(isset($mensagens['message']['left_chat_participant']['id'])){
+		if($mensagens['message']['left_chat_participant']['id'] == DADOS_BOT['result']['id']){
 			unset($dadosIdioma[$mensagens['message']['chat']['id']]);
 
 			salvarDados(RAIZ . 'dados/idioma.json', $dadosIdioma);
+
+			$continue = true;
 		}
 	}
 	else{
-		$IDIOMA = $dadosIdioma[$mensagens['message']['chat']['id']]['idioma'];
+		$mensagens['IDIOMA'] = $dadosIdioma[$mensagens['message']['chat']['id']]['idioma'];
 	}

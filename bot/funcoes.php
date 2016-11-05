@@ -7,6 +7,7 @@
 
 		if($conteudoRequisicao != null){
 			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($conteudoRequisicao));
+			echo $requisicao . '?' . http_build_query($conteudoRequisicao) . "\n\n";
 		}
 
 		return curl_exec($ch);
@@ -61,7 +62,7 @@
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
-	function sendDocument($chatID, $document, $replyMessage = null, $replyMarkup = null, $caption = null, $disableNotification = true){
+	function sendDocument($chatID, $document, $replyMessage = null, $replyMarkup = null, $caption = null, $disableNotification = false){
 		$requisicao = API_BOT . '/sendDocument';
 
 		$conteudoRequisicao = array(
@@ -89,15 +90,30 @@
 	}
 
 	function sendMessage($chatID, $text, $replyMessage = null, $replyMarkup = null, $parseMode = false, $disablePreview = true, $disableNotification = false){
-		$requisicao = API_BOT . '/sendMessage';
+		$requisicao = API_BOT;
 
 		$conteudoRequisicao = array(
 			'chat_id'	=> $chatID,
 				 'text' => $text
 		);
 
-		if(isset($replyMessage)){
-			$conteudoRequisicao['reply_to_message_id'] = $replyMessage;
+		if($GLOBALS['EDT_MSG'] == false){
+			$requisicao = $requisicao . '/sendMessage';
+
+			if(isset($replyMessage)){
+				$conteudoRequisicao['reply_to_message_id'] = $replyMessage;
+			}
+
+			if($disableNotification == true){
+				$conteudoRequisicao['disable_notification'] = true;
+			}
+		}
+		else{
+			$requisicao = $requisicao . '/editMessageText';
+
+			if(isset($replyMessage)){
+				$conteudoRequisicao['message_id'] = $replyMessage;
+			}
 		}
 
 		if(isset($replyMarkup)){
@@ -110,10 +126,6 @@
 
 		if($disablePreview == true){
 			$conteudoRequisicao['disable_web_page_preview'] = true;
-		}
-
-		if($disableNotification == true){
-			$conteudoRequisicao['disable_notification'] = true;
 		}
 
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
@@ -146,6 +158,22 @@
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
+	function forwardMessage($chatID, $fromID, $mensagemID, $disableNotification = false){
+		$requisicao = API_BOT . '/forwardMessage';
+
+		$conteudoRequisicao = array(
+					 'chat_id' => $chatID,
+			'from_chat_id' => $fromID,
+				'message_id' => $mensagemID
+		);
+
+		if($disableNotification == true){
+			$conteudoRequisicao['disable_notification'] = true;
+		}
+
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
+	}
+
 	function carregarDados($arquivo){
 		if(file_exists($arquivo)){
 			return json_decode(file_get_contents($arquivo, false, CONTEXTO), true);
@@ -160,7 +188,7 @@
 	}
 
 	function verificarCache($nomeCache){
-		$chave = md5($nomeCache);
+		$chave = md5(strtolower($nomeCache));
 
 		if(file_exists(CACHE_PASTA . $chave . '.json')){
 			$mensagem = carregarDados(CACHE_PASTA . $chave . '.json');
@@ -173,7 +201,7 @@
 	}
 
 	function salvarCache($nomeCache, $mensagem){
-		$chave = md5($nomeCache);
+		$chave = md5(strtolower($nomeCache));
 
 		$dados = array(
 			0 => $mensagem
@@ -223,12 +251,12 @@
       $erroEncontrado = 'CAUGHT EXCEPTION';
     }
 
-    $mensagem  = '<pre>🐞 ERRO ENCONTRADO</pre>'						. "\n\n";
-    $mensagem .= '<b>Tipo:</b> '			. $erroEncontrado			. "\n";
-    $mensagem .= '<b>Arquivo:</b> '		. $erroArquivo				. "\n";
-    $mensagem .= '<b>Linha:</b> '			. $erroLinha					. "\n";
-    $mensagem .= '<b>Descrição:</b> '	. $erroMensagem				. "\n";
-    $mensagem .= '<b>Data:</b> ' 			. date('d/m/Y H:i:s') . "\n";
+    $mensagem  = '<pre>🐞 ERRO ENCONTRADO</pre>'							. "\n\n";
+    $mensagem .= '<b>Tipo:</b> '				. $erroEncontrado			. "\n";
+    $mensagem .= '<b>Arquivo:</b> '			. $erroArquivo				. "\n";
+    $mensagem .= '<b>Linha:</b> '				. $erroLinha					. "\n";
+    $mensagem .= '<b>Descrição:</b> '		. $erroMensagem				. "\n";
+    $mensagem .= '<b>Data e Hora:</b> ' . date('d/m/Y H:i:s') . "\n";
 
     echo '🐞  ERRO: ' . $erroMensagem . ' no arquivo ' . $erroArquivo . ' (Linha ' . $erroLinha . ')' . "\n\n";
 
