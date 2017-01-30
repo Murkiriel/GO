@@ -89,7 +89,7 @@
 			}
 
 			include(RAIZ . 'blocos/documentos.php');
-			if (in_array($mensagens['message']['from']['id'], SUDOS)) { include(RAIZ . 'blocos/sudos.php'); }
+			include(RAIZ . 'blocos/sudos.php');
 			$redis->close() && exit();
 		}
 	}

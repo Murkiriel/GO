@@ -11,7 +11,7 @@
 																						'url' => 'https://telegram.me/Murkiriel']
 																				],
 																				[
-																					['text' => '🔙'	, 'callback_data' => '/start']
+																					['text' => '🔙', 'callback_data' => '/start']
 																				]
 																			]
 							];

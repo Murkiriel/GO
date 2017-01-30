@@ -57,12 +57,12 @@
 		$teclado = [
 									'inline_keyboard'	=>	[
 																					[
-																						['text' => '🇧🇷 Português', 'callback_data' => '/portugues'	],
-																						['text' => '🇬🇧 English'	, 'callback_data' => '/english'		]
+																						['text' => '🇧🇷 Português', 'callback_data' => '/portugues'],
+																						['text' => '🇬🇧 English', 'callback_data' => '/english']
 																					],
 																					[
-																						['text' => '🇪🇸 Español'	, 'callback_data' => '/espanol'		],
-																						['text' => '🇮🇹 Italiano'	, 'callback_data' => '/italiano'	]
+																						['text' => '🇪🇸 Español', 'callback_data' => '/espanol'],
+																						['text' => '🇮🇹 Italiano', 'callback_data' => '/italiano']
 																					]
 																				]
 								];

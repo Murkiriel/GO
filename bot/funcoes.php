@@ -43,6 +43,7 @@
 
 	/**
 	 * @param string $chatID
+	 * @param string $text
 	 */
 	function sendMessage($chatID, $text, $replyMessage = NULL, $replyMarkup = NULL, $parseMode = FALSE, $disablePreview = TRUE, $editarMensagem = FALSE) {
 		$requisicao = API_BOT;
@@ -72,9 +73,7 @@
 			$conteudoRequisicao['parse_mode'] = 'HTML';
 		}
 
-		if ($disablePreview === TRUE) {
-			$conteudoRequisicao['disable_web_page_preview'] = TRUE;
-		}
+		$conteudoRequisicao['disable_web_page_preview'] = TRUE;
 
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
@@ -107,9 +106,7 @@
 			$conteudoRequisicao['reply_markup'] = $replyMarkup;
 		}
 
-		if (isset($caption)) {
-			$conteudoRequisicao['caption'] = $caption;
-		}
+		$conteudoRequisicao['caption'] = $caption;
 
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
@@ -130,9 +127,7 @@
 			$conteudoRequisicao['reply_markup'] = $replyMarkup;
 		}
 
-		if (isset($caption)) {
-			$conteudoRequisicao['caption'] = $caption;
-		}
+		$conteudoRequisicao['caption'] = $caption;
 
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
@@ -225,19 +220,18 @@
     if (func_num_args() == 5) {
       list($erroCodigo, $erroMensagem, $erroArquivo, $erroLinha) = func_get_args();
     } else {
-            $excecao = func_get_arg(0);
-         $erroCodigo = $excecao->getCode();
-       $erroMensagem = $excecao->getMessage();
-        $erroArquivo = $excecao->getFile();
-          $erroLinha = $excecao->getLine();
+			$excecao = func_get_arg(0);
+			$erroCodigo = $excecao->getCode();
+			$erroMensagem = $excecao->getMessage();
+			$erroArquivo = $excecao->getFile();
+			$erroLinha = $excecao->getLine();
     }
 
     $erroTipo = array(
-      E_COMPILE_ERROR => 'COMPILE ERROR',		E_COMPILE_WARNING => 'COMPILE WARNING',		E_CORE_ERROR => 'CORE ERROR',
-			 E_CORE_WARNING => 'CORE WARNING',							E_ERROR => 'ERROR',									E_NOTICE => 'NOTICE',
-			 				E_PARSE => 'PARSING ERROR',	E_RECOVERABLE_ERROR => 'RECOVERABLE ERROR',			E_STRICT => 'STRICT NOTICE',
-				 E_USER_ERROR => 'USER ERROR',					E_USER_NOTICE => 'USER NOTICE',			E_USER_WARNING => 'USER WARNING',
-				 		E_WARNING => 'WARNING'
+      E_COMPILE_ERROR => 'COMPILE ERROR', E_COMPILE_WARNING => 'COMPILE WARNING', E_CORE_ERROR => 'CORE ERROR',
+			E_CORE_WARNING => 'CORE WARNING', E_ERROR => 'ERROR', E_NOTICE => 'NOTICE', E_PARSE => 'PARSING ERROR',
+			E_RECOVERABLE_ERROR => 'RECOVERABLE ERROR', E_STRICT => 'STRICT NOTICE', E_USER_ERROR => 'USER ERROR',
+			E_USER_NOTICE => 'USER NOTICE', E_USER_WARNING => 'USER WARNING', E_WARNING => 'WARNING'
   	);
 
     if (array_key_exists($erroCodigo, $erroTipo)) {
@@ -246,9 +240,12 @@
       $erroEncontrado = 'CAUGHT EXCEPTION';
     }
 
-    $mensagem  = '<pre>🐞 ERRO ENCONTRADO</pre>'							. "\n\n";	$mensagem .= '<b>Tipo:</b> '				. $erroEncontrado			. "\n";
-    $mensagem .= '<b>Arquivo:</b> '			. $erroArquivo				. "\n";		$mensagem .= '<b>Linha:</b> '				. $erroLinha					. "\n";
-    $mensagem .= '<b>Descrição:</b> '		. $erroMensagem				. "\n";		$mensagem .= '<b>Data e Hora:</b> ' . date('d/m/Y H:i:s') . "\n";
+    $mensagem = '<pre>🐞 ERRO ENCONTRADO</pre>' . "\n\n";
+		$mensagem .= '<b>Tipo:</b> ' . $erroEncontrado . "\n";
+    $mensagem .= '<b>Arquivo:</b> ' . $erroArquivo . "\n";
+		$mensagem .= '<b>Linha:</b> ' . $erroLinha . "\n";
+    $mensagem .= '<b>Descrição:</b> ' . $erroMensagem . "\n";
+		$mensagem .= '<b>Data e Hora:</b> ' . date('d/m/Y H:i:s') . "\n";
 
     echo '🐞  ERRO: ' . $erroMensagem . ' no arquivo ' . $erroArquivo . ' (Linha ' . $erroLinha . ')' . "\n\n";
 

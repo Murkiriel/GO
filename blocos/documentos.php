@@ -33,9 +33,9 @@
 					substr($mensagens['message']['document']['file_name'], -4) == '.obb') {
 				$redis->hset('documentos:store', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
 
-				$mensagem = '<b> 📱 APK/OBB ADICIONADO 📱 </b>'																	. "\n\n" .
-										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name']	. "\n" .
-										'<b>ID: </b>'		. $mensagens['message']['document']['file_id'];
+				$mensagem = '<b> 📱 APK/OBB ADICIONADO 📱 </b>' . "\n\n" .
+										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
+											'<b>ID: </b>' . $mensagens['message']['document']['file_id'];
 
 				notificarSudos($mensagem);
 			}

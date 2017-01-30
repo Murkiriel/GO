@@ -64,7 +64,7 @@
 																						'url' => 'https://telegram.me/' . DADOS_BOT['result']['username'] . '?startgroup=new']
 																				],
 																				[
-																					['text' => '🌎 '	. $idioma, 'callback_data' => '/idioma'],
+																					['text' => '🌎 ' . $idioma, 'callback_data' => '/idioma'],
 																					['text' => '📖 Info', 'callback_data' => '/info' ]
 																				]
 																			]

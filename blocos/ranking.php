@@ -1,7 +1,7 @@
 <?php
 	if ($mensagens['message']['chat']['type'] == 'group' OR $mensagens['message']['chat']['type'] == 'supergroup') {
 		if (strcasecmp($mensagens['message']['text'], '/rkgdel') == 0 OR
-				strcasecmp($mensagens['message']['text'], '/rkgdel' . '@' . DADOS_BOT['result']['username']) == 0 ) {
+				strcasecmp($mensagens['message']['text'], '/rkgdel' . '@' . DADOS_BOT['result']['username']) == 0) {
 				 $rkgdel = FALSE;
  			$resultado = getChatAdministrators($mensagens['message']['chat']['id']);
 
