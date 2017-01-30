@@ -45,7 +45,7 @@
 	 * @param string $chatID
 	 * @param string $text
 	 */
-	function sendMessage($chatID, $text, $replyMessage = NULL, $replyMarkup = NULL, $parseMode = FALSE, $disablePreview = TRUE, $editarMensagem = FALSE) {
+	function sendMessage($chatID, $text, $replyMessage = NULL, $replyMarkup = NULL, $parseMode = FALSE, $editarMensagem = FALSE) {
 		$requisicao = API_BOT;
 
 		$conteudoRequisicao = array(
