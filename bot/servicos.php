@@ -1,7 +1,7 @@
 <?php
 	// # MENSAGENS
 
-	$mensagens['edit_message'] = false;
+	$mensagens['edit_message'] = FALSE;
 
 	if (isset($mensagens['callback_query'])) {
 		$mensagens['callback_query']['message']['text'] = $mensagens['callback_query']['data'];
@@ -54,7 +54,7 @@
 	if ($redis->exists('idioma:' . $mensagens['message']['chat']['id'])) {
 		$idioma = $redis->get('idioma:' . $mensagens['message']['chat']['id']);
 	} else {
-		$teclado =	[
+		$teclado = [
 									'inline_keyboard'	=>	[
 																					[
 																						['text' =>  '🇧🇷 Português', 'callback_data' => '/portugues'	],
@@ -75,21 +75,21 @@
 			'<b>ES:</b> ' . TECLADO['ES'] . "\n" . '----------' . "\n" .
 			'<b>IT:</b> ' . TECLADO['IT'];
 
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true, true, false, $mensagens['edit_message']);
+		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, TRUE, TRUE, $mensagens['edit_message']);
 
-		$exit = true;
+		$exit = TRUE;
 	}
 
 	if (strcasecmp($mensagens['message']['text'], '/start' . '@' . DADOS_BOT['result']['username'] . ' new') == 0) {
-		$exit = true;
+		$exit = TRUE;
 	} else if (isset($mensagens['message']['left_chat_participant']['id']) AND
 									 $mensagens['message']['left_chat_participant']['id'] == DADOS_BOT['result']['id']) {
-		$exit = true;
+		$exit = TRUE;
 	}
 
 	// # RANKING
 
-	if ($mensagens['edit_message'] === false) {
+	if ($mensagens['edit_message'] === FALSE) {
 		if (!$redis->exists('idioma:' . $mensagens['message']['from']['id']) AND isset($idioma)){
 			$redis->set('idioma:' . $mensagens['message']['from']['id'], $idioma);
 		}

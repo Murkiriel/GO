@@ -13,7 +13,7 @@
 			$paginas = $resultado['query']['pages'];
 		 $idPagina = array_keys($paginas);
 
-		 if($idPagina[0] != -1){
+		 if ($idPagina[0] != -1) {
 			 	 $tituloPagina = $paginas[$idPagina[0]]['title'];
 			 $conteudoPagina = $paginas[$idPagina[0]]['extract'];
 			 			$urlPagina = 'https://' . $idioma . '.wikipedia.com/wiki/' . str_replace(' ', '_', $tituloPagina);
@@ -27,4 +27,4 @@
 		$mensagem = '📚: /wiki Brasil';
 	}
 
-	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], NULL, TRUE);

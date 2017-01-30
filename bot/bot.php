@@ -25,9 +25,9 @@
 
 		system('clear');
 		echo '+';
-		for ($i=0;$i<$hifens;$i++){echo '-'; }
+		for ($i = 0; $i<$hifens; $i++) {echo '-'; }
 		echo '+' . "\n" . '|' . $tituloBot . '|' . "\n" . '+';
-		for ($i=0;$i<$hifens;$i++){echo '-'; }
+		for ($i = 0; $i<$hifens; $i++) {echo '-'; }
 		echo '+' . "\n\n";
 	} else {
 		echo "\n\n";
@@ -47,56 +47,31 @@
 					$redis = conectarRedis();
 			$mensagens = $this->mensagens;
 					$texto = [];
-					 $exit = false;
+					 $exit = FALSE;
 
 			include(RAIZ . 'bot/servicos.php');
 
-			if ($exit === true) { $redis->close() && exit(); }
+			if ($exit === TRUE) { $redis->close() && exit(); }
 
 			switch (strtolower($texto[0])) {
 				case '/help':
-				case '/start':
-				case '/ajuda':
-				case '/ayuda':
-				case '/aiuto':
-		      include(RAIZ . 'blocos/ajuda.php');
-		      break;
-				case '/calc':
-			    include(RAIZ . 'blocos/calc.php');
-			    break;
-				case '/id':
-		      include(RAIZ . 'blocos/id.php');
-		      break;
-				case '/info':
-				  include(RAIZ . 'blocos/info.php');
-				  break;
+				case '/start':	include(RAIZ . 'blocos/ajuda.php');		break;
+				case '/calc':		include(RAIZ . 'blocos/calc.php');		break;
+				case '/id':			include(RAIZ . 'blocos/id.php');			break;
+				case '/info':		include(RAIZ . 'blocos/info.php');		break;
 				case '/books':
 				case '/libri':
 				case '/livros':
-				case '/libros':
-			  	include(RAIZ . '/blocos/livros.php');
-			    break;
-				case '/tv':
-				  include(RAIZ . 'blocos/tv.php');
-				  break;
+				case '/libros':	include(RAIZ . '/blocos/livros.php');	break;
+				case '/tv':			include(RAIZ . 'blocos/tv.php');			break;
 				case '/ranking':
-				case '/rkgdel':
-		      include(RAIZ . 'blocos/ranking.php');
-			  	break;
-				case '/store':
-			    include(RAIZ . 'blocos/store.php');
-				  break;
-				case '/wiki':
-			    include(RAIZ . 'blocos/wiki.php');
-			    break;
+				case '/rkgdel':	include(RAIZ . 'blocos/ranking.php');	break;
+				case '/store':	include(RAIZ . 'blocos/store.php');		break;
+				case '/wiki':		include(RAIZ . 'blocos/wiki.php');		break;
+				default:		include(RAIZ . 'blocos/documentos.php');	break;
 			}
 
-			include(RAIZ . 'blocos/documentos.php');
-
-			if (in_array($mensagens['message']['from']['id'], SUDOS)) {
-				include(RAIZ . 'blocos/sudos.php');
-			}
-
+			if (in_array($mensagens['message']['from']['id'], SUDOS)) { include(RAIZ . 'blocos/sudos.php'); }
 			$redis->close() && exit();
 		}
 	}

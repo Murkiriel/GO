@@ -2,7 +2,7 @@
 	$mensagem = '<pre>INFO ' . strtoupper(DADOS_BOT['result']['first_name']) . '</pre>' . "\n\n" .
 										 '<b>' . INFO[$idioma]['VERSAO'] . ':</b> ' . VERSAO;
 
-	$teclado =	[
+	$teclado = [
 								'inline_keyboard'	=>	[
 																				[
 																					['text' =>  '☕️ GitHub',
@@ -18,4 +18,4 @@
 
 	$replyMarkup = json_encode($teclado);
 
-	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true, true, false, $mensagens['editar_mensagem']);
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, TRUE, TRUE, $mensagens['edit_mensagem']);

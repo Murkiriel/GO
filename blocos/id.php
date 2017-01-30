@@ -33,7 +33,7 @@
 	$resultado = getUserProfilePhotos($mensagens['message']['from']['id']);
 
 	if (isset($resultado['result']['photos'][0][0]['file_id'])) {
-		sendPhoto($mensagens['message']['chat']['id'], $resultado['result']['photos'][0][0]['file_id'], $mensagens['message']['message_id'], null, $mensagem);
+		sendPhoto($mensagens['message']['chat']['id'], $resultado['result']['photos'][0][0]['file_id'], $mensagens['message']['message_id'], NULL, $mensagem);
 	} else {
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id']);
 	}

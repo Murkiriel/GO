@@ -1,6 +1,6 @@
 <?php
 	$teclado = array(
-		'hide_keyboard' => true
+		'hide_keyboard' => TRUE
 	);
 
 	$replyMarkup = json_encode($teclado);
@@ -11,20 +11,20 @@
 		if (isset($dadosTV)) {
 			$docs = array_keys($dadosTV);
 		} else {
-			$dosc[0] = null;
+			$dosc[0] = NULL;
 		}
 
 						 $cont = 0;
-		$resultados[0] = null;
+		$resultados[0] = NULL;
 
 		foreach ($docs as $lista) {
 			$posicao = strripos($lista, $texto[1]);
 
-			if ($posicao !== false) {
+			if ($posicao !== FALSE) {
 				if (isset($texto[2])) {
 					$posicao = strripos($lista, $texto[2]);
 
-					if ($posicao !== false) {
+					if ($posicao !== FALSE) {
 						$resultados[$cont] = $lista;
 					}
 				} else {
@@ -40,26 +40,26 @@
 		}
 
 		if ($mensagens['message']['chat']['type'] == 'private') {
-						$selective = false;
-			$oneTimeKeyboard = false;
+						$selective = FALSE;
+			$oneTimeKeyboard = FALSE;
 		} else {
-						$selective = true;
-			$oneTimeKeyboard = true;
+						$selective = TRUE;
+			$oneTimeKeyboard = TRUE;
 		}
 
-		if ($resultados[0] != null) {
+		if ($resultados[0] != NULL) {
 			$teclado = array(
 				'keyboard' => array(
 					array()
 				),
-					'resize_keyboard' => true,
+					'resize_keyboard' => TRUE,
 				'one_time_keyboard' => $oneTimeKeyboard,
 								'selective' => $selective
 			);
 
 			sort($resultados);
 
-			for ($i=0;$i<$cont;$i++) {
+			for ($i = 0; $i<$cont; $i++) {
 				$teclado['keyboard'][$i][0] = $resultados[$i];
 			}
 
@@ -73,4 +73,4 @@
 		$mensagem = '📚: /tv Star Wars';
 	}
 
-	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, TRUE);

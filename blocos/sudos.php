@@ -6,7 +6,7 @@
 								'/removerdocumento - Remover documento' . "\n" .
 								'/status - Ver status';
 
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
+		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], NULL, TRUE);
 	} else if (strcasecmp($texto[0], '/promover') == 0) {
 		if (isset($texto[1])) {
 			$mensagensEnviadas = 0;
@@ -15,14 +15,14 @@
 			foreach ($redis->keys('idioma:*') as $chatID) {
 				$chatID = floatval(str_ireplace('idioma:', '', $chatID));
 
-				if ($chatID > 0) {
-					$resultado = sendMessage($chatID, $textoDivulgacao, null, null, true);
+				if ($chatID>0) {
+					$resultado = sendMessage($chatID, $textoDivulgacao, NULL, NULL, TRUE);
 
-					if ($resultado['ok'] === true) {
+					if ($resultado['ok'] === TRUE) {
 						++$mensagensEnviadas;
 					}
 
-					if ($mensagensEnviadas % 30 ==  0) {
+					if ($mensagensEnviadas%30 ==  0) {
 						sleep(1);
 					}
 				}
@@ -35,10 +35,10 @@
 			foreach ($redis->keys('idioma:*') as $chatID) {
 				$chatID = floatval(str_ireplace('idioma:', '', $chatID));
 
-				if($chatID > 0){
+				if ($chatID>0) {
 					$resultado = forwardMessage($chatID, $mensagens['message']['reply_to_message']['chat']['id'],
-																				 				 $mensagens['message']['reply_to_message']['message_id'], false);
-					if ($resultado['ok'] === true) {
+																				 				 $mensagens['message']['reply_to_message']['message_id'], FALSE);
+					if ($resultado['ok'] === TRUE) {
 						++$mensagensEnviadas;
 					}
 				}
@@ -49,7 +49,7 @@
 			$mensagem = '📚: /promover Telegram > WhatsApp' . "\n\n" . 'Responder mensagem com /promover';
 		}
 
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
+		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], NULL, TRUE);
 	} else if (strcasecmp($texto[0], '/reiniciar') == 0) {
 		$redis->set('status_bot:loop', 'FALSE');
 
@@ -59,13 +59,12 @@
 		echo '+-------------+' . "\n";
 		echo '| REINICIANDO |' . "\n";
 		echo '+-------------+' . "\n\n";
-	} else if (strcasecmp($texto[0], '/removerdocumento')	== 0 ){
-		$documentoRemovido = false;
+	} else if (strcasecmp($texto[0], '/removerdocumento') == 0 ){
+		$documentoRemovido = FALSE;
 
-		if ($mensagens['message']['chat']['type'] != 'private'){
+		if ($mensagens['message']['chat']['type'] != 'private') {
 			$mensagem = 'Apenas no <b>privado!</b>';
-		}
-		else if (isset($texto[1])) {
+		} else if (isset($texto[1])) {
 			$nomeDocumento = substr(str_ireplace($texto[0], '', $mensagens['message']['text']), 1);
 
 			$chavesLista = array(
@@ -79,10 +78,10 @@
 					$idDocumento = $redis->hget('documentos:' . $chave, $nomeDocumento);
 					$redis->hdel('documentos:' . $chave, $nomeDocumento);
 
-					$documentoRemovido = true;
+					$documentoRemovido = TRUE;
 
 					$teclado = array(
-						'hide_keyboard' => true
+						'hide_keyboard' => TRUE
 					);
 
 					$replyMarkup = json_encode($teclado);
@@ -95,16 +94,15 @@
 				}
 			}
 
-			if ($documentoRemovido === false) {
+			if ($documentoRemovido === FALSE) {
 				$mensagem = '<b>' . $nomeDocumento . '</b> não existe na lista!';
 			}
-		}
-		else {
+		} else {
 			$mensagem = '📚: /removerdocumento WhatsApp.apk';
 		}
 
-		if ($documentoRemovido === false) {
-			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
+		if ($documentoRemovido === FALSE) {
+			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], NULL, TRUE);
 		}
 	} else if (strcasecmp($texto[0], '/status') == 0) {
 			 $grupos = count($redis->keys('idioma:-*'));
@@ -117,5 +115,5 @@
 								'<b>Usuários:</b> '	 . $usuarios																								. "\n\n" .
 								'<b>Msg / Seg:</b> ' . number_format($atendidas/60, 3, ',', '.') . ' m/s';
 
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
+		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], NULL, TRUE);
 	}

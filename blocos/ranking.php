@@ -2,7 +2,7 @@
 	if ($mensagens['message']['chat']['type'] == 'group' OR $mensagens['message']['chat']['type'] == 'supergroup') {
 		if (strcasecmp($mensagens['message']['text'], '/rkgdel')																				 == 0 OR
 				strcasecmp($mensagens['message']['text'], '/rkgdel' . '@' . DADOS_BOT['result']['username']) == 0 ) {
-				 $rkgdel = false;
+				 $rkgdel = FALSE;
  			$resultado = getChatAdministrators($mensagens['message']['chat']['id']);
 
  			foreach ($resultado['result'] as $adminsGrupo) {
@@ -11,14 +11,14 @@
 						$redis->del($hashs);
 					}
 
- 						$rkgdel = true;
- 					$mensagem	= 'O.K!';
+ 						$rkgdel = TRUE;
+ 					$mensagem = 'O.K!';
 
  					break;
  				}
  			}
 
- 			if ($rkgdel === false) {
+ 			if ($rkgdel === FALSE) {
  				$mensagem = RANKING[$idioma]['SMT_CRIADOR'];
  			}
 		} else {
@@ -52,5 +52,5 @@
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id']);
 	} else if ($mensagens['message']['chat']['type'] == 'private') {
-		sendMessage($mensagens['message']['chat']['id'], ERROS[$idioma]['SMT_GRUPO'], $mensagens['message']['message_id'], null, true);
+		sendMessage($mensagens['message']['chat']['id'], ERROS[$idioma]['SMT_GRUPO'], $mensagens['message']['message_id'], null, TRUE);
 	}

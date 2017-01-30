@@ -35,7 +35,7 @@
 		return json_decode(enviarRequisicao(API_BOT . '/getMe'), TRUE);
 	}
 
-	function sendMessage($chatID, $text, $replyMessage = NULL, $replyMarkup = NULL, $parseMode = FALSE, $disablePreview = TRUE, $disableNotification = FALSE, $editarMensagem = FALSE) {
+	function sendMessage($chatID, $text, $replyMessage = NULL, $replyMarkup = NULL, $parseMode = FALSE, $disablePreview = TRUE, $editarMensagem = FALSE) {
 		$requisicao = API_BOT;
 
 		$conteudoRequisicao = array(
@@ -48,10 +48,6 @@
 
 			if (isset($replyMessage)) {
 				$conteudoRequisicao['reply_to_message_id'] = $replyMessage;
-			}
-
-			if ($disableNotification === TRUE) {
-				$conteudoRequisicao['disable_notification'] = TRUE;
 			}
 		} else {
 			$requisicao = $requisicao . '/editMessageText';
@@ -74,7 +70,7 @@
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
 
-	function forwardMessage($chatID, $fromID, $mensagemID, $disableNotification = FALSE) {
+	function forwardMessage($chatID, $fromID, $mensagemID) {
 		$requisicao = API_BOT . '/forwardMessage';
 
 		$conteudoRequisicao = array(
@@ -83,14 +79,10 @@
 				'message_id' => $mensagemID
 		);
 
-		if ($disableNotification === TRUE) {
-			$conteudoRequisicao['disable_notification'] = TRUE;
-		}
-
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
 
-	function sendPhoto($chatID, $photo, $replyMessage = NULL, $replyMarkup = NULL, $caption = '@' . DADOS_BOT['result']['username'], $disableNotification = FALSE) {
+	function sendPhoto($chatID, $photo, $replyMessage = NULL, $replyMarkup = NULL, $caption = '@' . DADOS_BOT['result']['username']) {
 		$requisicao = API_BOT . '/sendPhoto';
 
 		$conteudoRequisicao = array(
@@ -110,14 +102,10 @@
 			$conteudoRequisicao['caption'] = $caption;
 		}
 
-		if ($disableNotification === TRUE) {
-			$conteudoRequisicao['disable_notification'] = TRUE;
-		}
-
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
 
-	function sendDocument($chatID, $document, $replyMessage = NULL, $replyMarkup = NULL, $caption = '@' . DADOS_BOT['result']['username'], $disableNotification = FALSE) {
+	function sendDocument($chatID, $document, $replyMessage = NULL, $replyMarkup = NULL, $caption = '@' . DADOS_BOT['result']['username']) {
 		$requisicao = API_BOT . '/sendDocument';
 
 		$conteudoRequisicao = array(
@@ -135,10 +123,6 @@
 
 		if (isset($caption)) {
 			$conteudoRequisicao['caption'] = $caption;
-		}
-
-		if ($disableNotification === TRUE) {
-			$conteudoRequisicao['disable_notification'] = TRUE;
 		}
 
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
@@ -177,7 +161,7 @@
 	}
 
 	function notificarSudos($mensagem) {
-		foreach(SUDOS as $sudo){
+		foreach (SUDOS as $sudo) {
 			sendMessage($sudo, $mensagem, NULL, NULL, TRUE);
 		}
 
@@ -194,11 +178,9 @@
 		while (TRUE) {
 			if (!empty($resultado['result']) AND is_array($resultado['result'])) {
 				foreach ($resultado['result'] as $mensagens) {
-					if (isset($mensagens['message']['date'])) {
-						if (time() - $mensagens['message']['date'] <= 20) {
-							getUpdates($updateID);
-							return notificarSudos('<pre>Iniciando...</pre>');
-						}
+					if (isset($mensagens['message']['date']) AND time() - $mensagens['message']['date']<= 20) {
+						getUpdates($updateID);
+						return notificarSudos('<pre>Iniciando...</pre>');
 					}
 
 					$updateID = $mensagens['update_id'] + 1;
@@ -212,11 +194,10 @@
 	}
 
 	function carregarDados($arquivo) {
-		if(file_exists($arquivo)){
-			return json_decode(file_get_contents($arquivo, false, CONTEXTO), true);
-		}
-		else{
-			return null;
+		if (file_exists($arquivo)) {
+			return json_decode(file_get_contents($arquivo, FALSE, CONTEXTO), TRUE);
+		} else {
+			return NULL;
 		}
 	}
 
