@@ -56,14 +56,14 @@
 			switch (strtolower($texto[0])) {
 				case '/start':
 				case '/help':
-		      include(RAIZ . 'blocos/ajuda.php');
-		      break;
+			  include(RAIZ . 'blocos/ajuda.php');
+			  break;
 				case '/calc':
-			    include(RAIZ . 'blocos/calc.php');
-			    break;
+				include(RAIZ . 'blocos/calc.php');
+				break;
 				case '/id':
-		      include(RAIZ . 'blocos/id.php');
-		      break;
+			  include(RAIZ . 'blocos/id.php');
+			  break;
 				case '/info':
 				  include(RAIZ . 'blocos/info.php');
 				  break;
@@ -72,20 +72,20 @@
 				case '/livros':
 				case '/libros':
 			  	include(RAIZ . '/blocos/livros.php');
-			    break;
+				break;
 				case '/tv':
 				  include(RAIZ . 'blocos/tv.php');
 				  break;
 				case '/ranking':
 				case '/rkgdel':
-		      include(RAIZ . 'blocos/ranking.php');
+			  include(RAIZ . 'blocos/ranking.php');
 			  	break;
 				case '/store':
-			    include(RAIZ . 'blocos/store.php');
+				include(RAIZ . 'blocos/store.php');
 				  break;
 				case '/wiki':
-			    include(RAIZ . 'blocos/wiki.php');
-			    break;
+				include(RAIZ . 'blocos/wiki.php');
+				break;
 			}
 
 			include(RAIZ . 'blocos/documentos.php');

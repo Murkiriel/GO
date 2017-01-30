@@ -90,15 +90,15 @@
 	// # RANKING
 
 	if ($mensagens['edit_message'] === FALSE) {
-		if (!$redis->exists('idioma:' . $mensagens['message']['from']['id']) AND isset($idioma)){
+		if (!$redis->exists('idioma:' . $mensagens['message']['from']['id']) AND isset($idioma)) {
 			$redis->set('idioma:' . $mensagens['message']['from']['id'], $idioma);
 		}
 
-		if ($mensagens['message']['chat']['type'] == 'group'			OR
-				$mensagens['message']['chat']['type'] == 'supergroup'	OR
-				$mensagens['message']['chat']['type'] == 'private'		) {
+		if ($mensagens['message']['chat']['type'] == 'group' OR
+				$mensagens['message']['chat']['type'] == 'supergroup' OR
+				$mensagens['message']['chat']['type'] == 'private') {
 
-			 	$redis->hset('ranking:' . $mensagens['message']['chat']['id'] . ':' . $mensagens['message']['from']['id'] , 'primeiro_nome', $mensagens['message']['from']['first_name']);
-				$redis->hincrby('ranking:' . $mensagens['message']['chat']['id'] . ':' . $mensagens['message']['from']['id'] , 'qntd_mensagem', 1);
+			 	$redis->hset('ranking:' . $mensagens['message']['chat']['id'] . ':' . $mensagens['message']['from']['id'], 'primeiro_nome', $mensagens['message']['from']['first_name']);
+				$redis->hincrby('ranking:' . $mensagens['message']['chat']['id'] . ':' . $mensagens['message']['from']['id'], 'qntd_mensagem', 1);
 		}
 	}
