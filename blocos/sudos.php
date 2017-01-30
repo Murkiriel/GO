@@ -1,8 +1,8 @@
 <?php
 	if (strcasecmp($mensagens['message']['text'], '/sudos') == 0) {
-		$mensagem = '<pre>COMANDOS SUDOS</pre>'							. "\n\n" .
-								'/promover - Promover texto'						. "\n" .
-								'/reiniciar - Reiniciar bot'						. "\n" .
+		$mensagem = '<pre>COMANDOS SUDOS</pre>' . "\n\n" .
+								'/promover - Promover texto' . "\n" .
+								'/reiniciar - Reiniciar bot' . "\n" .
 								'/removerdocumento - Remover documento' . "\n" .
 								'/status - Ver status';
 
@@ -22,7 +22,7 @@
 						++$mensagensEnviadas;
 					}
 
-					if ($mensagensEnviadas%30 ==  0) {
+					if ($mensagensEnviadas%30 == 0) {
 						sleep(1);
 					}
 				}
@@ -37,7 +37,7 @@
 
 				if ($chatID>0) {
 					$resultado = forwardMessage($chatID, $mensagens['message']['reply_to_message']['chat']['id'],
-																				 				 $mensagens['message']['reply_to_message']['message_id'], FALSE);
+																							 $mensagens['message']['reply_to_message']['message_id']);
 					if ($resultado['ok'] === TRUE) {
 						++$mensagensEnviadas;
 					}
@@ -59,7 +59,7 @@
 		echo '+-------------+' . "\n";
 		echo '| REINICIANDO |' . "\n";
 		echo '+-------------+' . "\n\n";
-	} else if (strcasecmp($texto[0], '/removerdocumento') == 0 ){
+	} else if (strcasecmp($texto[0], '/removerdocumento') == 0) {
 		$documentoRemovido = FALSE;
 
 		if ($mensagens['message']['chat']['type'] != 'private') {
@@ -86,8 +86,8 @@
 
 					$replyMarkup = json_encode($teclado);
 
-					$mensagem = '<b> 📱 DOCUMENTO REMOVIDO 📱 </b>'														. "\n\n" .
-											'<b>Nome:</b> ' . $nomeDocumento														. "\n"	 .
+					$mensagem = '<b> 📱 DOCUMENTO REMOVIDO 📱 </b>' . "\n\n" .
+											'<b>Nome:</b> ' . $nomeDocumento . "\n"	 .
 											'<b>ID: </b>'		. $idDocumento;
 
 					notificarSudos($mensagem);
@@ -109,10 +109,10 @@
 		 $usuarios = count($redis->keys('idioma:*')) - $grupos;
 		$atendidas = count($redis->keys('status_bot:msg_atendidas:*'));
 
-		$mensagem = '<pre>STATUS DO ' . strtoupper(DADOS_BOT['result']['first_name']) . '</pre>'		. "\n\n" .
-								'<b>Versão:</b> '		 . VERSAO																										. "\n\n" .
-								'<b>Grupos:</b> '		 . $grupos																									. "\n\n" .
-								'<b>Usuários:</b> '	 . $usuarios																								. "\n\n" .
+		$mensagem = '<pre>STATUS DO ' . strtoupper(DADOS_BOT['result']['first_name']) . '</pre>' . "\n\n" .
+								'<b>Versão:</b> ' . VERSAO . "\n\n" .
+								'<b>Grupos:</b> ' . $grupos . "\n\n" .
+								'<b>Usuários:</b> ' . $usuarios . "\n\n" .
 								'<b>Msg / Seg:</b> ' . number_format($atendidas/60, 3, ',', '.') . ' m/s';
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], NULL, TRUE);

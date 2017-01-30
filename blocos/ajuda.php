@@ -58,14 +58,14 @@
 	$teclado = [
 								'inline_keyboard'	=>	[
 																				[
-																					['text' =>  '⭐️ ' . AJUDA[$idioma]['TCD_AVALR'] . ' ' . DADOS_BOT['result']['first_name'],
+																					['text' => '⭐️ ' . AJUDA[$idioma]['TCD_AVALR'] . ' ' . DADOS_BOT['result']['first_name'],
 																						'url' => 'https://telegram.me/storebot?start=' . DADOS_BOT['result']['username']],
-																					['text' =>  '👥 ' . AJUDA[$idioma]['TCD_GRUPO'],
+																					['text' => '👥 ' . AJUDA[$idioma]['TCD_GRUPO'],
 																						'url' => 'https://telegram.me/' . DADOS_BOT['result']['username'] . '?startgroup=new']
 																				],
 																				[
-																					['text' =>  '🌎 '	. $idioma, 'callback_data' => '/idioma'],
-																					['text' =>  '📖 Info', 'callback_data' => '/info' ]
+																					['text' => '🌎 '	. $idioma, 'callback_data' => '/idioma'],
+																					['text' => '📖 Info', 'callback_data' => '/info' ]
 																				]
 																			]
 							];

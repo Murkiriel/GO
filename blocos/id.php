@@ -7,22 +7,22 @@
 	$mensagem = ID[$idioma]['NOME'] . ': ' . $mensagens['message']['from']['first_name'];
 
 	if (isset($mensagens['message']['from']['username'])) {
-		$mensagem = $mensagem . ' ( @'. $mensagens['message']['from']['username'].' )' ."\n".
-									 'ID: ' .					$mensagens['message']['from']['id'];
+		$mensagem = $mensagem . ' ( @' . $mensagens['message']['from']['username'] . ' )' . "\n" .
+									 'ID: ' . $mensagens['message']['from']['id'];
 	} else {
 		$mensagem = $mensagem . "\n" . 'ID: ' . $mensagens['message']['from']['id'];
 	}
 
-	if ($mensagens['message']['chat']['type'] == 'group'			OR
-			$mensagens['message']['chat']['type'] == 'supergroup'	OR
-			$mensagens['message']['chat']['type'] == 'private'		) {
+	if ($mensagens['message']['chat']['type'] == 'group' OR
+			$mensagens['message']['chat']['type'] == 'supergroup' OR
+			$mensagens['message']['chat']['type'] == 'private') {
 		if ($mensagens['message']['chat']['type'] != 'private') {
 			$mensagem = $mensagem . "\n\n" . 'Chat: ' . $mensagens['message']['chat']['title'] .
-																		 	' (ID: ' . $mensagens['message']['chat']['id'].')';
+																			 ' (ID: ' . $mensagens['message']['chat']['id'] . ')';
 		}
 
 		if ($mensagens['message']['from']['id'] != DADOS_BOT['result']['id']) {
-			$qntdMensagem = $redis->hget('ranking:'.$mensagens['message']['chat']['id'].':'.$mensagens['message']['from']['id'],'qntd_mensagem');
+			$qntdMensagem = $redis->hget('ranking:' . $mensagens['message']['chat']['id'] . ':' . $mensagens['message']['from']['id'], 'qntd_mensagem');
 		} else {
 			$qntdMensagem = '10^100';
 		}

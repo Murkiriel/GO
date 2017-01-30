@@ -30,7 +30,7 @@
 	if ($mensagens['message']['chat']['type'] == 'private' AND isset($mensagens['message']['document']['mime_type'])) {
 		if (in_array($mensagens['message']['from']['id'], SUDOS)) {
 			if (substr($mensagens['message']['document']['file_name'], -4) == '.apk' OR
-					substr($mensagens['message']['document']['file_name'], -4) == '.obb' ) {
+					substr($mensagens['message']['document']['file_name'], -4) == '.obb') {
 				$redis->hset('documentos:store', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
 
 				$mensagem = '<b> 📱 APK/OBB ADICIONADO 📱 </b>'																	. "\n\n" .

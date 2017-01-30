@@ -7,6 +7,9 @@
 		return $redis;
 	}
 
+	/**
+	 * @param string $requisicao
+	 */
 	function enviarRequisicao($requisicao, $conteudoRequisicao = NULL) {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_POST, TRUE);
@@ -20,6 +23,9 @@
 		return curl_exec($ch);
 	}
 
+	/**
+	 * @param integer $updateID
+	 */
 	function getUpdates($updateID) {
 		$requisicao = API_BOT . '/getUpdates';
 
@@ -35,6 +41,9 @@
 		return json_decode(enviarRequisicao(API_BOT . '/getMe'), TRUE);
 	}
 
+	/**
+	 * @param string $chatID
+	 */
 	function sendMessage($chatID, $text, $replyMessage = NULL, $replyMarkup = NULL, $parseMode = FALSE, $disablePreview = TRUE, $editarMensagem = FALSE) {
 		$requisicao = API_BOT;
 
@@ -160,6 +169,9 @@
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
 
+	/**
+	 * @param string $mensagem
+	 */
 	function notificarSudos($mensagem) {
 		foreach (SUDOS as $sudo) {
 			sendMessage($sudo, $mensagem, NULL, NULL, TRUE);
@@ -178,7 +190,7 @@
 		while (TRUE) {
 			if (!empty($resultado['result']) AND is_array($resultado['result'])) {
 				foreach ($resultado['result'] as $mensagens) {
-					if (isset($mensagens['message']['date']) AND time() - $mensagens['message']['date']<= 20) {
+					if (isset($mensagens['message']['date']) AND time() - $mensagens['message']['date']<=20) {
 						getUpdates($updateID);
 						return notificarSudos('<pre>Iniciando...</pre>');
 					}
@@ -206,8 +218,6 @@
 	}
 
 	function manipularErros($erroCodigo = NULL, $erroMensagem = NULL, $erroArquivo = NULL, $erroLinha = NULL) {
-		$excecao = NULL;
-
     if (error_reporting() == 0) {
       return NULL;
     }

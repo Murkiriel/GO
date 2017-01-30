@@ -5,13 +5,13 @@
 	$teclado = [
 								'inline_keyboard'	=>	[
 																				[
-																					['text' =>  '☕️ GitHub',
+																					['text' => '☕️ GitHub',
 																						'url' => 'https://github.com/Murkiriel/GO'],
-																					['text' =>  '📢 ' . INFO[$idioma]['CANAL'],
+																					['text' => '📢 ' . INFO[$idioma]['CANAL'],
 																						'url' => 'https://telegram.me/Murkiriel']
 																				],
 																				[
-																					['text' =>  '🔙'	, 'callback_data' => '/start']
+																					['text' => '🔙'	, 'callback_data' => '/start']
 																				]
 																			]
 							];
