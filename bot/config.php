@@ -1,14 +1,12 @@
 <?php
 	$api = 'https://api.telegram.org/bot';
-	$bot = '156817358:AAHTJjK48KX3rBjrYv9GPZP3CKalGbtGcr0'; //TOKEN BOT
+	$bot = ''; //TOKEN BOT
 
 	$redis = conectarRedis();
 
 	define('SUDOS', array(
-		'0' => '96438491', //SUDO ID
-		'1' => '279798801', // @FSMGORobot
-		'2' => '138504783', // @SrTornado
-		'3' => '263799625' // @Paulo6
+		'0' => '000000', //SUDO ID
+		'1' => '111111'
 	));
 
 	define('API_BOT', $api . $bot);
