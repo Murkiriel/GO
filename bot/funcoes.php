@@ -50,9 +50,9 @@
 				$conteudoRequisicao['reply_to_message_id'] = $replyMessage;
 			}
 
-			/*if ($disableNotification === TRUE) {
+			if ($disableNotification === TRUE) {
 				$conteudoRequisicao['disable_notification'] = TRUE;
-			}*/
+			}
 		} else {
 			$requisicao = $requisicao . '/editMessageText';
 
@@ -67,9 +67,9 @@
 			$conteudoRequisicao['parse_mode'] = 'HTML';
 		}
 
-		//if ($disablePreview === TRUE) {
+		if ($disablePreview === TRUE) {
 			$conteudoRequisicao['disable_web_page_preview'] = TRUE;
-		//}
+		}
 
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
@@ -83,9 +83,9 @@
 				'message_id' => $mensagemID
 		);
 
-		//if ($disableNotification === TRUE) {
+		if ($disableNotification === TRUE) {
 			$conteudoRequisicao['disable_notification'] = TRUE;
-		//}
+		}
 
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
@@ -106,13 +106,13 @@
 			$conteudoRequisicao['reply_markup'] = $replyMarkup;
 		}
 
-		//if (isset($caption)) {
+		if (isset($caption)) {
 			$conteudoRequisicao['caption'] = $caption;
-		//}
+		}
 
-		/*if ($disableNotification === TRUE) {
+		if ($disableNotification === TRUE) {
 			$conteudoRequisicao['disable_notification'] = TRUE;
-		}*/
+		}
 
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
@@ -133,13 +133,13 @@
 			$conteudoRequisicao['reply_markup'] = $replyMarkup;
 		}
 
-		//if (isset($caption)) {
+		if (isset($caption)) {
 			$conteudoRequisicao['caption'] = $caption;
-		//}
+		}
 
-		/*if ($disableNotification === TRUE) {
+		if ($disableNotification === TRUE) {
 			$conteudoRequisicao['disable_notification'] = TRUE;
-		}*/
+		}
 
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
@@ -195,16 +195,10 @@
 			if (!empty($resultado['result']) AND is_array($resultado['result'])) {
 				foreach ($resultado['result'] as $mensagens) {
 					if (isset($mensagens['message']['date'])) {
-						$data = $mensagens['message']['date'];
-					} else if (isset($mensagens['edited_message']['date'])) {
-						$data = $mensagens['edited_message']['date'];
-					} else if (isset($mensagens['callback_query']['message']['date'])) {
-						$data = $mensagens['callback_query']['message']['date'];
-					}
-
-					if (time() - $data <= 20) {
-						getUpdates($updateID);
-						return notificarSudos('<pre>Iniciando...</pre>');
+						if (time() - $mensagens['message']['date'] <= 20) {
+							getUpdates($updateID);
+							return notificarSudos('<pre>Iniciando...</pre>');
+						}
 					}
 
 					$updateID = $mensagens['update_id'] + 1;
@@ -233,9 +227,9 @@
 	function manipularErros($erroCodigo = NULL, $erroMensagem = NULL, $erroArquivo = NULL, $erroLinha = NULL) {
 		$excecao = NULL;
 
-    /*if (error_reporting() == 0) {
+    if (error_reporting() == 0) {
       return NULL;
-    }*/
+    }
 
     if (func_num_args() == 5) {
       list($erroCodigo, $erroMensagem, $erroArquivo, $erroLinha) = func_get_args();

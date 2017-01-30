@@ -24,8 +24,6 @@
 
 	// # IDIOMA
 
-	$exit = false;
-
 	$texto = explode(' ', $mensagens['message']['text']);
 	$texto[0] = str_ireplace('@' . DADOS_BOT['result']['username'], '', $texto[0]);
 
@@ -92,8 +90,8 @@
 	// # RANKING
 
 	if ($mensagens['edit_message'] === false) {
-		if (!$redis->exists('idioma:' . $mensagens['message']['from']['id'])) {
-			$idioma = $redis->get('idioma:' . $mensagens['message']['from']['id']);
+		if (!$redis->exists('idioma:' . $mensagens['message']['from']['id']) AND isset($idioma)){
+			$redis->set('idioma:' . $mensagens['message']['from']['id'], $idioma);
 		}
 
 		if ($mensagens['message']['chat']['type'] == 'group'			OR

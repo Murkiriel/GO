@@ -18,7 +18,7 @@
 
 		$updateID = 0;
 		$redis->set('status_bot:loop', 'TRUE');
-		//firstUpdate();
+		firstUpdate();
 
 		$tituloBot = strtoupper(' 🤖 -> ' . DADOS_BOT['result']['first_name'] . '  ( @' . DADOS_BOT['result']['username'] . ' ) ');
 			 $hifens = strlen($tituloBot) - 4;
@@ -46,6 +46,8 @@
 		public function run() {
 					$redis = conectarRedis();
 			$mensagens = $this->mensagens;
+					$texto = [];
+					 $exit = false;
 
 			include(RAIZ . 'bot/servicos.php');
 
