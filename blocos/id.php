@@ -1,46 +1,39 @@
 <?php
-	if(isset($mensagens['message']['reply_to_message'])){
+	if (isset($mensagens['message']['reply_to_message'])) {
 		$mensagens['message'] = $mensagens['message']['reply_to_message'];
 		unset($mensagens['message']['reply_to_message']);
 	}
 
-	$mensagem = ID[$mensagens['IDIOMA']]['NOME'] . ': ' . $mensagens['message']['from']['first_name'];
+	$mensagem = ID[$idioma]['NOME'] . ': ' . $mensagens['message']['from']['first_name'];
 
-	if(isset($mensagens['message']['from']['username'])){
+	if (isset($mensagens['message']['from']['username'])) {
 		$mensagem = $mensagem . ' ( @'. $mensagens['message']['from']['username'].' )' ."\n".
-									 'ID: ' .				 $mensagens['message']['from']['id'];
-	}
-	else{
+									 'ID: ' .					$mensagens['message']['from']['id'];
+	} else {
 		$mensagem = $mensagem . "\n" . 'ID: ' . $mensagens['message']['from']['id'];
 	}
 
-	if($mensagens['message']['chat']['type'] == 'group' OR $mensagens['message']['chat']['type'] == 'supergroup'){
-		$mensagem = $mensagem . "\n\n" . 'Chat: ' . $mensagens['message']['chat']['title'] .
-																		 ' (ID: ' . $mensagens['message']['chat']['id'].')';
-
-					 $dados = carregarDados(RAIZ . 'dados/ranking.json');
-		$qntdMensagem = 0;
-
-		if(isset($dados)){
-			if($mensagens['message']['from']['id'] != DADOS_BOT['result']['id']){
-				$qntdMensagem = $dados[$mensagens['message']['chat']['id']][$mensagens['message']['from']['id']]['qntd_mensagem'];
-			}
-			else{
-				$qntdMensagem = '10^100';
-			}
+	if ($mensagens['message']['chat']['type'] == 'group'			OR
+			$mensagens['message']['chat']['type'] == 'supergroup'	OR
+			$mensagens['message']['chat']['type'] == 'private'		) {
+		if ($mensagens['message']['chat']['type'] != 'private') {
+			$mensagem = $mensagem . "\n\n" . 'Chat: ' . $mensagens['message']['chat']['title'] .
+																		 	' (ID: ' . $mensagens['message']['chat']['id'].')';
 		}
 
-		$mensagem = $mensagem . "\n" . ID[$mensagens['IDIOMA']]['MSGS'] . ': ' . $qntdMensagem;
-	}
-	else if($mensagens['message']['chat']['type'] == 'private'){
-		$mensagem = $mensagem . "\n\n" . ID[$mensagens['IDIOMA']]['PRVD'];
+		if ($mensagens['message']['from']['id'] != DADOS_BOT['result']['id']) {
+			$qntdMensagem = $redis->hget('ranking:'.$mensagens['message']['chat']['id'].':'.$mensagens['message']['from']['id'],'qntd_mensagem');
+		} else {
+			$qntdMensagem = '10^100';
+		}
+
+		$mensagem = $mensagem . "\n" . ID[$idioma]['MSGS'] . ': ' . $qntdMensagem;
 	}
 
 	$resultado = getUserProfilePhotos($mensagens['message']['from']['id']);
 
-	if(isset($resultado['result']['photos'][0][0]['file_id'])){
+	if (isset($resultado['result']['photos'][0][0]['file_id'])) {
 		sendPhoto($mensagens['message']['chat']['id'], $resultado['result']['photos'][0][0]['file_id'], $mensagens['message']['message_id'], null, $mensagem);
-	}
-	else{
+	} else {
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id']);
 	}

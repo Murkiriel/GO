@@ -1,23 +1,17 @@
 <?php
-	date_default_timezone_set('America/Sao_Paulo');			//TIME ZONE
-
-	$horaCache = date('H');
-
 	$api = 'https://api.telegram.org/bot';
-	$bot = '';			//TOKEN BOT
+	$bot = '156817358:AAHTJjK48KX3rBjrYv9GPZP3CKalGbtGcr0'; //TOKEN BOT
+
+	$redis = conectarRedis();
 
 	define('SUDOS', array(
-		'0' => '000000',			//SUDO ID
-		'1' => '111111'
+		'0' => '96438491', //SUDO ID
+		'1' => '279798801', // @FSMGORobot
+		'2' => '138504783', // @SrTornado
+		'3' => '263799625' // @Paulo6
 	));
 
-	define('API_BOT',	$api . $bot);
+	define('API_BOT', $api . $bot);
 	define('CONTEXTO', stream_context_create(array('http' => array('header'=>'Connection: close\r\n'))));
 	define('RAIZ', system('pwd') . '/');
 	define('VERSAO', '4.0.0 (SGF)');
-
-	define('CACHE_PASTA', '/tmp/381ed5f/');
-
-	if(!file_exists(CACHE_PASTA)){
-		mkdir(CACHE_PASTA);
-	}

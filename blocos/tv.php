@@ -6,10 +6,10 @@
 	$replyMarkup = json_encode($teclado);
 
 	if (isset($texto[1])) {
-		$dadosLivros = $redis->hgetall('documentos:livros');
+		$dadosTV = $redis->hgetall('documentos:tv');
 
-		if (isset($dadosLivros)) {
-			$docs = array_keys($dadosLivros);
+		if (isset($dadosTV)) {
+			$docs = array_keys($dadosTV);
 		} else {
 			$dosc[0] = null;
 		}
@@ -70,7 +70,7 @@
 			$mensagem = ERROS[$idioma]['SEM_RSULT'];
 		}
 	} else {
-		$mensagem = '📚: /' . LIVROS[$idioma] . ' Harry Potter';
+		$mensagem = '📚: /tv Star Wars';
 	}
 
 	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);

@@ -1,30 +1,36 @@
 #!/bin/bash
 
-cd ..
+cd $HOME
+
+# DEPENDÊNCIAS
 
 apt-get update
 
 apt-get install -y \
-bison \
+apcalc \
 autoconf \
+bison \
 build-essential \
-pkg-config \
 git-core \
-libltdl-dev \
 libbz2-dev \
+libcurl4-openssl-dev \
+libenchant-dev \
+libfreetype6-dev \
+libicu-dev \
+libjpeg8-dev \
+libltdl-dev \
+libmcrypt-dev \
+libmysqlclient-dev \
+libpng-dev \
+libpspell-dev \
+libreadline-dev \
+libssl-dev \
 libxml2-dev \
 libxslt1-dev \
-libssl-dev \
-libicu-dev \
-libpspell-dev \
-libenchant-dev \
-libmcrypt-dev \
-libpng-dev \
-libjpeg8-dev \
-libfreetype6-dev \
-libmysqlclient-dev \
-libreadline-dev \
-libcurl4-openssl-dev
+pkg-config \
+redis-server
+
+# LIMPEZA
 
 rm -rf /etc/php7
 rm /usr/bin/php
@@ -35,85 +41,77 @@ mkdir -p /etc/php7
 mkdir -p /etc/php7/cli
 mkdir -p /etc/php7/etc
 
-rm -rf php-src
+# PHP 7.0.X
 
-git clone https://github.com/php/php-src.git --depth=1
+rm -rf php-7.0.15
 
-cd php-src/ext
+wget http://php.net/distributions/php-7.0.15.tar.gz
 
-git clone https://github.com/krakjoe/pthreads -b master pthreads
+tar -xzvf php-7.0.15.tar.gz
 
-cd ..
+cd php-7.0.15
 
 ./buildconf --force
 
-CONFIGURE_STRING="--prefix=/etc/php7 \
---with-bz2 \
---with-zlib \
---enable-zip \
---disable-cgi \
---enable-soap \
---enable-intl \
---with-mcrypt \
---with-openssl \
---with-readline \
---with-curl \
---enable-ftp \
---enable-mysqlnd \
---with-mysqli=mysqlnd \
---with-pdo-mysql=mysqlnd \
---enable-sockets \
---enable-pcntl \
---with-pspell \
---with-enchant \
---with-gettext \
---with-gd \
---enable-exif \
---with-jpeg-dir \
---with-png-dir \
---with-freetype-dir \
---with-xsl \
+./configure --disable-cgi \
 --enable-bcmath \
---enable-mbstring \
 --enable-calendar \
---enable-simplexml \
---enable-json \
---enable-hash \
---enable-session \
---enable-xml \
---enable-wddx \
---enable-opcache \
---with-pcre-regex \
---with-config-file-path=/etc/php7/cli \
---with-config-file-scan-dir=/etc/php7/etc \
 --enable-cli \
---enable-maintainer-zts \
---with-tsrm-pthreads \
 --enable-debug \
+--enable-exif \
 --enable-fpm \
---with-fpm-user=www-data \
---with-fpm-group=www-data"
+--enable-ftp \
+--enable-hash \
+--enable-intl \
+--enable-json \
+--enable-maintainer-zts \
+--enable-mbstring \
+--enable-mysqlnd \
+--enable-opcache \
+--enable-pcntl \
+--enable-session \
+--enable-simplexml \
+--enable-soap \
+--enable-sockets \
+--enable-wddx \
+--enable-xml \
+--enable-zip \
+--prefix='/etc/php7' \
+--with-bz2 \
+--with-config-file-path='/etc/php7/cli' \
+--with-config-file-scan-dir='/etc/php7/etc' \
+--with-curl \
+--with-enchant \
+--with-fpm-group='www-data' \
+--with-fpm-user='www-data' \
+--with-freetype-dir \
+--with-gd \
+--with-gettext \
+--with-jpeg-dir \
+--with-mcrypt \
+--with-mysqli='mysqlnd' \
+--with-openssl \
+--with-pcre-regex \
+--with-pdo-mysql='mysqlnd' \
+--with-png-dir \
+--with-pspell \
+--with-readline \
+--with-tsrm-pthreads \
+--with-xsl \
+--with-zlib
 
-./configure $CONFIGURE_STRING
+make
 
-make && make install
+make install
 
 chmod o+x /etc/php7/bin/phpize
 
 chmod o+x /etc/php7/bin/php-config
 
-cd ext/pthreads*
+cp php.ini-production /etc/php7/cli/php.ini
 
-/etc/php7/bin/phpize
+cp php.ini-production /etc/php7/cli/php-cli.ini
 
-./configure --prefix='/etc/php7' --with-libdir='/lib/x86_64-linux-gnu' --enable-pthreads=shared --with-php-config='/etc/php7/bin/php-config'
-
-make && make install
-
-cd ../../
-# Install FPM config files
-
-cp -r php.ini-production /etc/php7/cli/php.ini
 sed -i 's/;date.timezone =.*/date.timezone = America\/Sao_Paulo/' /etc/php7/cli/php.ini
 
 cp /etc/php7/etc/php-fpm.conf.default /etc/php7/etc/php-fpm.conf
@@ -132,10 +130,6 @@ sed -i 's#^php_fpm_CONF=.*#php_fpm_CONF=/etc/php7/etc/php-fpm.conf#' /etc/init.d
 
 sed -i 's#^php_fpm_PID=.*#php_fpm_PID=/var/run/php7-fpm.pid#' /etc/init.d/php7-fpm
 
-cp php.ini-production /etc/php7/cli/php-cli.ini
-
-echo "extension=pthreads.so" > /etc/php7/cli/php-cli.ini
-
 echo "zend_extension=opcache.so" >> /etc/php7/cli/php.ini
 
 ln --symbolic /etc/php7/bin/php /usr/bin/php
@@ -145,3 +139,46 @@ ln --symbolic /etc/php7/bin/phpize /usr/bin/phpize
 ln --symbolic /etc/php7/sbin/php-fpm /usr/sbin/php7-fpm
 
 update-rc.d php7-fpm defaults
+
+cd ..
+
+# PTHREADS
+
+rm -rf pthreads
+
+git clone https://github.com/krakjoe/pthreads -b master --depth=1
+
+cd pthreads
+
+phpize
+
+./configure --enable-pthreads=shared \
+--prefix='/etc/php7' \
+--with-libdir='/lib/x86_64-linux-gnu' \
+--with-php-config='/etc/php7/bin/php-config'
+
+make
+
+make install
+
+echo "extension=pthreads.so" > /etc/php7/cli/php-cli.ini
+
+cd ..
+
+# PHPREDIS
+
+rm -rf phpredis
+
+git clone https://github.com/phpredis/phpredis.git -b develop --depth=1
+
+cd phpredis
+
+phpize
+
+./configure --with-php-config='/etc/php7/bin/php-config'
+
+make
+
+make install
+
+echo "extension=redis.so" >> /etc/php7/cli/php-cli.ini

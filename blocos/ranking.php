@@ -1,33 +1,56 @@
 <?php
-	if(	$mensagens['message']['chat']['type'] == 'group' OR $mensagens['message']['chat']['type'] == 'supergroup'){
-		$dadosRanking = carregarDados(RAIZ . 'dados/ranking.json');
+	if ($mensagens['message']['chat']['type'] == 'group' OR $mensagens['message']['chat']['type'] == 'supergroup') {
+		if (strcasecmp($mensagens['message']['text'], '/rkgdel')																				 == 0 OR
+				strcasecmp($mensagens['message']['text'], '/rkgdel' . '@' . DADOS_BOT['result']['username']) == 0 ) {
+				 $rkgdel = false;
+ 			$resultado = getChatAdministrators($mensagens['message']['chat']['id']);
 
-		$cont = 0;
+ 			foreach ($resultado['result'] as $adminsGrupo) {
+ 				if ($adminsGrupo['user']['id'] == $mensagens['message']['from']['id'] AND $adminsGrupo['status'] == 'creator') {
+					foreach ($redis->keys('ranking:' . $mensagens['message']['chat']['id'] . ':*') as $hashs) {
+						$redis->del($hashs);
+					}
 
-		foreach($dadosRanking[$mensagens['message']['chat']['id']] as $rkgUsuarios){
-			$rkgNome[$cont] = $rkgUsuarios['primeiro_nome'];
-			$rkgMsgs[$cont] = $rkgUsuarios['qntd_mensagem'];
+ 						$rkgdel = true;
+ 					$mensagem	= 'O.K!';
 
-			++$cont;
-		}
+ 					break;
+ 				}
+ 			}
 
-		array_multisort($rkgMsgs, SORT_DESC, $rkgNome);
+ 			if ($rkgdel === false) {
+ 				$mensagem = RANKING[$idioma]['SMT_CRIADOR'];
+ 			}
+		} else {
+			$chavesRanking = $redis->keys('ranking:' . $mensagens['message']['chat']['id'] . '*');
 
-		$mensagem = '🏆 ' . RANKING[$mensagens['IDIOMA']]['TITULO'] . "\n\n";
-
-		for($cont=0;$cont<30;$cont++){
-			if(isset($rkgMsgs[$cont])){
-							 $i = $cont + 1;
-				$mensagem = $mensagem . $i .') ' . $rkgMsgs[$cont] . ' => ' . $rkgNome[$cont] . "\n";
+			foreach ($chavesRanking as $hash) {
+				$dadosRanking[] = $redis->hgetall($hash);
 			}
-		}
 
-		$mensagem = $mensagem . "\n" . '/rkgdel - ' . RANKING[$mensagens['IDIOMA']]['SMT_CRIADOR'];
+			$cont = 0;
+
+			foreach ($dadosRanking as $rankingGrupo) {
+				 $primeiroNome[$cont] = $rankingGrupo['primeiro_nome'];
+				$qntdMensagens[$cont] = $rankingGrupo['qntd_mensagem'];
+
+				++$cont;
+			}
+
+			array_multisort($qntdMensagens, SORT_DESC, $primeiroNome);
+
+			$mensagem = '🏆 ' . RANKING[$idioma]['TITULO'] . "\n\n";
+
+			for ($i=0;$i<30;$i++) {
+				if (isset($qntdMensagens[$i])) {
+					$mensagem = $mensagem . ($i+1) .') ' . $qntdMensagens[$i] . ' => ' . $primeiroNome[$i] . "\n";
+				}
+			}
+
+			$mensagem = $mensagem . "\n" . '/rkgdel - ' . RANKING[$idioma]['SMT_CRIADOR'];
+		}
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id']);
-	}
-	else if($mensagens['message']['chat']['type'] == 'private'){
-		$mensagem = ERROS[$mensagens['IDIOMA']]['SMT_GRUPO'];
-
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
+	} else if ($mensagens['message']['chat']['type'] == 'private') {
+		sendMessage($mensagens['message']['chat']['id'], ERROS[$idioma]['SMT_GRUPO'], $mensagens['message']['message_id'], null, true);
 	}

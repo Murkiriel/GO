@@ -1,75 +1,67 @@
 <?php
-	$bancos = array(
+	$chavesLista = array(
 		0 => 'store',
-		1 => 'livros'
+		1 => 'livros',
+		2 => 'tv'
 	);
 
-	foreach($bancos as $bancosArquivos){
-		$dadosDocumentos = carregarDados(RAIZ . 'dados/' . $bancosArquivos . '.json');
-
-		$nomeDocumento = $mensagens['message']['text'];
-
-		if(isset($dadosDocumentos[$nomeDocumento]['arquivo_id'])){
+	foreach ($chavesLista as $chave) {
+		if ($redis->hexists('documentos:' . $chave , $mensagens['message']['text'])) {
 			$teclado = array(
 				'hide_keyboard' => true
 			);
 
 			$replyMarkup = json_encode($teclado);
 
-			$document = $dadosDocumentos[$nomeDocumento]['arquivo_id'];
+			$documento = $redis->hget('documentos:' . $chave , $mensagens['message']['text']);
 
 			sendChatAction($mensagens['message']['chat']['id'], 'upload_document');
 
-			if($mensagens['message']['chat']['type'] == 'group' OR $mensagens['message']['chat']['type'] == 'supergroup'){
-				sendDocument($mensagens['message']['chat']['id'], $document,
+			if ($mensagens['message']['chat']['type'] == 'group' OR $mensagens['message']['chat']['type'] == 'supergroup') {
+				sendDocument($mensagens['message']['chat']['id'], $documento,
 										 $mensagens['message']['message_id'], $replyMarkup, '@' . DADOS_BOT['result']['username']);
 			}
 
-			sendDocument($mensagens['message']['from']['id'], $document,
+			sendDocument($mensagens['message']['from']['id'], $documento,
 									 $mensagens['message']['message_id'], $replyMarkup, '@' . DADOS_BOT['result']['username']);
 		}
 	}
 
-	if($mensagens['message']['chat']['type'] == 'private' AND isset($mensagens['message']['document']['mime_type'])){
-		if(in_array($mensagens['message']['from']['id'], SUDOS)){
-			if(substr($mensagens['message']['document']['file_name'], -4) == '.apk'	OR
-				 substr($mensagens['message']['document']['file_name'], -4) == '.obb'	){
-				$dadosDocumentos = carregarDados(RAIZ . 'dados/store.json');
+	if ($mensagens['message']['chat']['type'] == 'private' AND isset($mensagens['message']['document']['mime_type'])) {
+		if (in_array($mensagens['message']['from']['id'], SUDOS)) {
+			if (substr($mensagens['message']['document']['file_name'], -4) == '.apk'	OR
+					substr($mensagens['message']['document']['file_name'], -4) == '.obb'		) {
+				$redis->hset('documentos:store', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
 
-				$dadosDocumentos[$mensagens['message']['document']['file_name']] = array(
-				 'arquivo_id' => $mensagens['message']['document']['file_id']
-				);
+				$mensagem = '<b> 📱 APK/OBB ADICIONADO 📱 </b>'																	. "\n\n" .
+										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name']	. "\n" .
+										'<b>ID: </b>'		. $mensagens['message']['document']['file_id'];
 
-				salvarDados(RAIZ . 'dados/store.json', $dadosDocumentos);
-
-				foreach(SUDOS as $sudo){
-					$mensagem = '<b> 📱 APK/OBB ADICIONADO 📱 </b>'																	. "\n\n" .
-											'<b>Nome:</b> ' . $mensagens['message']['document']['file_name']	. "\n" .
-											'<b>ID: </b>'		. $mensagens['message']['document']['file_id'];
-
-					sendMessage($sudo,$mensagem, null, null, true);
-				}
+				notificarSudos($mensagem);
 			}
 
-			if(substr($mensagens['message']['document']['file_name'], -4) == '.pdf'		OR
-				 substr($mensagens['message']['document']['file_name'], -5) == '.epub'	OR
-				 substr($mensagens['message']['document']['file_name'], -5) == '.mobi'	){
+			if (substr($mensagens['message']['document']['file_name'], -4) == '.pdf'	OR
+					substr($mensagens['message']['document']['file_name'], -5) == '.epub'	OR
+					substr($mensagens['message']['document']['file_name'], -5) == '.mobi'	) {
+				$redis->hset('documentos:livros', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
 
-				$dadosDocumentos = carregarDados(RAIZ . 'dados/livros.json');
+				$mensagem = '<b> 📱 LIVRO ADICIONADO 📱 </b>'																	 . "\n\n" .
+										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n"	 .
+										'<b>ID: </b>'		. $mensagens['message']['document']['file_id'];
 
-				$dadosDocumentos[$mensagens['message']['document']['file_name']] = array(
-				 'arquivo_id' => $mensagens['message']['document']['file_id']
-				);
+				notificarSudos($mensagem);
+			}
 
-				salvarDados(RAIZ . 'dados/livros.json', $dadosDocumentos);
+			if (substr($mensagens['message']['document']['file_name'], -4) == '.mkv'	OR
+					substr($mensagens['message']['document']['file_name'], -4) == '.mp4'	OR
+					substr($mensagens['message']['document']['file_name'], -4) == '.avi'	) {
+				$redis->hset('documentos:tv', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
 
-				foreach(SUDOS as $sudo){
-					$mensagem = '<b> 📱 LIVRO ADICIONADO 📱 </b>'																	 . "\n\n" .
-											'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n"	 .
-											'<b>ID: </b>'		. $mensagens['message']['document']['file_id'];
+				$mensagem = '<b> 📱 VÍDEO ADICIONADO 📱 </b>'																	 . "\n\n" .
+										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n"	 .
+										'<b>ID: </b>'		. $mensagens['message']['document']['file_id'];
 
-					sendMessage($sudo,$mensagem, null, null, true);
-				}
+				notificarSudos($mensagem);
 			}
 		}
-	};
+	}
