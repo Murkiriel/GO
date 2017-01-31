@@ -18,4 +18,4 @@
 
 	$replyMarkup = json_encode($teclado);
 
-	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, TRUE, TRUE, $mensagens['edit_mensagem']);
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, TRUE, $mensagens['edit_mensagem']);

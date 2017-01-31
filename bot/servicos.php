@@ -75,7 +75,7 @@
 			'<b>ES:</b> ' . TECLADO['ES'] . "\n" . '----------' . "\n" .
 			'<b>IT:</b> ' . TECLADO['IT'];
 
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, TRUE, TRUE, $mensagens['edit_message']);
+		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, TRUE, $mensagens['edit_message']);
 
 		$exit = TRUE;
 	}
