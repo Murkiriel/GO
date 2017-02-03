@@ -1,4 +1,7 @@
 ﻿#GO
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/595d792dcdc84f4db87edf52841956cc)](https://www.codacy.com/app/Murkiriel/GO?utm_source=github.com&utm_medium=referral&utm_content=Murkiriel/GO&utm_campaign=badger)
+
 Renewal of [@GO_Robot](https://telegram.me/GO_Robot)
 
 ##News
