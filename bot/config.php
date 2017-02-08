@@ -2,8 +2,6 @@
 	$api = 'https://api.telegram.org/bot';
 	$bot = ''; //TOKEN BOT
 
-	$redis = conectarRedis();
-
 	define('SUDOS', array(
 		'0' => '000000', //SUDO ID
 		'1' => '111111'

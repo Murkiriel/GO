@@ -1,6 +1,8 @@
 <?php
 	// # MENSAGENS
 
+	$mensagens = $this->mensagens;
+
 	$mensagens['edit_message'] = FALSE;
 
 	if (isset($mensagens['callback_query'])) {
@@ -101,4 +103,38 @@
 			 	$redis->hset('ranking:' . $mensagens['message']['chat']['id'] . ':' . $mensagens['message']['from']['id'], 'primeiro_nome', $mensagens['message']['from']['first_name']);
 				$redis->hincrby('ranking:' . $mensagens['message']['chat']['id'] . ':' . $mensagens['message']['from']['id'], 'qntd_mensagem', 1);
 		}
+	}
+
+	// # BEM-VINDO
+
+	if (isset($mensagens['message']['new_chat_participant'])) {
+		if ($redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'ativo') === 'TRUE') {
+					$tipoMensagem = $redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'tipo');
+			$conteudoMensagem = $redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo');
+
+			if ($tipoMensagem == 'texto') {
+				$conteudoMensagem = str_ireplace('$nome', $mensagens['message']['new_chat_participant']['first_name'], $conteudoMensagem);
+				$conteudoMensagem = str_ireplace('$grupo', $mensagens['message']['chat']['title'], $conteudoMensagem);
+
+				if (isset($mensagens['message']['new_chat_participant']['first_name'])) {
+					$conteudoMensagem = str_ireplace('$usuario', '@' . $mensagens['message']['new_chat_participant']['username'], $conteudoMensagem);
+				} else {
+					$conteudoMensagem = str_ireplace('$usuario', $mensagens['message']['new_chat_participant']['first_name'], $conteudoMensagem);
+				}
+
+				sendMessage($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id']);
+			} else if ($tipoMensagem == 'documento') {
+				sendDocument($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], NULL, NULL);
+			} else if ($tipoMensagem == 'foto') {
+				sendPhoto($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], NULL, NULL);
+			}
+		}
+	}
+
+	// # STATUS
+
+	if ($mensagens['message']['chat']['type'] == 'private' OR $mensagens['message']['chat']['type'] == 'group') {
+		$redis->set('status_bot:privateorgroup', $mensagens['message']['message_id']);
+	} else if ($mensagens['message']['chat']['type'] == 'supergroup') {
+		$redis->set('status_bot:supergroup', $mensagens['message']['message_id']);
 	}

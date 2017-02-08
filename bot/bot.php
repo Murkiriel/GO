@@ -17,6 +17,7 @@
 		echo '+-------------+' . "\n\n";
 
 		$updateID = 0;
+		$redis = conectarRedis();
 		$redis->set('status_bot:loop', 'TRUE');
 		firstUpdate();
 
@@ -35,7 +36,7 @@
 		echo '| ERRO AO CONECTAR |' . "\n";
 		echo '+------------------+' . "\n\n";
 
-		die();
+		die($redis->close());
 	}
 
 	class botThread extends Thread {
@@ -44,53 +45,84 @@
 		}
 
 		public function run() {
-					$redis = conectarRedis();
-			$mensagens = $this->mensagens;
-					$texto = [];
-					 $exit = FALSE;
+			$redis = conectarRedis();
+			$texto = [];
+			 $exit = FALSE;
 
 			include(RAIZ . 'bot/servicos.php');
 
-			if ($exit === TRUE) { $redis->close() && exit(); }
+			if ($exit === FALSE) {
+				switch (strtolower($texto[0])) {
+					case '/start': case '/help':
+						include(RAIZ . 'blocos/ajuda.php');
+						break;
+					case '/adms':
+						include(RAIZ . 'blocos/adms.php');
+						break;
+					case '/bemvindo': case '/welcome': case '/bienvenida': case '/benvenuto':
+						include(RAIZ . 'blocos/bemvindo.php');
+						break;
+					case '/calc':
+						include(RAIZ . 'blocos/calc.php');
+						break;
+					case '/dm':
+						include(RAIZ . 'blocos/dm.php');
+						break;
+					case '/duck':
+						include(RAIZ . 'blocos/duck.php');
+						break;
+					case '/id':
+				  	include(RAIZ . 'blocos/id.php');
+				  	break;
+					case '/info':
+					  include(RAIZ . 'blocos/info.php');
+					  break;
+					case '/gerar': case '/generate': case '/generar': case '/generare':
+					  include(RAIZ . 'blocos/gerar.php');
+						break;
+					case '/grupo': case '/group': case '/grupo': case '/gruppo':
+					  include(RAIZ . 'blocos/grupo.php');
+						break;
+					case '/md5':
+					  include(RAIZ . 'blocos/md5.php');
+						break;
+					case '/regras': case '/rules': case '/reglas': case '/regole':
+						include(RAIZ . 'blocos/regras.php');
+						break;
+					case '/sha512':
+					  include(RAIZ . 'blocos/sha512.php');
+						break;
+					case '/books': case '/libri': case '/livros': case '/libros':
+				  	include(RAIZ . '/blocos/livros.php');
+					break;
+					case '/tv':
+					  include(RAIZ . 'blocos/tv.php');
+					  break;
+					case '/psp':
+						include(RAIZ . 'blocos/psp.php');
+						break;
+					case '/ranking': case '/rkgdel':
+				  include(RAIZ . 'blocos/ranking.php');
+				  	break;
+					case '/snes':
+					  include(RAIZ . 'blocos/snes.php');
+					  break;
+					case '/store':
+					include(RAIZ . 'blocos/store.php');
+					  break;
+					case '/apoyo': case '/suporte': case '/support': case '/supporto':
+						include(RAIZ . 'blocos/suporte.php');
+						break;
+					case '/wiki':
+						include(RAIZ . 'blocos/wiki.php');
+					break;
+				}
 
-			switch (strtolower($texto[0])) {
-				case '/start':
-				case '/help':
-			  include(RAIZ . 'blocos/ajuda.php');
-			  break;
-				case '/calc':
-				include(RAIZ . 'blocos/calc.php');
-				break;
-				case '/id':
-			  include(RAIZ . 'blocos/id.php');
-			  break;
-				case '/info':
-				  include(RAIZ . 'blocos/info.php');
-				  break;
-				case '/books':
-				case '/libri':
-				case '/livros':
-				case '/libros':
-			  	include(RAIZ . '/blocos/livros.php');
-				break;
-				case '/tv':
-				  include(RAIZ . 'blocos/tv.php');
-				  break;
-				case '/ranking':
-				case '/rkgdel':
-			  include(RAIZ . 'blocos/ranking.php');
-			  	break;
-				case '/store':
-				include(RAIZ . 'blocos/store.php');
-				  break;
-				case '/wiki':
-				include(RAIZ . 'blocos/wiki.php');
-				break;
+				include(RAIZ . 'blocos/documentos.php');
+				include(RAIZ . 'blocos/sudos.php');
 			}
 
-			include(RAIZ . 'blocos/documentos.php');
-			include(RAIZ . 'blocos/sudos.php');
-			$redis->close() && exit();
+			$redis->close();
 		}
 	}
 
@@ -121,4 +153,4 @@
 	echo '| REINICIADO! |' . "\n";
 	echo '+-------------+' . "\n\n";
 
-	$redis->close() && die();
+	die($redis->close());

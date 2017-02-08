@@ -10,7 +10,7 @@
 		$expressao = str_replace('÷', '/', $expressao);
 		$expressao = str_replace(',', '.', $expressao);
 
-		$mensagem = '<b>' . shell_exec('calc ' . $expressao) . '</b>';
+		$mensagem = '<b>' . shell_exec('calc "' . $expressao . '"') . '</b>';
 
 		$redis->setex('calc:' . $chave, 3600, $mensagem);
 	} else {

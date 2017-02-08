@@ -71,7 +71,9 @@
 				$chavesLista = array(
 					0 => 'store',
 					1 => 'livros',
-					2 => 'tv'
+					2 => 'tv',
+					3 => 'psp',
+					4 => 'snes'
 				);
 
 				foreach ($chavesLista as $chave) {
@@ -109,11 +111,13 @@
 				 $grupos = count($redis->keys('idioma:-*'));
 			 $usuarios = count($redis->keys('idioma:*')) - $grupos;
 			$atendidas = count($redis->keys('status_bot:msg_atendidas:*'));
+					$total = $redis->get('status_bot:privateorgroup') + $redis->get('status_bot:supergroup');
 
 			$mensagem = '<pre>STATUS DO ' . strtoupper(DADOS_BOT['result']['first_name']) . '</pre>' . "\n\n" .
 									'<b>Versão:</b> ' . VERSAO . "\n\n" .
 									'<b>Grupos:</b> ' . $grupos . "\n\n" .
 									'<b>Usuários:</b> ' . $usuarios . "\n\n" .
+									'<b>Mensagens:</b> ' . number_format($total, 0, ',', '.') . "\n\n" .
 									'<b>Msg / Seg:</b> ' . number_format($atendidas/60, 3, ',', '.') . ' m/s';
 
 			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], NULL, TRUE);

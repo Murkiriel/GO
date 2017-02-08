@@ -2,7 +2,9 @@
 	$chavesLista = array(
 		0 => 'store',
 		1 => 'livros',
-		2 => 'tv'
+		2 => 'tv',
+		3 => 'psp',
+		4 => 'snes'
 	);
 
 	foreach ($chavesLista as $chave) {
@@ -19,11 +21,11 @@
 
 			if ($mensagens['message']['chat']['type'] == 'group' OR $mensagens['message']['chat']['type'] == 'supergroup') {
 				sendDocument($mensagens['message']['chat']['id'], $documento,
-										 $mensagens['message']['message_id'], $replyMarkup, '@' . DADOS_BOT['result']['username']);
+										 $mensagens['message']['message_id'], $replyMarkup);
 			}
 
 			sendDocument($mensagens['message']['from']['id'], $documento,
-									 $mensagens['message']['message_id'], $replyMarkup, '@' . DADOS_BOT['result']['username']);
+									 $mensagens['message']['message_id'], $replyMarkup);
 		}
 	}
 
@@ -35,31 +37,43 @@
 
 				$mensagem = '<b> 📱 APK/OBB ADICIONADO 📱 </b>' . "\n\n" .
 										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
-											'<b>ID: </b>' . $mensagens['message']['document']['file_id'];
+											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
 
 				notificarSudos($mensagem);
-			}
-
-			if (substr($mensagens['message']['document']['file_name'], -4) == '.pdf'	OR
-					substr($mensagens['message']['document']['file_name'], -5) == '.epub'	OR
-					substr($mensagens['message']['document']['file_name'], -5) == '.mobi'	) {
+			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.pdf' OR
+								 substr($mensagens['message']['document']['file_name'], -5) == '.epub' OR
+								 substr($mensagens['message']['document']['file_name'], -5) == '.mobi') {
 				$redis->hset('documentos:livros', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
 
-				$mensagem = '<b> 📱 LIVRO ADICIONADO 📱 </b>'																	 . "\n\n" .
-										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n"	 .
-										'<b>ID: </b>'		. $mensagens['message']['document']['file_id'];
+				$mensagem = '<b> 📱 LIVRO ADICIONADO 📱 </b>' . "\n\n" .
+										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
+											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
 
 				notificarSudos($mensagem);
-			}
-
-			if (substr($mensagens['message']['document']['file_name'], -4) == '.mkv' OR
-					substr($mensagens['message']['document']['file_name'], -4) == '.mp4' OR
-					substr($mensagens['message']['document']['file_name'], -4) == '.avi' ) {
+			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.mkv' OR
+								 substr($mensagens['message']['document']['file_name'], -4) == '.mp4' OR
+								 substr($mensagens['message']['document']['file_name'], -4) == '.avi') {
 				$redis->hset('documentos:tv', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
 
-				$mensagem = '<b> 📱 VÍDEO ADICIONADO 📱 </b>'																	 . "\n\n" .
-										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n"	 .
-										'<b>ID: </b>'		. $mensagens['message']['document']['file_id'];
+				$mensagem = '<b> 📱 VÍDEO ADICIONADO 📱 </b>' . "\n\n" .
+										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
+											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
+
+				notificarSudos($mensagem);
+			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.cso') {
+				$redis->hset('documentos:psp', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
+
+				$mensagem = '<b> 📱 PSP ADICIONADO 📱 </b>' . "\n\n" .
+										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
+											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
+
+				notificarSudos($mensagem);
+			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.smc') {
+				$redis->hset('documentos:snes', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
+
+				$mensagem = '<b> 📱 SNES ADICIONADO 📱 </b>' . "\n\n" .
+										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
+											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
 
 				notificarSudos($mensagem);
 			}

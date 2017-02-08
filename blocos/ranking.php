@@ -28,11 +28,13 @@
 				$dadosRanking[] = $redis->hgetall($hash);
 			}
 
-			$cont = 0;
+						$cont = 0;
+			$totalGrupo = 0;
 
 			foreach ($dadosRanking as $rankingGrupo) {
 				 $primeiroNome[$cont] = $rankingGrupo['primeiro_nome'];
 				$qntdMensagens[$cont] = $rankingGrupo['qntd_mensagem'];
+				$totalGrupo = $totalGrupo + $qntdMensagens[$cont];
 
 				++$cont;
 			}
@@ -47,7 +49,7 @@
 				}
 			}
 
-			$mensagem = $mensagem . "\n" . '/rkgdel - ' . RANKING[$idioma]['SMT_CRIADOR'];
+			$mensagem = $mensagem . "\n" . RANKING[$idioma]['TOTAL'] . $totalGrupo . "\n\n" . '/rkgdel - ' . RANKING[$idioma]['SMT_CRIADOR'];
 		}
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id']);

@@ -11,16 +11,16 @@
 	 * @param string $requisicao
 	 */
 	function enviarRequisicao($requisicao, $conteudoRequisicao = NULL) {
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_POST, TRUE);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-		curl_setopt($ch, CURLOPT_URL, $requisicao);
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_POST, TRUE);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+		curl_setopt($curl, CURLOPT_URL, $requisicao);
 
 		if ($conteudoRequisicao != NULL) {
-			curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($conteudoRequisicao));
+			curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($conteudoRequisicao));
 		}
 
-		return curl_exec($ch);
+		return curl_exec($curl);
 	}
 
 	/**
@@ -59,7 +59,7 @@
 			if (isset($replyMessage)) {
 				$conteudoRequisicao['reply_to_message_id'] = $replyMessage;
 			}
-		} else {
+		} else if ($editarMensagem === TRUE) {
 			$requisicao = $requisicao . '/editMessageText';
 
 			$conteudoRequisicao['message_id'] = $replyMessage;
@@ -78,6 +78,11 @@
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
 
+	/**
+	 * @param string $chatID
+	 * @param string $fromID
+	 * @param string $mensagemID
+	 */
 	function forwardMessage($chatID, $fromID, $mensagemID) {
 		$requisicao = API_BOT . '/forwardMessage';
 
@@ -90,6 +95,10 @@
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
 
+	/**
+	 * @param string $chatID
+	 * @param string $photo
+	 */
 	function sendPhoto($chatID, $photo, $replyMessage = NULL, $replyMarkup = NULL, $caption = '@' . DADOS_BOT['result']['username']) {
 		$requisicao = API_BOT . '/sendPhoto';
 
@@ -111,6 +120,10 @@
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
 
+	/**
+	 * @param string $chatID
+	 * @param string $document
+	 */
 	function sendDocument($chatID, $document, $replyMessage = NULL, $replyMarkup = NULL, $caption = '@' . DADOS_BOT['result']['username']) {
 		$requisicao = API_BOT . '/sendDocument';
 
@@ -132,6 +145,10 @@
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
 
+	/**
+	 * @param string $chatID
+	 * @param string $action
+	 */
 	function sendChatAction($chatID, $action) {
 		$requisicao = API_BOT . '/sendChatAction';
 
@@ -143,6 +160,9 @@
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
 
+	/**
+	 * @param string $chatID
+	 */
 	function getChatAdministrators($chatID) {
 		$requisicao = API_BOT . '/getChatAdministrators';
 
@@ -153,6 +173,9 @@
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
 	}
 
+	/**
+	 * @param string $userID
+	 */
 	function getUserProfilePhotos($userID) {
 		$requisicao = API_BOT . '/getUserProfilePhotos';
 
@@ -200,6 +223,9 @@
 		}
 	}
 
+	/**
+	 * @param string $arquivo
+	 */
 	function carregarDados($arquivo) {
 		if (file_exists($arquivo)) {
 			return json_decode(file_get_contents($arquivo, FALSE, CONTEXTO), TRUE);
@@ -208,6 +234,10 @@
 		}
 	}
 
+	/**
+	 * @param string $arquivo
+	 * @param string $dados
+	 */
 	function salvarDados($arquivo, $dados) {
 		return file_put_contents($arquivo, json_encode($dados));
 	}
