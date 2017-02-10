@@ -10,7 +10,7 @@
 
 	define('DADOS_BOT', getMe());
 
-	if (DADOS_BOT['ok'] === TRUE) {
+	if (DADOS_BOT['ok'] === true) {
 		system('clear');
 		echo '+-------------+' . "\n";
 		echo '| ATUALIZANDO |' . "\n";
@@ -18,7 +18,7 @@
 
 		$updateID = 0;
 		$redis = conectarRedis();
-		$redis->set('status_bot:loop', 'TRUE');
+		$redis->set('status_bot:loop', 'true');
 		firstUpdate();
 
 		$tituloBot = strtoupper(' 🤖 -> ' . DADOS_BOT['result']['first_name'] . '  ( @' . DADOS_BOT['result']['username'] . ' ) ');
@@ -36,7 +36,7 @@
 		echo '| ERRO AO CONECTAR |' . "\n";
 		echo '+------------------+' . "\n\n";
 
-		die($redis->close());
+		die();
 	}
 
 	class botThread extends Thread {
@@ -47,11 +47,11 @@
 		public function run() {
 			$redis = conectarRedis();
 			$texto = [];
-			 $exit = FALSE;
+			 $exit = false;
 
 			include(RAIZ . 'bot/servicos.php');
 
-			if ($exit === FALSE) {
+			if ($exit === false) {
 				switch (strtolower($texto[0])) {
 					case '/start': case '/help':
 						include(RAIZ . 'blocos/ajuda.php');
@@ -126,10 +126,10 @@
 		}
 	}
 
-	while ($redis->get('status_bot:loop') === 'TRUE') {
+	while ($redis->get('status_bot:loop') === 'true') {
 		$resultado = getUpdates($updateID);
 
-		if (!empty($resultado['result']) AND is_array($resultado['result'])) {
+		if (!empty($resultado['result']) and is_array($resultado['result'])) {
 			$threads = [];
 
 			foreach ($resultado['result'] as $mensagens) {

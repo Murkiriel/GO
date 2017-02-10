@@ -9,7 +9,7 @@
 		}
 
 		foreach (SUDOS as $sudo) {
-			sendMessage($sudo, '📬 <b>Mensagem recebida:</b>', NULL, NULL, TRUE);
+			sendMessage($sudo, '📬 <b>Mensagem recebida:</b>', null, null, true);
 			forwardMessage($sudo, $chatID, $mensagemID);
 			$mensagem = '📬 <b>Mensagem enviada!</b>';
 		}
@@ -17,4 +17,4 @@
 		$mensagem = '📚: /' . SUPORTE[$idioma];
 	}
 
-	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], NULL, TRUE);
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);

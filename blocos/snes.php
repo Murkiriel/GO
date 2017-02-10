@@ -1,6 +1,6 @@
 <?php
 	$teclado = array(
-		'hide_keyboard' => TRUE
+		'hide_keyboard' => true
 	);
 
 	$replyMarkup = json_encode($teclado);
@@ -11,20 +11,20 @@
 		if (isset($dadosSNES)) {
 			$docs = array_keys($dadosSNES);
 		} else {
-			$dosc[0] = NULL;
+			$dosc[0] = null;
 		}
 
 						 $cont = 0;
-		$resultados[0] = NULL;
+		$resultados[0] = null;
 
 		foreach ($docs as $lista) {
 			$posicao = strripos($lista, $texto[1]);
 
-			if ($posicao !== FALSE) {
+			if ($posicao !== false) {
 				if (isset($texto[2])) {
 					$posicao = strripos($lista, $texto[2]);
 
-					if ($posicao !== FALSE) {
+					if ($posicao !== false) {
 						$resultados[$cont] = $lista;
 					}
 				} else {
@@ -40,19 +40,19 @@
 		}
 
 		if ($mensagens['message']['chat']['type'] == 'private') {
-						$selective = FALSE;
-			$oneTimeKeyboard = FALSE;
+						$selective = false;
+			$oneTimeKeyboard = false;
 		} else {
-						$selective = TRUE;
-			$oneTimeKeyboard = TRUE;
+						$selective = true;
+			$oneTimeKeyboard = true;
 		}
 
-		if ($resultados[0] != NULL) {
+		if ($resultados[0] != null) {
 			$teclado = array(
 				'keyboard' => array(
 					array()
 				),
-					'resize_keyboard' => TRUE,
+					'resize_keyboard' => true,
 				'one_time_keyboard' => $oneTimeKeyboard,
 								'selective' => $selective
 			);
@@ -73,4 +73,4 @@
 		$mensagem = '📚: /snes Super Mario';
 	}
 
-	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, TRUE);
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);

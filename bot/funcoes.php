@@ -10,13 +10,13 @@
 	/**
 	 * @param string $requisicao
 	 */
-	function enviarRequisicao($requisicao, $conteudoRequisicao = NULL) {
+	function enviarRequisicao($requisicao, $conteudoRequisicao = null) {
 		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_POST, TRUE);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+		curl_setopt($curl, CURLOPT_POST, true);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($curl, CURLOPT_URL, $requisicao);
 
-		if ($conteudoRequisicao != NULL) {
+		if ($conteudoRequisicao != null) {
 			curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($conteudoRequisicao));
 		}
 
@@ -34,18 +34,18 @@
 			'timeout' => 20
 		);
 
-		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
 	function getMe() {
-		return json_decode(enviarRequisicao(API_BOT . '/getMe'), TRUE);
+		return json_decode(enviarRequisicao(API_BOT . '/getMe'), true);
 	}
 
 	/**
 	 * @param string $chatID
 	 * @param string $text
 	 */
-	function sendMessage($chatID, $text, $replyMessage = NULL, $replyMarkup = NULL, $parseMode = FALSE, $editarMensagem = FALSE) {
+	function sendMessage($chatID, $text, $replyMessage = null, $replyMarkup = null, $parseMode = false, $editarMensagem = false) {
 		$requisicao = API_BOT;
 
 		$conteudoRequisicao = array(
@@ -53,13 +53,13 @@
 				 'text' => $text
 		);
 
-		if ($editarMensagem === FALSE) {
+		if ($editarMensagem === false) {
 			$requisicao = $requisicao . '/sendMessage';
 
 			if (isset($replyMessage)) {
 				$conteudoRequisicao['reply_to_message_id'] = $replyMessage;
 			}
-		} else if ($editarMensagem === TRUE) {
+		} else if ($editarMensagem === true) {
 			$requisicao = $requisicao . '/editMessageText';
 
 			$conteudoRequisicao['message_id'] = $replyMessage;
@@ -69,13 +69,13 @@
 			$conteudoRequisicao['reply_markup'] = $replyMarkup;
 		}
 
-		if ($parseMode === TRUE) {
+		if ($parseMode === true) {
 			$conteudoRequisicao['parse_mode'] = 'HTML';
 		}
 
-		$conteudoRequisicao['disable_web_page_preview'] = TRUE;
+		$conteudoRequisicao['disable_web_page_preview'] = true;
 
-		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
 	/**
@@ -92,14 +92,14 @@
 				'message_id' => $mensagemID
 		);
 
-		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
 	/**
 	 * @param string $chatID
 	 * @param string $photo
 	 */
-	function sendPhoto($chatID, $photo, $replyMessage = NULL, $replyMarkup = NULL, $caption = '@' . DADOS_BOT['result']['username']) {
+	function sendPhoto($chatID, $photo, $replyMessage = null, $replyMarkup = null, $caption = '@' . DADOS_BOT['result']['username']) {
 		$requisicao = API_BOT . '/sendPhoto';
 
 		$conteudoRequisicao = array(
@@ -117,14 +117,14 @@
 
 		$conteudoRequisicao['caption'] = $caption;
 
-		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
 	/**
 	 * @param string $chatID
 	 * @param string $document
 	 */
-	function sendDocument($chatID, $document, $replyMessage = NULL, $replyMarkup = NULL, $caption = '@' . DADOS_BOT['result']['username']) {
+	function sendDocument($chatID, $document, $replyMessage = null, $replyMarkup = null, $caption = '@' . DADOS_BOT['result']['username']) {
 		$requisicao = API_BOT . '/sendDocument';
 
 		$conteudoRequisicao = array(
@@ -142,7 +142,7 @@
 
 		$conteudoRequisicao['caption'] = $caption;
 
-		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
 	/**
@@ -157,7 +157,7 @@
 			 'action' => $action
 		);
 
-		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
 	/**
@@ -170,7 +170,7 @@
 			'chat_id' => $chatID
 		);
 
-		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
 	/**
@@ -184,7 +184,7 @@
 				'limit' => 1
 		);
 
-		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}
 
 	/**
@@ -192,7 +192,7 @@
 	 */
 	function notificarSudos($mensagem) {
 		foreach (SUDOS as $sudo) {
-			sendMessage($sudo, $mensagem, NULL, NULL, TRUE);
+			sendMessage($sudo, $mensagem, null, null, true);
 		}
 
 		return;
@@ -203,12 +203,12 @@
 
 		$requisicao = API_BOT . '/getUpdates';
 		$conteudoRequisicao = array('allowed_updates' => array('message', 'edited_message', 'callback_query'));
-		$resultado = json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), TRUE);
+		$resultado = json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 
-		while (TRUE) {
-			if (!empty($resultado['result']) AND is_array($resultado['result'])) {
+		while (true) {
+			if (!empty($resultado['result']) and is_array($resultado['result'])) {
 				foreach ($resultado['result'] as $mensagens) {
-					if (isset($mensagens['message']['date']) AND time() - $mensagens['message']['date']<=20) {
+					if (isset($mensagens['message']['date']) and time() - $mensagens['message']['date']<=20) {
 						getUpdates($updateID);
 						return notificarSudos('<pre>Iniciando...</pre>');
 					}
@@ -228,9 +228,9 @@
 	 */
 	function carregarDados($arquivo) {
 		if (file_exists($arquivo)) {
-			return json_decode(file_get_contents($arquivo, FALSE, CONTEXTO), TRUE);
+			return json_decode(file_get_contents($arquivo, false, CONTEXTO), true);
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 
@@ -242,9 +242,9 @@
 		return file_put_contents($arquivo, json_encode($dados));
 	}
 
-	function manipularErros($erroCodigo = NULL, $erroMensagem = NULL, $erroArquivo = NULL, $erroLinha = NULL) {
+	function manipularErros($erroCodigo = null, $erroMensagem = null, $erroArquivo = null, $erroLinha = null) {
     if (error_reporting() == 0) {
-      return NULL;
+      return null;
     }
 
     if (func_num_args() == 5) {

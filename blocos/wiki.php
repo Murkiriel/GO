@@ -8,7 +8,7 @@
 
 		$requisicao = 'https://' . $idioma . '.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exchars=480&exsectionformat=plain&explaintext=&redirects=&titles=' . urlencode($nomeArtigo);
 
-		$resultado = json_decode(enviarRequisicao($requisicao), TRUE);
+		$resultado = json_decode(enviarRequisicao($requisicao), true);
 
 			$paginas = $resultado['query']['pages'];
 		 $idPagina = array_keys($paginas);
@@ -27,4 +27,4 @@
 		$mensagem = '📚: /wiki Brasil';
 	}
 
-	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], NULL, TRUE);
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);

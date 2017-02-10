@@ -10,7 +10,7 @@
 	foreach ($chavesLista as $chave) {
 		if ($redis->hexists('documentos:' . $chave, $mensagens['message']['text'])) {
 			$teclado = array(
-				'hide_keyboard' => TRUE
+				'hide_keyboard' => true
 			);
 
 			$replyMarkup = json_encode($teclado);
@@ -19,7 +19,7 @@
 
 			sendChatAction($mensagens['message']['chat']['id'], 'upload_document');
 
-			if ($mensagens['message']['chat']['type'] == 'group' OR $mensagens['message']['chat']['type'] == 'supergroup') {
+			if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
 				sendDocument($mensagens['message']['chat']['id'], $documento,
 										 $mensagens['message']['message_id'], $replyMarkup);
 			}
@@ -29,9 +29,9 @@
 		}
 	}
 
-	if ($mensagens['message']['chat']['type'] == 'private' AND isset($mensagens['message']['document']['mime_type'])) {
+	if ($mensagens['message']['chat']['type'] == 'private' and isset($mensagens['message']['document']['mime_type'])) {
 		if (in_array($mensagens['message']['from']['id'], SUDOS)) {
-			if (substr($mensagens['message']['document']['file_name'], -4) == '.apk' OR
+			if (substr($mensagens['message']['document']['file_name'], -4) == '.apk' or
 					substr($mensagens['message']['document']['file_name'], -4) == '.obb') {
 				$redis->hset('documentos:store', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
 
@@ -40,8 +40,8 @@
 											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
 
 				notificarSudos($mensagem);
-			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.pdf' OR
-								 substr($mensagens['message']['document']['file_name'], -5) == '.epub' OR
+			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.pdf' or
+								 substr($mensagens['message']['document']['file_name'], -5) == '.epub' or
 								 substr($mensagens['message']['document']['file_name'], -5) == '.mobi') {
 				$redis->hset('documentos:livros', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
 
@@ -50,8 +50,8 @@
 											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
 
 				notificarSudos($mensagem);
-			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.mkv' OR
-								 substr($mensagens['message']['document']['file_name'], -4) == '.mp4' OR
+			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.mkv' or
+								 substr($mensagens['message']['document']['file_name'], -4) == '.mp4' or
 								 substr($mensagens['message']['document']['file_name'], -4) == '.avi') {
 				$redis->hset('documentos:tv', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
 

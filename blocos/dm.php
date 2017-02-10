@@ -7,7 +7,7 @@
 
 		$requisicao = 'https://api.dailymotion.com/videos?limit=5&search=' . urlencode(str_ireplace($texto[0], '', $mensagens['message']['text']));
 
-		$resultado = json_decode(file_get_contents($requisicao, FALSE, CONTEXTO), TRUE);
+		$resultado = json_decode(file_get_contents($requisicao, false, CONTEXTO), true);
 
 		$cont = count($resultado['list']);
 
@@ -26,4 +26,4 @@
 		$mensagem = '📚: /dm Humor';
 	}
 
-	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], NULL, TRUE);
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);

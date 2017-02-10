@@ -13,8 +13,8 @@
 		$mensagem = $mensagem . "\n" . 'ID: ' . $mensagens['message']['from']['id'];
 	}
 
-	if ($mensagens['message']['chat']['type'] == 'group' OR
-			$mensagens['message']['chat']['type'] == 'supergroup' OR
+	if ($mensagens['message']['chat']['type'] == 'group' or
+			$mensagens['message']['chat']['type'] == 'supergroup' or
 			$mensagens['message']['chat']['type'] == 'private') {
 		if ($mensagens['message']['chat']['type'] != 'private') {
 			$mensagem = $mensagem . "\n\n" . 'Chat: ' . $mensagens['message']['chat']['title'] .
@@ -33,7 +33,7 @@
 	$resultado = getUserProfilePhotos($mensagens['message']['from']['id']);
 
 	if (isset($resultado['result']['photos'][0][0]['file_id'])) {
-		sendPhoto($mensagens['message']['chat']['id'], $resultado['result']['photos'][0][0]['file_id'], $mensagens['message']['message_id'], NULL, $mensagem);
+		sendPhoto($mensagens['message']['chat']['id'], $resultado['result']['photos'][0][0]['file_id'], $mensagens['message']['message_id'], null, $mensagem);
 	} else {
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id']);
 	}

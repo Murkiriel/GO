@@ -1,7 +1,7 @@
 <?php
 	$olaFulano = '';
 
-	if ($mensagens['message']['chat']['type'] == 'group' OR $mensagens['message']['chat']['type'] == 'supergroup') {
+	if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
 		$olaFulano = ' ' . $mensagens['message']['chat']['title'];
 	}
 
@@ -135,4 +135,4 @@
 
 	$replyMarkup = json_encode($teclado);
 
-	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, FALSE, $mensagens['edit_message']);
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, false, $mensagens['edit_message']);

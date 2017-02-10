@@ -3,7 +3,7 @@
 
 	$mensagens = $this->mensagens;
 
-	$mensagens['edit_message'] = FALSE;
+	$mensagens['edit_message'] = false;
 
 	if (isset($mensagens['callback_query'])) {
 		$mensagens['callback_query']['message']['text'] = $mensagens['callback_query']['data'];
@@ -13,7 +13,7 @@
 			$mensagens['message']['from'] = $mensagens['message']['reply_to_message']['from'];
 		}
 
-		$mensagens['edit_message'] = TRUE;
+		$mensagens['edit_message'] = true;
 
 		unset($mensagens['callback_query']);
 	} else if (isset($mensagens['edited_message'])) {
@@ -77,27 +77,27 @@
 			'<b>ES:</b> ' . TECLADO['ES'] . "\n" . '----------' . "\n" .
 			'<b>IT:</b> ' . TECLADO['IT'];
 
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, TRUE, $mensagens['edit_message']);
+		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true, $mensagens['edit_message']);
 
-		$exit = TRUE;
+		$exit = true;
 	}
 
 	if (strcasecmp($mensagens['message']['text'], '/start' . '@' . DADOS_BOT['result']['username'] . ' new') == 0) {
-		$exit = TRUE;
-	} else if (isset($mensagens['message']['left_chat_participant']['id']) AND
+		$exit = true;
+	} else if (isset($mensagens['message']['left_chat_participant']['id']) and
 									 $mensagens['message']['left_chat_participant']['id'] == DADOS_BOT['result']['id']) {
-		$exit = TRUE;
+		$exit = true;
 	}
 
 	// # RANKING
 
-	if ($mensagens['edit_message'] === FALSE) {
-		if (!$redis->exists('idioma:' . $mensagens['message']['from']['id']) AND isset($idioma)) {
+	if ($mensagens['edit_message'] === false) {
+		if (!$redis->exists('idioma:' . $mensagens['message']['from']['id']) and isset($idioma)) {
 			$redis->set('idioma:' . $mensagens['message']['from']['id'], $idioma);
 		}
 
-		if ($mensagens['message']['chat']['type'] == 'group' OR
-				$mensagens['message']['chat']['type'] == 'supergroup' OR
+		if ($mensagens['message']['chat']['type'] == 'group' or
+				$mensagens['message']['chat']['type'] == 'supergroup' or
 				$mensagens['message']['chat']['type'] == 'private') {
 
 			 	$redis->hset('ranking:' . $mensagens['message']['chat']['id'] . ':' . $mensagens['message']['from']['id'], 'primeiro_nome', $mensagens['message']['from']['first_name']);
@@ -108,7 +108,7 @@
 	// # BEM-VINDO
 
 	if (isset($mensagens['message']['new_chat_participant'])) {
-		if ($redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'ativo') === 'TRUE') {
+		if ($redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'ativo') === 'true') {
 					$tipoMensagem = $redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'tipo');
 			$conteudoMensagem = $redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo');
 
@@ -124,16 +124,16 @@
 
 				sendMessage($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id']);
 			} else if ($tipoMensagem == 'documento') {
-				sendDocument($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], NULL, NULL);
+				sendDocument($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], null, null);
 			} else if ($tipoMensagem == 'foto') {
-				sendPhoto($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], NULL, NULL);
+				sendPhoto($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], null, null);
 			}
 		}
 	}
 
 	// # STATUS
 
-	if ($mensagens['message']['chat']['type'] == 'private' OR $mensagens['message']['chat']['type'] == 'group') {
+	if ($mensagens['message']['chat']['type'] == 'private' or $mensagens['message']['chat']['type'] == 'group') {
 		$redis->set('status_bot:privateorgroup', $mensagens['message']['message_id']);
 	} else if ($mensagens['message']['chat']['type'] == 'supergroup') {
 		$redis->set('status_bot:supergroup', $mensagens['message']['message_id']);

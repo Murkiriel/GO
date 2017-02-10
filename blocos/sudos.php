@@ -7,7 +7,7 @@
 									'/removerdocumento - Remover documento' . "\n" .
 									'/status - Ver status';
 
-			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], NULL, TRUE);
+			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
 		} else if (strcasecmp($texto[0], '/promover') == 0) {
 			if (isset($texto[1])) {
 				$mensagensEnviadas = 0;
@@ -17,9 +17,9 @@
 					$chatID = floatval(str_ireplace('idioma:', '', $chatID));
 
 					if ($chatID>0) {
-						$resultado = sendMessage($chatID, $textoDivulgacao, NULL, NULL, TRUE);
+						$resultado = sendMessage($chatID, $textoDivulgacao, null, null, true);
 
-						if ($resultado['ok'] === TRUE) {
+						if ($resultado['ok'] === true) {
 							++$mensagensEnviadas;
 						}
 
@@ -39,7 +39,7 @@
 					if ($chatID>0) {
 						$resultado = forwardMessage($chatID, $mensagens['message']['reply_to_message']['chat']['id'],
 																								 $mensagens['message']['reply_to_message']['message_id']);
-						if ($resultado['ok'] === TRUE) {
+						if ($resultado['ok'] === true) {
 							++$mensagensEnviadas;
 						}
 					}
@@ -50,9 +50,9 @@
 				$mensagem = '📚: /promover Telegram > WhatsApp' . "\n\n" . 'Responder mensagem com /promover';
 			}
 
-			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], NULL, TRUE);
+			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
 		} else if (strcasecmp($texto[0], '/reiniciar') == 0) {
-			$redis->set('status_bot:loop', 'FALSE');
+			$redis->set('status_bot:loop', 'false');
 
 			notificarSudos('<pre>Reiniciando...</pre>');
 
@@ -61,7 +61,7 @@
 			echo '| REINICIANDO |' . "\n";
 			echo '+-------------+' . "\n\n";
 		} else if (strcasecmp($texto[0], '/removerdocumento') == 0) {
-			$documentoRemovido = FALSE;
+			$documentoRemovido = false;
 
 			if ($mensagens['message']['chat']['type'] != 'private') {
 				$mensagem = 'Apenas no <b>privado!</b>';
@@ -81,10 +81,10 @@
 						$idDocumento = $redis->hget('documentos:' . $chave, $nomeDocumento);
 						$redis->hdel('documentos:' . $chave, $nomeDocumento);
 
-						$documentoRemovido = TRUE;
+						$documentoRemovido = true;
 
 						$teclado = array(
-							'hide_keyboard' => TRUE
+							'hide_keyboard' => true
 						);
 
 						$replyMarkup = json_encode($teclado);
@@ -97,15 +97,15 @@
 					}
 				}
 
-				if ($documentoRemovido === FALSE) {
+				if ($documentoRemovido === false) {
 					$mensagem = '<b>' . $nomeDocumento . '</b> não existe na lista!';
 				}
 			} else {
 				$mensagem = '📚: /removerdocumento WhatsApp.apk';
 			}
 
-			if ($documentoRemovido === FALSE) {
-				sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], NULL, TRUE);
+			if ($documentoRemovido === false) {
+				sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
 			}
 		} else if (strcasecmp($texto[0], '/status') == 0) {
 				 $grupos = count($redis->keys('idioma:-*'));
@@ -120,6 +120,6 @@
 									'<b>Mensagens:</b> ' . number_format($total, 0, ',', '.') . "\n\n" .
 									'<b>Msg / Seg:</b> ' . number_format($atendidas/60, 3, ',', '.') . ' m/s';
 
-			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], NULL, TRUE);
+			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
 		}
 	}

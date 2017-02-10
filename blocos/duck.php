@@ -7,11 +7,11 @@
 
 		$requisicao = 'http://api.duckduckgo.com/?format=json&q=' . urlencode(str_ireplace($texto[0], '', $mensagens['message']['text']));
 
-		$resultado = json_decode(file_get_contents($requisicao, FALSE, CONTEXTO), TRUE);
+		$resultado = json_decode(file_get_contents($requisicao, false, CONTEXTO), true);
 
 		$cont = count($resultado['RelatedTopics']);
 
-		if ($cont != 0 OR isset($resultado['RelatedTopics'][0]['Result'])) {
+		if ($cont != 0 or isset($resultado['RelatedTopics'][0]['Result'])) {
 			$mensagem = '🔎 <b>DuckDuckGO:</b>' . "\n";
 
 			for ($i = 0; $i<$cont; $i++) {
@@ -28,4 +28,4 @@
 		$mensagem = '📚: /duck Telegram';
 	}
 
-	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], NULL, TRUE);
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
