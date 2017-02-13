@@ -1,0 +1,3 @@
+[submodule "rastrojs"]
+	path = rastrojs
+	url = git://github.com/talesluna/RastroJS.git
