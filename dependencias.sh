@@ -14,6 +14,7 @@ build-essential \
 git-core \
 nodejs \
 nodejs-legacy \
+npm \
 libbz2-dev \
 libcurl4-openssl-dev \
 libenchant-dev \
@@ -34,8 +35,6 @@ redis-server
 
 # SUBMODULES
 
-cd GO
-
 git pull
 
 git submodule update --init --recursive
@@ -44,6 +43,8 @@ git submodule update --init --recursive
 
 cd rastrojs
 
+npm install express
+
 npm install
 
 cd ..
@@ -51,5 +52,7 @@ cd ..
 # SINESP-API
 
 cd sinesp-api
+
+npm install express
 
 npm install
