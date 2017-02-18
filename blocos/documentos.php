@@ -1,81 +1,82 @@
 <?php
-	$chavesLista = array(
-		0 => 'store',
-		1 => 'livros',
-		2 => 'tv',
-		3 => 'psp',
-		4 => 'snes'
+	$teclado = array(
+		'hide_keyboard' => true
 	);
 
-	foreach ($chavesLista as $chave) {
-		if ($redis->hexists('documentos:' . $chave, $mensagens['message']['text'])) {
+	$replyMarkup = json_encode($teclado);
+
+	if (isset($texto[1])) {
+		$texto[0] = substr($texto[0], 1);
+
+		if ($texto[0] == 'books' or $texto[0] == 'libri' or $texto[0] == 'libros') {
+			$texto[0] = 'livros';
+		}
+
+		$dados = $redis->hgetall('documentos:' . $texto[0]);
+
+		if (isset($dados)) {
+			$docs = array_keys($dados);
+		} else {
+			$dosc[0] = null;
+		}
+
+						 $cont = 0;
+		$resultados[0] = null;
+
+		foreach ($docs as $lista) {
+			$posicao = strripos($lista, $texto[1]);
+
+			if ($posicao !== false) {
+				if (isset($texto[2])) {
+					$posicao = strripos($lista, $texto[2]);
+
+					if ($posicao !== false) {
+						$resultados[$cont] = $lista;
+					}
+				} else {
+					$resultados[$cont] = $lista;
+				}
+
+				++$cont;
+			}
+
+			if ($cont == 99) {
+				break;
+			}
+		}
+
+		if ($mensagens['message']['chat']['type'] == 'private') {
+						$selective = false;
+			$oneTimeKeyboard = false;
+		} else {
+						$selective = true;
+			$oneTimeKeyboard = true;
+		}
+
+		if ($resultados[0] != null) {
 			$teclado = array(
-				'hide_keyboard' => true
+				'keyboard' => array(
+					array()
+				),
+					'resize_keyboard' => true,
+				'one_time_keyboard' => $oneTimeKeyboard,
+								'selective' => $selective
 			);
+
+			sort($resultados);
+
+			for ($i = 0; $i<$cont; $i++) {
+				$teclado['keyboard'][$i][0] = $resultados[$i];
+			}
 
 			$replyMarkup = json_encode($teclado);
 
-			$documento = $redis->hget('documentos:' . $chave, $mensagens['message']['text']);
-
-			sendChatAction($mensagens['message']['chat']['id'], 'upload_document');
-
-			if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
-				sendDocument($mensagens['message']['chat']['id'], $documento,
-										 $mensagens['message']['message_id'], $replyMarkup);
-			}
-
-			sendDocument($mensagens['message']['from']['id'], $documento,
-									 $mensagens['message']['message_id'], $replyMarkup);
+			$mensagem = TECLADO[$idioma];
+		} else {
+			$mensagem = ERROS[$idioma]['SEM_RSULT'];
 		}
+	} else {
+		$mensagem = '📚: ' . $texto[0] . 'Telegram';
 	}
 
-	if ($mensagens['message']['chat']['type'] == 'private' and isset($mensagens['message']['document']['mime_type'])) {
-		if (in_array($mensagens['message']['from']['id'], SUDOS)) {
-			if (substr($mensagens['message']['document']['file_name'], -4) == '.apk' or
-					substr($mensagens['message']['document']['file_name'], -4) == '.obb') {
-				$redis->hset('documentos:store', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
-
-				$mensagem = '<b> 📱 APK/OBB ADICIONADO 📱 </b>' . "\n\n" .
-										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
-											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
-
-				notificarSudos($mensagem);
-			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.pdf' or
-								 substr($mensagens['message']['document']['file_name'], -5) == '.epub' or
-								 substr($mensagens['message']['document']['file_name'], -5) == '.mobi') {
-				$redis->hset('documentos:livros', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
-
-				$mensagem = '<b> 📱 LIVRO ADICIONADO 📱 </b>' . "\n\n" .
-										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
-											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
-
-				notificarSudos($mensagem);
-			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.mkv' or
-								 substr($mensagens['message']['document']['file_name'], -4) == '.mp4' or
-								 substr($mensagens['message']['document']['file_name'], -4) == '.avi') {
-				$redis->hset('documentos:tv', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
-
-				$mensagem = '<b> 📱 VÍDEO ADICIONADO 📱 </b>' . "\n\n" .
-										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
-											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
-
-				notificarSudos($mensagem);
-			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.cso') {
-				$redis->hset('documentos:psp', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
-
-				$mensagem = '<b> 📱 PSP ADICIONADO 📱 </b>' . "\n\n" .
-										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
-											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
-
-				notificarSudos($mensagem);
-			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.smc') {
-				$redis->hset('documentos:snes', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
-
-				$mensagem = '<b> 📱 SNES ADICIONADO 📱 </b>' . "\n\n" .
-										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
-											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
-
-				notificarSudos($mensagem);
-			}
-		}
-	}
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);

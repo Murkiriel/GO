@@ -7,11 +7,10 @@
 	$mensagem = ID[$idioma]['NOME'] . ': ' . $mensagens['message']['from']['first_name'];
 
 	if (isset($mensagens['message']['from']['username'])) {
-		$mensagem = $mensagem . ' ( @' . $mensagens['message']['from']['username'] . ' )' . "\n" .
-									 'ID: ' . $mensagens['message']['from']['id'];
-	} else {
-		$mensagem = $mensagem . "\n" . 'ID: ' . $mensagens['message']['from']['id'];
+		$mensagem = $mensagem . ' ( @' . $mensagens['message']['from']['username'] . ' )';
 	}
+
+	$mensagem = $mensagem . "\n" . 'ID: ' . $mensagens['message']['from']['id'];
 
 	if ($mensagens['message']['chat']['type'] == 'group' or
 			$mensagens['message']['chat']['type'] == 'supergroup' or

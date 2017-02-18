@@ -1,7 +1,7 @@
 <?php
 	if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
-		$usuarioAdmin = false;
 			 $resultado = getChatAdministrators($mensagens['message']['chat']['id']);
+		$usuarioAdmin = false;
 
 		foreach ($resultado['result'] as $adminsGrupo) {
 			if ($adminsGrupo['user']['id'] == $mensagens['message']['from']['id']) {
@@ -15,7 +15,7 @@
 
 		if ($usuarioAdmin === true) {
 			if (strtolower($texto[1]) == 'on') {
-				if ($redis->hexists('regras:' . $mensagens['message']['chat']['id'], 'conteudo')) {
+				if ($redis->hexists('regras:' . $mensagens['message']['chat']['id'], 'conteudo') === true) {
 					$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 
 					$mensagem = REGRAS[$idioma]['ATIVO'];
@@ -23,7 +23,7 @@
 					$mensagem = REGRAS[$idioma]['NAO_DEFINIDA'];
 				}
 			} else if (strtolower($texto[1]) == 'off') {
-				if ($redis->hexists('regras:' . $mensagens['message']['chat']['id'], 'conteudo')) {
+				if ($redis->hexists('regras:' . $mensagens['message']['chat']['id'], 'conteudo') === true) {
 					$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'ativo', 'false');
 
 					$mensagem = REGRAS[$idioma]['DESATIVO'];
@@ -69,11 +69,9 @@
 			sendDocument($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, null);
 		} else if ($tipoMensagem == 'foto') {
 			sendPhoto($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, null);
-		} else {
-			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
 		}
 	} else if ($mensagens['message']['chat']['type'] == 'private') {
 		$mensagem = ERROS[$idioma]['SMT_GRUPO'];
-
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
 	}
+
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id']);

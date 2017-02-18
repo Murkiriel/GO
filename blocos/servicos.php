@@ -10,7 +10,7 @@
 				$conteudoMensagem = str_ireplace('$nome', $mensagens['message']['new_chat_participant']['first_name'], $conteudoMensagem);
 				$conteudoMensagem = str_ireplace('$grupo', $mensagens['message']['chat']['title'], $conteudoMensagem);
 
-				if (isset($mensagens['message']['new_chat_participant']['first_name'])) {
+				if (isset($mensagens['message']['new_chat_participant']['username'])) {
 					$conteudoMensagem = str_ireplace('$usuario', '@' . $mensagens['message']['new_chat_participant']['username'], $conteudoMensagem);
 				} else {
 					$conteudoMensagem = str_ireplace('$usuario', $mensagens['message']['new_chat_participant']['first_name'], $conteudoMensagem);
@@ -25,18 +25,81 @@
 		}
 	}
 
-	// # STATUS
+	// # DOCUMENTOS
 
-	if ($mensagens['message']['chat']['type'] == 'private' or $mensagens['message']['chat']['type'] == 'group') {
-		$redis->set('status_bot:privateorgroup', $mensagens['message']['message_id']);
-	} else if ($mensagens['message']['chat']['type'] == 'supergroup') {
-		$redis->set('status_bot:supergroup', $mensagens['message']['message_id']);
+	foreach ($redis->keys('documentos:*') as $hash) {
+		if ($redis->hexists($hash, $mensagens['message']['text']) === true) {
+			$teclado = array(
+				'hide_keyboard' => true
+			);
+
+			$replyMarkup = json_encode($teclado);
+
+			$idDocumento = $redis->hget($hash, $mensagens['message']['text']);
+
+			sendChatAction($mensagens['message']['chat']['id'], 'upload_document');
+
+			if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
+				sendDocument($mensagens['message']['chat']['id'], $idDocumento,
+										 $mensagens['message']['message_id'], $replyMarkup);
+			}
+
+			sendDocument($mensagens['message']['from']['id'], $idDocumento,
+									 $mensagens['message']['message_id'], $replyMarkup);
+
+			break;
+		}
 	}
 
-	// # CANAIS
+	if ($mensagens['message']['chat']['type'] == 'private' and isset($mensagens['message']['document']['mime_type'])) {
+		if (in_array($mensagens['message']['from']['id'], SUDOS)) {
+			if (substr($mensagens['message']['document']['file_name'], -4) == '.apk' or
+					substr($mensagens['message']['document']['file_name'], -4) == '.obb') {
+				$redis->hset('documentos:store', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
 
-	if ($mensagens['channel_post']['chat']['type'] == 'channel') {
-		$redis->set('canais:' . $mensagens['channel_post']['chat']['id'], '@' . $mensagens['channel_post']['chat']['username']);
+				$mensagem = '<b> 📱 APK/OBB ADICIONADO 📱 </b>' . "\n\n" .
+										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
+											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
+
+				notificarSudos($mensagem);
+			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.pdf' or
+								 substr($mensagens['message']['document']['file_name'], -5) == '.epub' or
+								 substr($mensagens['message']['document']['file_name'], -5) == '.mobi') {
+				$redis->hset('documentos:livros', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
+
+				$mensagem = '<b> 📱 LIVRO ADICIONADO 📱 </b>' . "\n\n" .
+										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
+											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
+
+				notificarSudos($mensagem);
+			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.mkv' or
+								 substr($mensagens['message']['document']['file_name'], -4) == '.mp4' or
+								 substr($mensagens['message']['document']['file_name'], -4) == '.avi') {
+				$redis->hset('documentos:tv', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
+
+				$mensagem = '<b> 📱 VÍDEO ADICIONADO 📱 </b>' . "\n\n" .
+										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
+											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
+
+				notificarSudos($mensagem);
+			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.cso') {
+				$redis->hset('documentos:psp', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
+
+				$mensagem = '<b> 📱 PSP ADICIONADO 📱 </b>' . "\n\n" .
+										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
+											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
+
+				notificarSudos($mensagem);
+			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.smc') {
+				$redis->hset('documentos:snes', $mensagens['message']['document']['file_name'], $mensagens['message']['document']['file_id']);
+
+				$mensagem = '<b> 📱 SNES ADICIONADO 📱 </b>' . "\n\n" .
+										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
+											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
+
+				notificarSudos($mensagem);
+			}
+		}
 	}
 
 	// # RSS SERVICOS
@@ -227,33 +290,41 @@
 		case '/basquete':
 			$link = 'https://esportes.yahoo.com/basquete/?format=rss';
 			break;
+		case '/pplware':
+			$link = 'https://pplware.sapo.pt/feed/';
+			break;
+		case '/canaltech':
+			$link = 'https://feeds2.feedburner.com/canaltechbr';
+			break;
+		case '/androidpit':
+			$link = 'http://www.androidpit.com.br/feed/main.xml';
+			break;
+		case '/folha':
+			$link = 'http://feeds.folha.uol.com.br/emcimadahora/rss091.xml';
+			break;
+		case '/g1':
+			$link = 'http://pox.globo.com/rss/g1/';
+			break;
+		case '/terra':
+			$link = 'http://noticias.terra.com.br/rss/Controller?channelid=e3c54b844f65e310VgnVCM3000009acceb0aRCRD&ctName=atomo-noticia';
+			break;
 	}
 
 	if (!empty($link)) {
-		$feed = file_get_contents($link, false, CONTEXTO);
-
 		try{
-			$rss = new SimpleXmlElement($feed);
-		}
-		catch(Exception $e){
-			$mensagem = 'Ocorreu um erro! Tente mais tarde.';
+			$rss = new SimpleXmlElement(file_get_contents($link));
+		} catch(Exception $e){
+			$mensagem = 'Ocorreu um erro! Tente novamente mais tarde.';
 		}
 
 		if (isset($rss->channel->item)) {
-			$mensagem = '〰〰〰〰〰〰〰' . "\n\n";
+			$mensagem = mensagemRSS($rss->channel->item);
 
-			foreach($rss->channel->item as $item){
-				$item->title = html_entity_decode(strip_tags($item->title), ENT_QUOTES, 'UTF-8');
-				$mensagem = $mensagem . '<b>' . $item->title . '</b>' . "\n\n";
-				$item->description = html_entity_decode(strip_tags($item->description), ENT_QUOTES, 'UTF-8');
-				$mensagem = $mensagem . $item->description . "\n\n" . '👉 <a href="' . $item->link . '">Continuar lendo</a>';
-
-				break;
+			try {
+				$redis->hset('rss:chats:' . $mensagens['message']['from']['id'], $link, md5($mensagem));
+			} catch(Exception $e){
+				$redis->hset('rss:chats:' . $mensagens['message']['chat']['id'], $link, md5($mensagem));
 			}
-
-			$mensagem = $mensagem . "\n\n" . '〰〰〰〰〰〰〰';
-
-			$redis->hset('rss:feed:' . $mensagens['message']['chat']['id'], $link, md5($item->title));
 
 			$mensagem = $mensagem . "\n\n" . 'O conteúdo do seu RSS aparecerá assim. Você será notificado à cada atualização.';
 		}
@@ -269,4 +340,18 @@
 		$replyMarkup = json_encode($teclado);
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true, $mensagens['edit_message']);
+	}
+
+	// # STATUS
+
+	if ($mensagens['message']['chat']['type'] == 'private' or $mensagens['message']['chat']['type'] == 'group') {
+		$redis->set('status_bot:privateorgroup', $mensagens['message']['message_id']);
+	} else if ($mensagens['message']['chat']['type'] == 'supergroup') {
+		$redis->set('status_bot:supergroup', $mensagens['message']['message_id']);
+	}
+
+	// # CANAIS
+
+	if ($mensagens['channel_post']['chat']['type'] == 'channel') {
+		$redis->set('canais:' . $mensagens['channel_post']['chat']['id'], '@' . $mensagens['channel_post']['chat']['username']);
 	}

@@ -1,16 +1,18 @@
 <?php
-	$olaFulano = '';
-
 	if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
-		$olaFulano = ' ' . $mensagens['message']['chat']['title'];
+		$olaFulano = $mensagens['message']['chat']['title'];
+	} else {
+		$olaFulano = $mensagens['message']['chat']['first_name'];
 	}
 
 	if ($idioma == 'PT') {
-		$mensagem = 'Olá' . $olaFulano . '! Veja abaixo os comandos disponíveis:
+		$mensagem = 'Olá ' . $olaFulano . '! Veja abaixo os comandos disponíveis:
 
 #Pesquisas
+/dicio - Pesquisar no dicionário
 /dm - Pesquisar no Dailymotion
 /duck - Pesquisar no DuckDuckGO
+/placa - Pesquisar placas de carros
 /wiki - Pesquisar na Wikipédia
 
 #Arquivos
@@ -26,6 +28,7 @@
 /gerar - Gerar número aleatório
 /md5 - Gerar MD5 de algo
 /sha512 - Gerar SHA512 de algo
+/rastro - Rastrear encomenda dos Correios
 
 #Grupo
 /adms - Ver administradores
@@ -33,7 +36,7 @@
 
 /suporte - Enviar mensagem para o suporte';
 	} else if ($idioma == 'EN') {
-		$mensagem = 'Hi' . $olaFulano . '! See below the available commands:
+		$mensagem = 'Hi ' . $olaFulano . '! See below the available commands:
 
 #Searchs
 /dm - Search Dailymotion
@@ -60,7 +63,7 @@
 
 /support - Send message to support';
 		} else if ($idioma == 'ES') {
-		$mensagem = '¡Hola' . $olaFulano . '! Vea a continuación los comandos disponibles:
+		$mensagem = '¡Hola ' . $olaFulano . '! Vea a continuación los comandos disponibles:
 
 #Busquedas
 /dm - Busca Dailymotion
@@ -87,7 +90,7 @@
 
 /apoyo - enviar mensaje de apoyo';
 	} else if ($idioma == 'IT') {
-		$mensagem = 'Ciao' . $olaFulano . '! Vedi sotto i comandi disponibili:
+		$mensagem = 'Ciao ' . $olaFulano . '! Vedi sotto i comandi disponibili:
 
 #Ricerche
 /dm - Ricerca Dailymotion

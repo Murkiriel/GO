@@ -1,30 +1,29 @@
 <?php
 	if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
-		if (strcasecmp($mensagens['message']['text'], '/rkgdel') == 0 or
-				strcasecmp($mensagens['message']['text'], '/rkgdel' . '@' . DADOS_BOT['result']['username']) == 0) {
-				 $rkgdel = false;
- 			$resultado = getChatAdministrators($mensagens['message']['chat']['id']);
+		if (strtolower($texto[0]) == '/rkgdel') {
+ 				 $resultado = getChatAdministrators($mensagens['message']['chat']['id']);
+			$usuarioAdmin = false;
 
  			foreach ($resultado['result'] as $adminsGrupo) {
  				if ($adminsGrupo['user']['id'] == $mensagens['message']['from']['id'] and $adminsGrupo['status'] == 'creator') {
-					foreach ($redis->keys('ranking:' . $mensagens['message']['chat']['id'] . ':*') as $hashs) {
-						$redis->del($hashs);
+					foreach ($redis->keys('ranking:' . $mensagens['message']['chat']['id'] . ':*') as $hash) {
+						$redis->del($hash);
 					}
 
- 						$rkgdel = true;
- 					$mensagem = 'O.K!';
+ 					$usuarioAdmin = true;
+ 							$mensagem = 'O.K!';
 
  					break;
  				}
  			}
 
- 			if ($rkgdel === false) {
+ 			if ($usuarioAdmin === false) {
  				$mensagem = RANKING[$idioma]['SMT_CRIADOR'];
  			}
 		} else {
-			$chavesRanking = $redis->keys('ranking:' . $mensagens['message']['chat']['id'] . '*');
+			 $dadosRanking = [];
 
-			foreach ($chavesRanking as $hash) {
+			foreach ($redis->keys('ranking:' . $mensagens['message']['chat']['id'] . '*') as $hash) {
 				$dadosRanking[] = $redis->hgetall($hash);
 			}
 
@@ -46,13 +45,15 @@
 			for ($i=0;$i<30;$i++) {
 				if (isset($qntdMensagens[$i])) {
 					$mensagem = $mensagem . ($i+1) .') ' . $qntdMensagens[$i] . ' => ' . $primeiroNome[$i] . "\n";
+				} else {
+					break;
 				}
 			}
 
 			$mensagem = $mensagem . "\n" . RANKING[$idioma]['TOTAL'] . $totalGrupo . "\n\n" . '/rkgdel - ' . RANKING[$idioma]['SMT_CRIADOR'];
 		}
-
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id']);
 	} else if ($mensagens['message']['chat']['type'] == 'private') {
-		sendMessage($mensagens['message']['chat']['id'], ERROS[$idioma]['SMT_GRUPO'], $mensagens['message']['message_id'], null, true);
+		$mensagem = ERROS[$idioma]['SMT_GRUPO'];
 	}
+
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id']);

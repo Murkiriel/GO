@@ -18,6 +18,15 @@ sudo chmod +x *.sh
 sudo ./instalar.sh
 ```
 
+##Updates
+
+```bash
+# Tested on Ubuntu 16.10 x64
+sudo chmod +x dependencias.sh
+
+sudo ./dependencias.sh
+```
+
 **Before you do anything, open config.php in a text editor and make the following changes:**
 
 > • Set $bot to the authentication token you received from the [@BotFather](https://telegram.me/BotFather).

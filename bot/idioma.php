@@ -31,7 +31,8 @@
 			'AJUDA' => '<pre>📚 BEM-VINDO</pre>' . "\n\n".
 									'/bemvindo - Define "Bem-Vindo" por resposta de mensagem' . "\n\n" .
 									'/bemvindo on - Ativa as mensagens de boas-vindas' . "\n" .
-									'/bemvindo off - Desativa as mensagens de boas-vindas'
+									'/bemvindo off - Desativa as mensagens de boas-vindas' . "\n\n" .
+									'Use <b>$nome</b>, <b>$usuario</b> e <b>$grupo</b> para personalizar mensagens'
 		),
 		'EN' => array(
 			'ATIVO' => 'Message <b>"Welcome"</b> enabled!',
@@ -41,7 +42,8 @@
 			'AJUDA' => '<pre>📚 WELCOME</pre>' . "\n\n".
 									'/welcome - Define "Welcome" for message response' . "\n\n" .
 									'/welcome on - Activate the welcome messages' . "\n" .
-									'/welcome off - Disables the welcome messages'
+									'/welcome off - Disables the welcome messages' . "\n\n" .
+									'Use <b>$nome</b>, <b>$usuario</b> and <b>$grupo</b> to customize messages'
 		),
 		'ES' => array(
 			'ATIVO' => '¡Mensaje de <b>"Bienvenida"</b> habilitado!',
@@ -51,7 +53,8 @@
 			'AJUDA' => '<pre>📚 BIENVENIDA</pre>' . "\n\n".
 									'/bienvenida - Definir "Bienvenida" para la respuesta del mensaje' . "\n\n" .
 									'/bienvenida on - Activar los mensajes de bienvenida' . "\n" .
-									'/bienvenida off - Desactiva los mensajes de bienvenida'
+									'/bienvenida off - Desactiva los mensajes de bienvenida' . "\n\n" .
+									'Use <b>$nome</b>, <b>$usuario</b> y <b>$grupo</b> para personalizar los mensajes'
 		),
 		'IT' => array(
 			'ATIVO' => 'Messaggio di <b>"Benvenuto"</b> attivato!',
@@ -61,7 +64,8 @@
 			'AJUDA' => '<pre>📚 BENVENUTO</pre>' . "\n\n".
 									'/benvenuto - Definire "Benvenuto" per il messaggio di risposta' . "\n\n" .
 									'/benvenuto on - Attivare i messaggi di benvenuto' . "\n" .
-									'/benvenuto off - Disattiva i messaggi di benvenuto'
+									'/benvenuto off - Disattiva i messaggi di benvenuto' . "\n\n" .
+									'Utilizzare <b>$nome</b>, <b>$usuario</b> e <b>$grupo</b> per personalizzare i messaggi'
 		)
 	));
 
@@ -185,7 +189,7 @@
 			'CRIADA' => 'Message <b>"Rules"</b> created successfully!',
 			'NAO_DEFINIDA' => 'Use "/rules set" to define a message first!',
 			'AJUDA' => '<pre>📚 RULES</pre>' . "\n\n".
-									'/regole - View the rules of the group' . "\n\n" .
+									'/rules - View the rules of the group' . "\n\n" .
 									'/rules set - Define the rules for message response' . "\n" .
 									'/rules on - Activate the rules messages' . "\n" .
 									'/rules off - Disables the rules messages'
@@ -196,7 +200,7 @@
 			'CRIADA' => '¡Mensaje de <b>"Reglas"</b> creado con éxito!',
 			'NAO_DEFINIDA' => 'Uso "/reglas set" para definir un mensaje primero!',
 			'AJUDA' => '<pre>📚 REGLAS</pre>' . "\n\n".
-									'/regole - Ver las reglas del grupo' . "\n\n" .
+									'/reglas - Ver las reglas del grupo' . "\n\n" .
 									'/reglas set - Definir las reglas para la respuesta del mensaje' . "\n" .
 									'/reglas on - Activar los mensajes de reglas' . "\n" .
 									'/reglas off - Desactiva los mensajes de reglas'
@@ -213,6 +217,23 @@
 									'/regole off - Disattiva i messaggi di regole'
 		)
 	));
+
+	define('RSS', array(
+		'PT' => '<pre>📚 RSS</pre>' . "\n\n".
+								'/rss https://seu.rss.aqui - Adicionar RSS para sua lista' . "\n" .
+								'/rss del - Apagar sua lista de RSS' . "\n\n" .
+								'Você pode escolher também no menu abaixo:',
+		'EN' => '<pre>📚 RSS</pre>' . "\n\n".
+								'/rss https://you.rss.here - Add RSS to your list' . "\n" .
+								'/rss del - Delete your list of RSS',
+		'ES' => '<pre>📚 RSS</pre>' . "\n\n".
+								'/rss https://su.rss.aqui - Añadir RSS a la lista' . "\n" .
+								'/rss del - Borrar la lista de RSS',
+		'IT' => '<pre>📚 RSS</pre>' . "\n\n".
+								'/rss https://tuo.rss.qui - Aggiungi RSS alla tua lista' . "\n" .
+								'/rss del - Elimina il tuo lista di RSS'
+	));
+
 
 	define('SUPORTE', array(
 		'PT' => 'suporte Onde posso melhorar?',

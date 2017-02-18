@@ -1,9 +1,9 @@
 <?php
 	$api = 'https://api.telegram.org/bot';
-	$bot = ''; //TOKEN BOT
+	$bot = '156817358:AAG8ZpRni15oxG0MJoO2jLI3WhIYEWneUg0'; //TOKEN BOT
 
 	define('SUDOS', array(
-		'0' => '000000', //SUDO ID
+		'0' => '96438491', //SUDO ID
 		'1' => '111111'
 	));
 

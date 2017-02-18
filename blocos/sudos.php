@@ -1,23 +1,24 @@
 <?php
 	if (in_array($mensagens['message']['from']['id'], SUDOS)) {
-		if (strcasecmp($mensagens['message']['text'], '/sudos') == 0) {
+		if (strtolower($texto[0]) == '/sudos') {
 			$mensagem = '<pre>COMANDOS SUDOS</pre>' . "\n\n" .
-									'/promover - Promover texto' . "\n" .
+									'/promover - Enviar divulgação para usuários' . "\n" .
+									'/postagem - Enviar divulgação para usuários, grupos e canais' . "\n" .
 									'/reiniciar - Reiniciar bot' . "\n" .
 									'/removerdocumento - Remover documento' . "\n" .
 									'/status - Ver status';
 
 			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
-		} else if (strcasecmp($texto[0], '/promover') == 0) {
+		} else if (strtolower($texto[0]) == '/promover') {
 			if (isset($texto[1])) {
 				$mensagensEnviadas = 0;
-					$textoDivulgacao = str_ireplace($texto[0], '', $mensagens['message']['text']);
+						$textoPromocao = str_ireplace($texto[0] . ' ', '', $mensagens['message']['text']);
 
-				foreach ($redis->keys('idioma:*') as $chatID) {
-					$chatID = floatval(str_ireplace('idioma:', '', $chatID));
+				foreach ($redis->keys('idioma:*') as $hash) {
+					$chatID = floatval(str_ireplace('idioma:', '', $hash));
 
 					if ($chatID>0) {
-						$resultado = sendMessage($chatID, $textoDivulgacao, null, null, true);
+						$resultado = sendMessage($chatID, $textoPromocao, null, null, true);
 
 						if ($resultado['ok'] === true) {
 							++$mensagensEnviadas;
@@ -33,14 +34,18 @@
 			} else if (isset($mensagens['message']['reply_to_message'])) {
 				$mensagensEnviadas = 0;
 
-				foreach ($redis->keys('idioma:*') as $chatID) {
-					$chatID = floatval(str_ireplace('idioma:', '', $chatID));
+				foreach ($redis->keys('idioma:*') as $hash) {
+					$chatID = floatval(str_ireplace('idioma:', '', $hash));
 
 					if ($chatID>0) {
 						$resultado = forwardMessage($chatID, $mensagens['message']['reply_to_message']['chat']['id'],
 																								 $mensagens['message']['reply_to_message']['message_id']);
 						if ($resultado['ok'] === true) {
 							++$mensagensEnviadas;
+						}
+
+						if ($mensagensEnviadas%30 == 0) {
+							sleep(1);
 						}
 					}
 				}
@@ -51,7 +56,78 @@
 			}
 
 			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
-		} else if (strcasecmp($texto[0], '/reiniciar') == 0) {
+		} else if (strtolower($texto[0]) == '/postagem') {
+			if (isset($texto[1])) {
+				$mensagensEnviadas = 0;
+						$textoPostagem = str_ireplace($texto[0] . ' ', '', $mensagens['message']['text']);
+
+				foreach ($redis->keys('canais:*') as $hash) {
+					$chatID = floatval(str_ireplace('canais:', '', $hash));
+
+					$resultado = sendMessage($chatID, $textoPostagem, null, null, true);
+
+					if ($resultado['ok'] === true) {
+						++$mensagensEnviadas;
+					}
+
+					if ($mensagensEnviadas%30 == 0) {
+						sleep(1);
+					}
+				}
+
+				foreach ($redis->keys('idioma:*') as $hash) {
+					$chatID = floatval(str_ireplace('idioma:', '', $hash));
+
+					$resultado = sendMessage($chatID, $textoPostagem, null, null, true);
+
+					if ($resultado['ok'] === true) {
+						++$mensagensEnviadas;
+					}
+
+					if ($mensagensEnviadas%30 == 0) {
+						sleep(1);
+					}
+				}
+
+				$mensagem = '<b>Postagem finalizada!</b>' . "\n" . 'Foram enviadas ' . $mensagensEnviadas . ' mensagens.';
+			} else if (isset($mensagens['message']['reply_to_message'])) {
+				$mensagensEnviadas = 0;
+
+				foreach ($redis->keys('canais:*') as $hash) {
+					$chatID = floatval(str_ireplace('canais:', '', $hash));
+
+					$resultado = forwardMessage($chatID, $mensagens['message']['reply_to_message']['chat']['id'],
+																							 $mensagens['message']['reply_to_message']['message_id']);
+					if ($resultado['ok'] === true) {
+						++$mensagensEnviadas;
+					}
+
+					if ($mensagensEnviadas%30 == 0) {
+						sleep(1);
+					}
+				}
+
+				foreach ($redis->keys('idioma:*') as $hash) {
+					$chatID = floatval(str_ireplace('idioma:', '', $hash));
+
+					$resultado = forwardMessage($chatID, $mensagens['message']['reply_to_message']['chat']['id'],
+																							 $mensagens['message']['reply_to_message']['message_id']);
+					if ($resultado['ok'] === true) {
+						++$mensagensEnviadas;
+					}
+
+					if ($mensagensEnviadas%30 == 0) {
+						sleep(1);
+					}
+				}
+
+				$mensagem = '<b>Postagem finalizada!</b>' . "\n" . 'Foram encaminhadas ' . $mensagensEnviadas . ' mensagens.';
+				} else {
+				$mensagem = '📚: /postagem Telegram > WhatsApp' . "\n\n" . 'Responder mensagem com /postagem';
+			}
+
+			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
+		} else if (strtolower($texto[0]) == '/reiniciar') {
 			$redis->set('status_bot:loop', 'false');
 
 			notificarSudos('<pre>Reiniciando...</pre>');
@@ -60,26 +136,18 @@
 			echo '+-------------+' . "\n";
 			echo '| REINICIANDO |' . "\n";
 			echo '+-------------+' . "\n\n";
-		} else if (strcasecmp($texto[0], '/removerdocumento') == 0) {
+		} else if (strtolower($texto[0]) == '/removerdocumento') {
 			$documentoRemovido = false;
 
 			if ($mensagens['message']['chat']['type'] != 'private') {
 				$mensagem = 'Apenas no <b>privado!</b>';
 			} else if (isset($texto[1])) {
-				$nomeDocumento = substr(str_ireplace($texto[0], '', $mensagens['message']['text']), 1);
+				$nomeDocumento = str_ireplace($texto[0] . ' ', '', $mensagens['message']['text']);
 
-				$chavesLista = array(
-					0 => 'store',
-					1 => 'livros',
-					2 => 'tv',
-					3 => 'psp',
-					4 => 'snes'
-				);
-
-				foreach ($chavesLista as $chave) {
-					if ($redis->hexists('documentos:' . $chave, $nomeDocumento)) {
-						$idDocumento = $redis->hget('documentos:' . $chave, $nomeDocumento);
-						$redis->hdel('documentos:' . $chave, $nomeDocumento);
+				foreach ($redis->keys('documentos:*') as $hash) {
+					if ($redis->hexists($hash, $nomeDocumento) === true) {
+						$idDocumento = $redis->hget($hash, $nomeDocumento);
+						$redis->hdel($hash, $nomeDocumento);
 
 						$documentoRemovido = true;
 
@@ -107,7 +175,7 @@
 			if ($documentoRemovido === false) {
 				sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
 			}
-		} else if (strcasecmp($texto[0], '/status') == 0) {
+		} else if (strtolower($texto[0]) == '/status') {
 				 $grupos = count($redis->keys('idioma:-*'));
 			 $usuarios = count($redis->keys('idioma:*')) - $grupos;
 			$atendidas = count($redis->keys('status_bot:msg_atendidas:*'));
