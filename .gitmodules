@@ -1,3 +1,6 @@
 [submodule "rastrojs"]
 	path = rastrojs
 	url = git://github.com/talesluna/RastroJS.git
+[submodule "sinesp-api"]
+	path = sinesp-api
+	url = git://github.com/bbarreto/sinesp-api.git
