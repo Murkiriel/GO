@@ -4,9 +4,9 @@
 	if ($redis->exists('duck:' . $chave) === true) {
 		$mensagem = $redis->get('duck:' . $chave);
 	} else if (isset($texto[1])) {
-		$pesquisa = urlencode(str_ireplace('/' . $texto[0] . ' ', '', $mensagens['message']['text']);
+		$pesquisa = urlencode(str_ireplace('/' . $texto[0] . ' ', '', $mensagens['message']['text']));
 
-		$requisicao = 'http://api.duckduckgo.com/?format=json&q=' . $pesquisa);
+		$requisicao = 'http://api.duckduckgo.com/?format=json&q=' . $pesquisa;
 		 $resultado = json_decode(file_get_contents($requisicao), true);
 
 		$cont = count($resultado['RelatedTopics']);

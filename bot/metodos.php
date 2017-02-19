@@ -22,21 +22,19 @@
 	 * @param string $text
 	 */
 	function sendMessage($chatID, $text, $replyMessage = null, $replyMarkup = null, $parseMode = false, $editarMensagem = false) {
-		$requisicao = API_BOT;
-
 		$conteudoRequisicao = array(
 			'chat_id'	=> $chatID,
 				 'text' => $text
 		);
 
 		if ($editarMensagem === false) {
-			$requisicao = $requisicao . '/sendMessage';
+			$requisicao = API_BOT . '/sendMessage';
 
 			if (isset($replyMessage)) {
 				$conteudoRequisicao['reply_to_message_id'] = $replyMessage;
 			}
-		} else if ($editarMensagem === true) {
-			$requisicao = $requisicao . '/editMessageText';
+		} else {
+			$requisicao = API_BOT . '/editMessageText';
 
 			$conteudoRequisicao['message_id'] = $replyMessage;
 		}

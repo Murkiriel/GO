@@ -52,7 +52,7 @@
 
 		echo '+' , "\n\n";
 	} else {
-		echo "\n\n";
+		system('clear');
 		echo '+------------------+' , "\n";
 		echo '| ERRO AO CONECTAR |' , "\n";
 		echo '+------------------+' , "\n\n";

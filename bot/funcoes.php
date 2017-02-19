@@ -46,7 +46,7 @@
 		$updateID = 0;
 
 		$requisicao = API_BOT . '/getUpdates';
-		$conteudoRequisicao['allowed_updates'] = ['message', 'edited_message', 'callback_query', 'channel'];
+		$conteudoRequisicao = ['allowed_updates' => ['message', 'edited_message', 'callback_query', 'channel']];
 		$resultado = json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 
 		while (true) {

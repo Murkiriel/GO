@@ -2,7 +2,7 @@
 	if ($idioma == 'PT') {
 		if (isset($texto[1])) {
 			$placa = str_ireplace('/' . $texto[0] . ' ', '', $mensagens['message']['text']);
-			$placa = strtoupper(str_ireplace('-', '', str_ireplace(' ', '', $placa)));
+			$placa = strtoupper(str_ireplace(['-', ' '], '', $placa));
 
 			$veiculo = new Sinesp;
 
