@@ -34,7 +34,6 @@ class Sinesp
 
     private function exec()
     {
-        $this->verificarRequisitos();
         $this->obterResposta();
         $this->tratarResposta();
     }
@@ -70,23 +69,8 @@ class Sinesp
         $this->dados = (array) simplexml_load_string($response)->Body->getStatusResponse->return;
     }
 
-    private function verificarRequisitos()
-    {
-        if (! function_exists('curl_init')) {
-            throw new \Exception('Incapaz de processar. PHP requer biblioteca cURL');
-        }
-
-        if (! function_exists('simplexml_load_string')) {
-            throw new \Exception('Incapaz de processar. PHP requer biblioteca libxml');
-        }
-
-        return;
-    }
-
     private function setUp($placa)
     {
-        $placa = $this->ajustar($placa);
-
         if (! $this->validar($placa)) {
             throw new \Exception('Placa do veiculo nao especificada ou em formato invalido!');
         }
@@ -125,10 +109,5 @@ EOX;
     private function validar($placa)
     {
         return preg_match('/^[a-zA-Z]{3}-?\d{4}$/i', $placa);
-    }
-
-    private function ajustar($placa)
-    {
-        return str_replace(['-', ' '], '', $placa);
     }
 }
