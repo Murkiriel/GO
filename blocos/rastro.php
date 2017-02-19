@@ -1,8 +1,14 @@
 <?php
 	if ($idioma == 'PT') {
+<<<<<<< HEAD
 		if (isset($texto[1]) and strtolower($texto[1]) == 'del' and isset($texto[2])) {
 			if ($redis->exists('rastro:chats:' . $mensagens['message']['from']['id'] . ':' . $texto[2]) === true) {
 					$redis->del('rastro:chats:' . $mensagens['message']['from']['id'] . ':' . $texto[2]);
+=======
+		if (strtolower($texto[1]) == 'del' and isset($texto[2])) {
+			if ($redis->exists('rastro:chats' . $mensagens['message']['from']['id'] . ':' . $texto[2]) === true) {
+					$redis->del('rastro:chats' . $mensagens['message']['from']['id'] . ':' . $texto[2]);
+>>>>>>> origin/master
 					$redis->del('rastro:situacao:' . $mensagens['message']['from']['id'] . ':' . $texto[2]);
 
 				$mensagem = 'Código de rastreio apagado.';

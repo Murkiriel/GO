@@ -35,10 +35,13 @@ redis-server
 
 # SUBMODULES
 
+<<<<<<< HEAD
 cd GO
 
 rm -rf rastrojs
 
+=======
+>>>>>>> origin/master
 git pull
 
 git submodule update --init --recursive
@@ -46,6 +49,19 @@ git submodule update --init --recursive
 # RASTROJS
 
 cd rastrojs
+
+npm install express
+<<<<<<< HEAD
+=======
+
+npm install
+
+cd ..
+
+# SINESP-API
+
+cd sinesp-api
+>>>>>>> origin/master
 
 npm install express
 
