@@ -4,7 +4,7 @@ cd $HOME
 
 # DEPENDÊNCIAS
 
-bash dependencias.sh
+bash GO/dependencias.sh
 
 # LIMPEZA
 

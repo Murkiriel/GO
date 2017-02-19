@@ -10,7 +10,7 @@
 	/**
 	 * @param string $requisicao
 	 */
-	function enviarRequisicao($requisicao, $conteudoRequisicao = null) {
+	function enviarRequisicao($requisicao, $conteudoRequisicao = null, $cabecalho = null) {
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_POST, true);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
@@ -20,7 +20,15 @@
 			curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($conteudoRequisicao));
 		}
 
-		return curl_exec($curl);
+		if ($cabecalho != null) {
+			curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecalho);
+		}
+
+		$resultado = curl_exec($curl);
+
+		curl_close($curl);
+
+		return $resultado;
 	}
 
 	/**

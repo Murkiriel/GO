@@ -49,10 +49,10 @@
 			foreach ($redis->keys('rss:chats:*') as $hash) {
 				foreach ($redis->hgetall($hash) as $link => $md5Mensagem) {
 					if ($redis->exists('rss:situacao:' . md5($link)) === false) {
-						try{
-							$rss = new SimpleXmlElement(file_get_contents($link);
+						try {
+							$rss = new SimpleXmlElement(file_get_contents($link));
 						}
-						catch(Exception $e){
+						catch (Exception $e) {
 							$rss = [];
 						}
 

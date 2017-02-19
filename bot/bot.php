@@ -5,6 +5,8 @@
 	require_once('config.php');
 	require_once('idioma.php');
 
+	require_once('lib/sinesp.php');
+
 	system('clear');
 	echo '+----------+' . "\n";
 	echo '| TESTANDO |' . "\n";
@@ -20,9 +22,6 @@
 
 		$rastroJS = new RastroJS();
 		$rastroJS->start();
-
-		$sinespAPI = new SinespAPI();
-		$sinespAPI->start();
 
 		$redis = conectarRedis();
 		$redis->set('status_bot:loop', 'true');

@@ -5,13 +5,21 @@
 
 		foreach ($resultado['result'] as $adminsGrupo) {
 			if ($adminsGrupo['status'] == 'creator') {
-				$mensagem = '👤 ' . $adminsGrupo['user']['first_name'] . "\n\n" . $mensagem;
-			} else {
-				$mensagem = $mensagem . '👥 ' . $adminsGrupo['user']['first_name'] . "\n";
-			}
-		}
+			 if (isset($adminsGrupo['user']['username'])) {
+				 $mensagem = '👤 <a href="t.me/' . $adminsGrupo['user']['username'] . '">' . strip_tags($adminsGrupo['user']['first_name']) . '</a>' . "\n\n" . $mensagem;
+			 } else {
+				 $mensagem = '👤 ' . strip_tags($adminsGrupo['user']['first_name']) . "\n\n" . $mensagem;
+			 }
+		 } else {
+			 if (isset($adminsGrupo['user']['username'])) {
+				 $mensagem = $mensagem . '👥 <a href="t.me/' . $adminsGrupo['user']['username'] . '">' . strip_tags($adminsGrupo['user']['first_name']) . '</a>' . "\n";
+			 } else {
+				 $mensagem = $mensagem . '👥 ' . strip_tags($adminsGrupo['user']['first_name']) . "\n";
+			 }
+		 }
+	 }
 	} else if ($mensagens['message']['chat']['type'] == 'private') {
 		$mensagem = ERROS[$idioma]['SMT_GRUPO'];
 	}
 
-	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, false);
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);

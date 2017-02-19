@@ -65,9 +65,6 @@
           case '/regras': case '/rules': case '/reglas': case '/regole':
             include(RAIZ . 'blocos/regras.php');
             break;
-          case '/rss': case '/campeonatos': case '/times': case '/esportes':
-            include(RAIZ . 'blocos/rss.php');
-            break;
           case '/sha512':
             include(RAIZ . 'blocos/sha512.php');
             break;
