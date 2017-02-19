@@ -4,16 +4,21 @@
 	if ($redis->exists('wiki:' . $chave) === true) {
 		$mensagem = $redis->get('wiki:' . $chave);
 	} else if (isset($texto[1])) {
-		$artigo = str_ireplace($texto[0] . ' ', '', $mensagens['message']['text']);
+		$artigo = urlencode('/' . str_ireplace($texto[0] . ' ', '', $mensagens['message']['text']));
 
-		$requisicao = 'https://' . $idioma . '.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&exchars=480&exsectionformat=plain&explaintext=&redirects=&titles=' . urlencode($artigo);
-		 $resultado = json_decode(enviarRequisicao($requisicao), true);
+		$requisicao = 'https://' . $idioma . '.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&'  .
+																				 'exchars=480&exsectionformat=plain&explaintext=&redirects=&titles=' . $artigo;
 
-		 $idPagina = array_keys($resultado['query']['pages']);
+		$resultado = json_decode(enviarRequisicao($requisicao), true);
 
-		 if ($idPagina[0] != -1) {
-			 $urlPagina = 'https://' . $idioma . '.wikipedia.com/wiki/' . str_replace(' ', '_', $resultado['query']['pages'][$idPagina[0]]['title']);
-			 	$mensagem = '🗄 <a href="' . $urlPagina . '">' . $resultado['query']['pages'][$idPagina[0]]['title'] . '</a>' . "\n\n" . $resultado['query']['pages'][$idPagina[0]]['extract'];
+		$idPagina = array_keys($resultado['query']['pages']);
+
+		if ($idPagina[0] != -1) {
+			 $urlPagina = 'https://' . $idioma . '.wikipedia.com/wiki/' .
+			 							str_replace(' ', '_', $resultado['query']['pages'][$idPagina[0]]['title']);
+
+			 	$mensagem = '🗄 <a href="' . $urlPagina . '">' . $resultado['query']['pages'][$idPagina[0]]['title'] .
+										'</a>' . "\n\n" . $resultado['query']['pages'][$idPagina[0]]['extract'];
 		} else {
 			$mensagem = ERROS[$idioma][SEM_RSULT];
 		}

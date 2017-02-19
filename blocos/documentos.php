@@ -1,13 +1,9 @@
 <?php
-	$teclado = array(
-		'hide_keyboard' => true
-	);
+	$teclado['hide_keyboard'] = true;
 
 	$replyMarkup = json_encode($teclado);
 
 	if (isset($texto[1])) {
-		$texto[0] = substr($texto[0], 1);
-
 		if ($texto[0] == 'books' or $texto[0] == 'libri' or $texto[0] == 'libros') {
 			$texto[0] = 'livros';
 		}
@@ -55,9 +51,6 @@
 
 		if ($resultados[0] != null) {
 			$teclado = array(
-				'keyboard' => array(
-					array()
-				),
 					'resize_keyboard' => true,
 				'one_time_keyboard' => $oneTimeKeyboard,
 								'selective' => $selective
@@ -76,7 +69,7 @@
 			$mensagem = ERROS[$idioma]['SEM_RSULT'];
 		}
 	} else {
-		$mensagem = '📚: ' . $texto[0] . 'Telegram';
+		$mensagem = '📚: /' . $texto[0] . 'Telegram';
 	}
 
 	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);

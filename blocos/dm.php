@@ -4,9 +4,10 @@
 	if ($redis->exists('dm:' . $chave) === true) {
 		$mensagem = $redis->get('dm:' . $chave);
 	} else if (isset($texto[1])) {
+		$pesquisa = urlencode(str_ireplace('/' . $texto[0] . ' ', '', $mensagens['message']['text']);
 
-		$requisicao = 'https://api.dailymotion.com/videos?limit=5&search=' . urlencode(str_ireplace($texto[0] . ' ', '', $mensagens['message']['text']));
-		 $resultado = json_decode(file_get_contents($requisicao, false, CONTEXTO), true);
+		$requisicao = 'https://api.dailymotion.com/videos?limit=5&search=' . $pesquisa);
+		 $resultado = json_decode(file_get_contents($requisicao), true);
 
 		$cont = count($resultado['list']);
 

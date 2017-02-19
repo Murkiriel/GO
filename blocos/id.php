@@ -21,7 +21,8 @@
 		}
 
 		if ($mensagens['message']['from']['id'] != DADOS_BOT['result']['id']) {
-			$qntdMensagem = $redis->hget('ranking:' . $mensagens['message']['chat']['id'] . ':' . $mensagens['message']['from']['id'], 'qntd_mensagem');
+			$qntdMensagem = $redis->hget('ranking:' . $mensagens['message']['chat']['id'] . ':' .
+											$mensagens['message']['from']['id'], 'qntd_mensagem');
 		} else {
 			$qntdMensagem = '10^100';
 		}
@@ -32,7 +33,9 @@
 	$resultado = getUserProfilePhotos($mensagens['message']['from']['id']);
 
 	if (isset($resultado['result']['photos'][0][0]['file_id'])) {
-		sendPhoto($mensagens['message']['chat']['id'], $resultado['result']['photos'][0][0]['file_id'], $mensagens['message']['message_id'], null, $mensagem);
+		sendPhoto($mensagens['message']['chat']['id'], $resultado['result']['photos'][0][0]['file_id'],
+							$mensagens['message']['message_id'], null, $mensagem
+		);
 	} else {
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id']);
 	}

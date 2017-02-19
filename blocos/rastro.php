@@ -15,8 +15,8 @@
 			$requisicao = 'http://127.0.0.1:3000/json/' . $codigo;
 			 $resultado = json_decode(file_get_contents($requisicao), true);
 
-			if (is_array($resultado)){
-				$descricao = str_ireplace($texto[0] . ' ', '', $mensagens['message']['text']);
+			if (is_array($resultado)) {
+				$descricao = str_ireplace('/' . $texto[0] . ' ', '', $mensagens['message']['text']);
 				$descricao = str_ireplace($texto[1], '', $descricao);
 
 				if (empty($descricao)) {
@@ -46,7 +46,7 @@
 
 			$rastros = $redis->keys('rastro:chats:' . $mensagens['message']['from']['id'] . '*');
 
-			if (!empty($rastros)){
+			if (!empty($rastros)) {
 				$mensagem = $mensagem . "\n\n" . '<pre>+---------------+</pre>' . "\n\n" . '<b>Códigos em sua lista:</b>' . "\n\n";
 
 				foreach ($rastros as $codigosUsuario) {

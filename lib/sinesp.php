@@ -6,18 +6,13 @@ class Sinesp
 {
     private $secret = 'TRwf1iBwvCoSboSscGne';
     private $url = 'http://sinespcidadao.sinesp.gov.br/sinesp-cidadao/mobile/consultar-placa';
-    private $proxy = null;
 
     private $placa = '';
     private $response = '';
     private $dados = [];
 
-    public function buscar($placa, array $proxy = [])
+    public function buscar($placa)
     {
-        if ($proxy) {
-            $this->proxy($proxy['ip'], $proxy['porta']);
-        }
-
         $this->setUp($placa);
         $this->exec();
     }
@@ -25,11 +20,6 @@ class Sinesp
     public function dados()
     {
         return $this->dados;
-    }
-
-    public function proxy($ip, $porta)
-    {
-        $this->proxy = $ip . ':' . $porta;
     }
 
     public function __get($name)
@@ -63,10 +53,6 @@ class Sinesp
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $this->url);
-
-        if ($this->proxy) {
-            curl_setopt($ch, CURLOPT_PROXY, $this->proxy);
-        }
 
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);

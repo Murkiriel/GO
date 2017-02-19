@@ -1,7 +1,7 @@
 <?php
 	if ($idioma == 'PT') {
 		if (isset($texto[1])) {
-			$placa = str_ireplace($texto[0] . ' ', '', $mensagens['message']['text']);
+			$placa = str_ireplace('/' . $texto[0] . ' ', '', $mensagens['message']['text']);
 			$placa = strtoupper(str_ireplace('-', '', str_ireplace(' ', '', $placa)));
 
 			$veiculo = new Sinesp;
@@ -10,7 +10,7 @@
 				$veiculo->buscar($placa);
 
 				if ($veiculo->existe()) {
-					$mensagem = '<b>Placa:</b> ' . substr($placa, 0, 3) . '-' . substr($placa,3) . "\n";
+					$mensagem = '<b>Placa:</b> ' . substr($placa, 0, 3) . '-' . substr($placa, 3) . "\n";
 
 					$mensagem = $mensagem . '<b>Veículo:</b> ' . $veiculo->modelo . "\n" .
 																	'<b>Ano/Modelo:</b> ' . $veiculo->ano . '/' . $veiculo->anoModelo . "\n" .

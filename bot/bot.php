@@ -1,24 +1,29 @@
 <?php
-	require_once('classes.php');
-	require_once('funcoes.php');
-	require_once('metodos.php');
-	require_once('config.php');
-	require_once('idioma.php');
+	require('classes.php');
+	require('funcoes.php');
+	require('metodos.php');
+	require('config.php');
+	require('idioma.php');
+	require('comandos.php');
 
-	require_once('lib/sinesp.php');
+	require(RAIZ . 'lib/sinesp.php');
+
+	use Classes\RastroJS;
+	use Classes\ServicosThread;
+	use Comandos\BotThread;
 
 	system('clear');
-	echo '+----------+' . "\n";
-	echo '| TESTANDO |' . "\n";
-	echo '+----------+' . "\n\n";
+	echo '+------------+' , "\n";
+	echo '| CONECTANDO |' , "\n";
+	echo '+------------+' , "\n\n";
 
 	define('DADOS_BOT', getMe());
 
 	if (DADOS_BOT['ok'] === true) {
 		system('clear');
-		echo '+-------------+' . "\n";
-		echo '| ATUALIZANDO |' . "\n";
-		echo '+-------------+' . "\n\n";
+		echo '+-------------+' , "\n";
+		echo '| ATUALIZANDO |' , "\n";
+		echo '+-------------+' , "\n\n";
 
 		$rastroJS = new RastroJS();
 		$rastroJS->start();
@@ -33,28 +38,32 @@
 			 $hifens = strlen($tituloBot) - 4;
 
 		system('clear');
+
 		echo '+';
-		for ($i = 0; $i<$hifens; $i++) {echo '-'; }
-		echo '+' . "\n" . '|' . $tituloBot . '|' . "\n" . '+';
-		for ($i = 0; $i<$hifens; $i++) {echo '-'; }
-		echo '+' . "\n\n";
+
+		for ($i = 0; $i<$hifens; $i++) {
+			echo '-';
+		}
+		echo '+' , "\n" , '|' , $tituloBot , '|' , "\n" , '+';
+
+		for ($i = 0; $i<$hifens; $i++) {
+			echo '-';
+		}
+
+		echo '+' , "\n\n";
 	} else {
 		echo "\n\n";
-		echo '+------------------+' . "\n";
-		echo '| ERRO AO CONECTAR |' . "\n";
-		echo '+------------------+' . "\n\n";
+		echo '+------------------+' , "\n";
+		echo '| ERRO AO CONECTAR |' , "\n";
+		echo '+------------------+' , "\n\n";
 
 		die();
 	}
 
-	require_once('comandos.php');
-
-	use Comandos\BotThread;
-
 	while ($redis->get('status_bot:loop') === 'true') {
 		$resultado = getUpdates($updateID);
 
-		if (!empty($resultado['result']) and is_array($resultado['result'])) {
+		if (!empty($resultado['result'])) {
 			$threads = [];
 
 			foreach ($resultado['result'] as $mensagens) {
@@ -77,8 +86,8 @@
 	getUpdates($updateID);
 
 	system('clear');
-	echo '+-------------+' . "\n";
-	echo '| REINICIADO! |' . "\n";
-	echo '+-------------+' . "\n\n";
+	echo '+-------------+' , "\n";
+	echo '| REINICIADO! |' , "\n";
+	echo '+-------------+' , "\n\n";
 
 	$redis->close() && die();

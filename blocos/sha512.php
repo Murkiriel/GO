@@ -1,6 +1,6 @@
 <?php
 	if (isset($texto[1])) {
-		$mensagem = '<pre>' . hash('sha512', str_ireplace($texto[0] . ' ', '', $mensagens['message']['text'])) . '</pre>';
+		$mensagem = '<pre>' . hash('sha512', str_ireplace('/' . $texto[0] . ' ', '', $mensagens['message']['text'])) . '</pre>';
 	} else {
 		$mensagem = '📚: /sha512 ' . DADOS_BOT['result']['first_name'];
 	}

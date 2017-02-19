@@ -1,29 +1,28 @@
 <?php
-	define('AJUDA', array(
-		'PT' => array(
+	define('AJUDA', [
+		'PT' => [
 			'GRUPO' => 'Funções pra grupos',
 			'TCD_AVALR' => 'Avaliar',
 			'TCD_GRUPO' => 'Adicionar ao grupo'
-		),
-		'EN' => array(
+		],
+		'EN' => [
 			'GRUPO' => 'Functions for groups',
 			'TCD_AVALR' => 'Rate',
 			'TCD_GRUPO' => 'Add to group'
-		),
-		'ES' => array(
+		],
+		'ES' => [
 			'GRUPO' => 'Funciones para grupos',
 			'TCD_AVALR' => 'Tasa',
 			'TCD_GRUPO' => 'Añadir a grupo'
-		),
-		'IT' => array(
+		],
+		'IT' => [
 			'GRUPO' => 'Funzioni per i gruppi',
 			'TCD_AVALR' => 'Tasso',
 			'TCD_GRUPO' => 'Aggiungere al gruppo'
-		)
-	));
+	]]);
 
-	define('BEMVINDO', array(
-		'PT' => array(
+	define('BEMVINDO', [
+		'PT' => [
 			'ATIVO' => 'Mensagem de <b>"Bem-Vindo"</b> ativada!',
 			'DESATIVO' => 'Mensagem de <b>"Bem-Vindo"</b> desativada!',
 			'CRIADA' => 'Mensagem de <b>"Bem-Vindo"</b> criada com sucesso!',
@@ -33,8 +32,8 @@
 									'/bemvindo on - Ativa as mensagens de boas-vindas' . "\n" .
 									'/bemvindo off - Desativa as mensagens de boas-vindas' . "\n\n" .
 									'Use <b>$nome</b>, <b>$usuario</b> e <b>$grupo</b> para personalizar mensagens'
-		),
-		'EN' => array(
+		],
+		'EN' => [
 			'ATIVO' => 'Message <b>"Welcome"</b> enabled!',
 			'DESATIVO' => 'Message <b>"Welcome"</b> disabled!',
 			'CRIADA' => 'Message <b>"Welcome"</b> created successfully!',
@@ -44,8 +43,8 @@
 									'/welcome on - Activate the welcome messages' . "\n" .
 									'/welcome off - Disables the welcome messages' . "\n\n" .
 									'Use <b>$nome</b>, <b>$usuario</b> and <b>$grupo</b> to customize messages'
-		),
-		'ES' => array(
+		],
+		'ES' => [
 			'ATIVO' => '¡Mensaje de <b>"Bienvenida"</b> habilitado!',
 			'DESATIVO' => 'Mensaje de <b>"Bienvenida"</b> desactivado!',
 			'CRIADA' => '¡Mensaje de <b>"Bienvenida"</b> creado con éxito!',
@@ -55,8 +54,8 @@
 									'/bienvenida on - Activar los mensajes de bienvenida' . "\n" .
 									'/bienvenida off - Desactiva los mensajes de bienvenida' . "\n\n" .
 									'Use <b>$nome</b>, <b>$usuario</b> y <b>$grupo</b> para personalizar los mensajes'
-		),
-		'IT' => array(
+		],
+		'IT' => [
 			'ATIVO' => 'Messaggio di <b>"Benvenuto"</b> attivato!',
 			'DESATIVO' => 'Messaggio di <b>"Benvenuto"</b> disabilitato!',
 			'CRIADA' => 'Messaggio di <b>"Benvenuto"</b> creato con successo!',
@@ -66,113 +65,113 @@
 									'/benvenuto on - Attivare i messaggi di benvenuto' . "\n" .
 									'/benvenuto off - Disattiva i messaggi di benvenuto' . "\n\n" .
 									'Utilizzare <b>$nome</b>, <b>$usuario</b> e <b>$grupo</b> per personalizzare i messaggi'
-		)
-	));
+		]
+	]);
 
-	define('ERROS', array(
-		'PT' => array(
+	define('ERROS', [
+		'PT' => [
 			'SMT_GRUPO' => 'Somente em grupos!',
 			'SMT_ADMS' => 'Somente /adms!',
 			'SEM_RSULT' => 'Eu não encontrei resultados sobre isso :['
-		),
-		'EN' => array(
+		],
+		'EN' => [
 			'SMT_GRUPO' => 'Only groups!',
 			'SMT_ADMS' => 'Only /adms!',
 			'SEM_RSULT' => 'I have not found results about it :['
-		),
-		'ES' => array(
+		],
+		'ES' => [
 			'SMT_GRUPO' => 'Sólo losgrupos!',
 			'SMT_ADMS' => 'Sólo /adms!',
 			'SEM_RSULT' => 'No he encontrado resultados al respecto :['
-		),
-		'IT' => array(
+		],
+		'IT' => [
 			'SMT_GRUPO' => 'Solo i gruppi!',
 			'SMT_ADMS' => 'Solo i /adms!',
 			'SEM_RSULT' => 'Non ho trovato i risultati su di esso :['
-		)
-	));
+		]
+	]);
 
-	define('ID', array(
-		'PT' => array(
+	define('ID', [
+		'PT' => [
 			'NOME' => 'Nome',
 			'MSGS' => 'Mensagens',
 			'PRVD' => 'Você está no privado!'
-		),
-		'EN' => array(
+		],
+		'EN' => [
 			'NOME' => 'Name',
 			'MSGS' => 'Messages',
 			'PRVD' => 'You are in private!'
-		),
-		'ES' => array(
+		],
+		'ES' => [
 			'NOME' => 'Nombre',
 			'MSGS' => 'Mensajes',
 			'PRVD' => 'Estás en privado!'
-		),
-		'IT' => array(
+		],
+		'IT' => [
 			'NOME' => 'Nome',
 			'MSGS' => 'Messaggi',
 			'PRVD' => 'Sei in privato!'
-		)
-	));
+		]
+	]);
 
-	define('INFO', array(
-		'PT' => array(
+	define('INFO', [
+		'PT' => [
 			'VERSAO' => 'Versão',
 			'CANAL' => 'Canal'
-		),
-		'EN' => array(
+		],
+		'EN' => [
 			'VERSAO' => 'Version',
 			'CANAL' => 'Channel'
-		),
-		'ES' => array(
+		],
+		'ES' => [
 			'VERSAO' => 'Versión',
 			'CANAL' => 'Canal'
-		),
-		'IT' => array(
+		],
+		'IT' => [
 			'VERSAO' => 'Versione',
 			'CANAL' => 'Canale'
-		)
-	));
+		]
+	]);
 
-	define('GERAR', array(
+	define('GERAR', [
 		'PT' => 'gerar',
 		'EN' => 'generate',
 		'ES' => 'generar',
 		'IT' => 'generare'
-	));
+	]);
 
-	define('LIVROS', array(
+	define('LIVROS', [
 		'PT' => 'livros',
 		'EN' => 'books',
 		'ES' => 'libros',
 		'IT' => 'libri'
-	));
+	]);
 
-	define('RANKING', array(
-		'PT' => array(
+	define('RANKING', [
+		'PT' => [
 			'TITULO' => 'Ranking de Mensagens',
 			'TOTAL' => 'Total do grupo: ',
 			'SMT_CRIADOR' => 'Apenas o criador do grupo pode excluir o ranking!'
-		),
-		'EN' => array(
+		],
+		'EN' => [
 			'TITULO' => 'Ranking of Messages',
 			'TOTAL' => 'Group total: ',
 			'SMT_CRIADOR' => 'Only the creator of the group can delete the ranking!'
-		),
-		'ES' => array(
+		],
+		'ES' => [
 			'TITULO' => 'Ranking del Mensajes',
 			'TOTAL' => 'Total de grupo: ',
 			'SMT_CRIADOR' => 'Sólo el creador del grupo puede eliminar el ranking!'
-		),
-		'IT' => array(
+		],
+		'IT' => [
 			'TITULO' => 'Ranking del Messaggio',
 			'TOTAL' => 'Totale gruppo: ',
 			'SMT_CRIADOR' => 'Solo il creatore del gruppo può eliminare la ranking!'
-		)
-	));
+		]
+	]);
 
-	define('REGRAS', array(
-		'PT' => array(
+	define('REGRAS', [
+		'PT' => [
 			'ATIVO' => 'Mensagem de <b>"Regras"</b> ativada!',
 			'DESATIVO' => 'Mensagem de <b>"Regras"</b> desativada!',
 			'CRIADA' => 'Mensagem de <b>"Regras"</b> criada com sucesso!',
@@ -182,8 +181,8 @@
 									'/regras set - Define as regras por resposta de mensagem' . "\n" .
 									'/regras on - Ativa as mensagens de regras' . "\n" .
 									'/regras off - Desativa as mensagens de regras'
-		),
-		'EN' => array(
+		],
+		'EN' => [
 			'ATIVO' => 'Message <b>"Rules"</b> enabled!',
 			'DESATIVO' => 'Message <b>"Rules"</b> disabled!',
 			'CRIADA' => 'Message <b>"Rules"</b> created successfully!',
@@ -193,8 +192,8 @@
 									'/rules set - Define the rules for message response' . "\n" .
 									'/rules on - Activate the rules messages' . "\n" .
 									'/rules off - Disables the rules messages'
-		),
-		'ES' => array(
+		],
+		'ES' => [
 			'ATIVO' => '¡Mensaje de <b>"Reglas"</b> habilitado!',
 			'DESATIVO' => 'Mensaje de <b>"Reglas"</b> desactivado!',
 			'CRIADA' => '¡Mensaje de <b>"Reglas"</b> creado con éxito!',
@@ -204,8 +203,8 @@
 									'/reglas set - Definir las reglas para la respuesta del mensaje' . "\n" .
 									'/reglas on - Activar los mensajes de reglas' . "\n" .
 									'/reglas off - Desactiva los mensajes de reglas'
-		),
-		'IT' => array(
+		],
+		'IT' => [
 			'ATIVO' => 'Messaggio di <b>"Regole"</b> attivato!',
 			'DESATIVO' => 'Messaggio di <b>"Regole"</b> disabilitato!',
 			'CRIADA' => 'Messaggio di <b>"Regole"</b> creato con successo!',
@@ -215,10 +214,10 @@
 									'/regole set - Definire le regole per il messaggio di risposta' . "\n" .
 									'/regole on - Attivare i messaggi di regole' . "\n" .
 									'/regole off - Disattiva i messaggi di regole'
-		)
-	));
+		]
+	]);
 
-	define('RSS', array(
+	define('RSS', [
 		'PT' => '<pre>📚 RSS</pre>' . "\n\n".
 								'/rss https://seu.rss.aqui - Adicionar RSS para sua lista' . "\n" .
 								'/rss del - Apagar sua lista de RSS' . "\n\n" .
@@ -232,19 +231,19 @@
 		'IT' => '<pre>📚 RSS</pre>' . "\n\n".
 								'/rss https://tuo.rss.qui - Aggiungi RSS alla tua lista' . "\n" .
 								'/rss del - Elimina il tuo lista di RSS'
-	));
+	]);
 
 
-	define('SUPORTE', array(
+	define('SUPORTE', [
 		'PT' => 'suporte Onde posso melhorar?',
 		'EN' => 'support Where can I improve?',
 		'ES' => 'apoyo ¿Dónde puedo mejorar?',
 		'IT' => 'supporto Dove posso migliorare?'
-	));
+	]);
 
-	define('TECLADO', array(
+	define('TECLADO', [
 		'PT' => 'Escolha entre as opções do <b>teclado</b>',
 		'EN' => 'Choose between <b>keyboard</b> options',
 		'ES' => 'Elija entre opciones de <b>teclado</b>',
 		'IT' => 'Scegliere tra le opzioni della <b>tastiera</b>'
-	));
+	]);

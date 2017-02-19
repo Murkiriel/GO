@@ -46,13 +46,13 @@
 		$updateID = 0;
 
 		$requisicao = API_BOT . '/getUpdates';
-		$conteudoRequisicao = array('allowed_updates' => array('message', 'edited_message', 'callback_query', 'channel'));
+		$conteudoRequisicao['allowed_updates'] = ['message', 'edited_message', 'callback_query', 'channel'];
 		$resultado = json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 
 		while (true) {
-			if (!empty($resultado['result']) and is_array($resultado['result'])) {
+			if (!empty($resultado['result'])) {
 				foreach ($resultado['result'] as $mensagens) {
-					if (isset($mensagens['message']['date']) and time() - $mensagens['message']['date']<=20) {
+					if (isset($mensagens['message']['date']) and time() - $mensagens['message']['date']<=5) {
 						getUpdates($updateID);
 						return notificarSudos('<pre>Iniciando...</pre>');
 					}
@@ -72,7 +72,7 @@
 	 */
 	function carregarDados($arquivo) {
 		if (file_exists($arquivo)) {
-			return json_decode(file_get_contents($arquivo, false, CONTEXTO), true);
+			return json_decode(file_get_contents($arquivo), true);
 		} else {
 			return null;
 		}
@@ -89,7 +89,7 @@
 	function mensagemRSS($conteudoRSS) {
 		$mensagem = '〰〰〰〰〰〰〰' . "\n\n";
 
-		foreach($conteudoRSS as $item){
+		foreach ($conteudoRSS as $item) {
 			$item->title = html_entity_decode(strip_tags($item->title), ENT_QUOTES, 'UTF-8');
 			$mensagem = $mensagem . '<a href="' . $item->link . '">' . $item->title . '</a>' . "\n\n";
 			$mensagem = $mensagem . html_entity_decode(strip_tags($item->description), ENT_QUOTES, 'UTF-8');
@@ -137,7 +137,7 @@
     $mensagem .= '<b>Descrição:</b> ' . $erroMensagem . "\n";
 		$mensagem .= '<b>Data e Hora:</b> ' . date('d/m/Y H:i:s') . "\n";
 
-    echo '🐞  ERRO: ' . $erroMensagem . ' no arquivo ' . $erroArquivo . ' (Linha ' . $erroLinha . ')' . "\n\n";
+    echo '🐞  ERRO: ' , $erroMensagem , ' no arquivo ' , $erroArquivo , ' (Linha ' , $erroLinha , ')' , "\n\n";
 
 		notificarSudos($mensagem);
   }

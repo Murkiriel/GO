@@ -1,6 +1,6 @@
 <?php
 	if (isset($texto[1])) {
-		$expressao = str_replace($texto[0] . ' ', '', $mensagens['message']['text']);
+		$expressao = str_replace('/' . $texto[0] . ' ', '', $mensagens['message']['text']);
 		$expressao = str_replace('x', '*', $expressao);
 		$expressao = str_replace('X', '*', $expressao);
 		$expressao = str_replace('÷', '/', $expressao);

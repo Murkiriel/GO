@@ -5,10 +5,10 @@
 	function getUpdates($updateID) {
 		$requisicao = API_BOT . '/getUpdates';
 
-		$conteudoRequisicao = array(
-			 'offset' => $updateID,
-			'timeout' => 20
-		);
+		$conteudoRequisicao = [
+			'offset'	=> $updateID,
+			'timeout'	=> 20
+		];
 
 		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 	}

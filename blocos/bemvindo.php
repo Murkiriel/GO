@@ -36,20 +36,26 @@
 			} else if (isset($mensagens['message']['reply_to_message']['document']['file_id'])) {
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'tipo', 'documento');
-				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo', $mensagens['message']['reply_to_message']['document']['file_id']);
+				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo',
+										 $mensagens['message']['reply_to_message']['document']['file_id']
+				);
 
 				$mensagem = BEMVINDO[$idioma]['CRIADA'];
 			} else if (isset($mensagens['message']['reply_to_message']['sticker']['file_id'])) {
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'tipo', 'documento');
-				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo', $mensagens['message']['reply_to_message']['sticker']['file_id']);
+				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo',
+										 $mensagens['message']['reply_to_message']['sticker']['file_id']
+				);
 
 				$mensagem = BEMVINDO[$idioma]['CRIADA'];
 
 			} else if (isset($mensagens['message']['reply_to_message']['photo'][0]['file_id'])) {
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'tipo', 'foto');
-				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo', $mensagens['message']['reply_to_message']['photo'][0]['file_id']);
+				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo',
+										 $mensagens['message']['reply_to_message']['photo'][0]['file_id']
+				);
 
 				$mensagem = BEMVINDO[$idioma]['CRIADA'];
 			} else {

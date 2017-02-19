@@ -39,26 +39,33 @@
 			} else if (isset($mensagens['message']['reply_to_message']['document']['file_id']) and strtolower($texto[1]) == 'set') {
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'tipo', 'documento');
-				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'conteudo', $mensagens['message']['reply_to_message']['document']['file_id']);
+				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'conteudo',
+										 $mensagens['message']['reply_to_message']['document']['file_id']
+				);
 
 				$mensagem = REGRAS[$idioma]['CRIADA'];
 			} else if (isset($mensagens['message']['reply_to_message']['sticker']['file_id']) and strtolower($texto[1]) == 'set') {
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'tipo', 'documento');
-				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'conteudo', $mensagens['message']['reply_to_message']['sticker']['file_id']);
+				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'conteudo',
+										 $mensagens['message']['reply_to_message']['sticker']['file_id']
+				);
 
 				$mensagem = REGRAS[$idioma]['CRIADA'];
 
 			} else if (isset($mensagens['message']['reply_to_message']['photo'][0]['file_id']) and strtolower($texto[1]) == 'set') {
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'tipo', 'foto');
-				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'conteudo', $mensagens['message']['reply_to_message']['photo'][0]['file_id']);
+				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'conteudo',
+										 $mensagens['message']['reply_to_message']['photo'][0]['file_id']
+				);
 
 				$mensagem = REGRAS[$idioma]['CRIADA'];
 			}
 		}
 
-		if (empty($texto[1]) and $redis->hexists('regras:' . $mensagens['message']['chat']['id'], 'conteudo') and $redis->hget('regras:' . $mensagens['message']['chat']['id'], 'ativo') === 'true') {
+		if (empty($texto[1]) and $redis->hexists('regras:' . $mensagens['message']['chat']['id'], 'conteudo')
+												 and $redis->hget('regras:' . $mensagens['message']['chat']['id'], 'ativo') === 'true') {
 					$mensagem = $redis->hget('regras:' . $mensagens['message']['chat']['id'], 'conteudo');
 			$tipoMensagem = $redis->hget('regras:' . $mensagens['message']['chat']['id'], 'tipo');
 		} else if ($usuarioAdmin === false) {

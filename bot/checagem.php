@@ -30,28 +30,28 @@
 	// # IDIOMA
 
 	$texto = explode(' ', $mensagens['message']['text']);
-	$texto[0] = str_ireplace('@' . DADOS_BOT['result']['username'], '', $texto[0]);
+	$texto[0] = substr(str_ireplace('@' . DADOS_BOT['result']['username'], '', $texto[0]), 1);
 
 	switch (strtolower($texto[0])) {
-		case '/portugues':
+		case 'portugues':
 			$redis->set('idioma:' . $mensagens['message']['chat']['id'], 'PT');
-			$texto[0] = '/start';
+			$texto[0] = 'start';
 			break;
-		case '/english':
+		case 'english':
 			$redis->set('idioma:' . $mensagens['message']['chat']['id'], 'EN');
-			$texto[0] = '/start';
+			$texto[0] = 'start';
 			break;
-		case '/espanol':
+		case 'espanol':
 			$redis->set('idioma:' . $mensagens['message']['chat']['id'], 'ES');
-			$texto[0] = '/start';
+			$texto[0] = 'start';
 			break;
-		case '/italiano':
+		case 'italiano':
 			$redis->set('idioma:' . $mensagens['message']['chat']['id'], 'IT');
-			$texto[0] = '/start';
+			$texto[0] = 'start';
 			break;
-		case '/idioma':
-		case '/language':
-		case '/lingua':
+		case 'idioma':
+		case 'language':
+		case 'lingua':
 			$redis->del('idioma:' . $mensagens['message']['chat']['id']);
 			break;
 	}
@@ -80,7 +80,9 @@
 			'<b>ES:</b> ' . TECLADO['ES'] . "\n" . '----------' . "\n" .
 			'<b>IT:</b> ' . TECLADO['IT'];
 
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true, $mensagens['edit_message']);
+		sendMessage($mensagens['message']['chat']['id'], $mensagem,
+								$mensagens['message']['message_id'], $replyMarkup, true, $mensagens['edit_message']
+		);
 
 		$exit = true;
 	}
@@ -108,8 +110,13 @@
 					$mensagens['message']['chat']['type'] == 'supergroup' or
 					$mensagens['message']['chat']['type'] == 'private') {
 
-				 	$redis->hset('ranking:' . $mensagens['message']['chat']['id'] . ':' . $mensagens['message']['from']['id'], 'primeiro_nome', $mensagens['message']['from']['first_name']);
-					$redis->hincrby('ranking:' . $mensagens['message']['chat']['id'] . ':' . $mensagens['message']['from']['id'], 'qntd_mensagem', 1);
+				 	$redis->hset('ranking:' . $mensagens['message']['chat']['id'] . ':' .
+											 $mensagens['message']['from']['id'], 'primeiro_nome', $mensagens['message']['from']['first_name']
+					);
+
+					$redis->hincrby('ranking:' . $mensagens['message']['chat']['id'] . ':' .
+													$mensagens['message']['from']['id'], 'qntd_mensagem', 1
+					);
 			}
 		}
 	}

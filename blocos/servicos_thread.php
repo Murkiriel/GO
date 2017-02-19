@@ -13,9 +13,9 @@
 					$codigo = substr(strrchr($hash, ':'), 1);
 
 				$requisicao = 'http://127.0.0.1:3000/json/' . $codigo;
-		 		 $resultado = json_decode(file_get_contents($requisicao, false, CONTEXTO), true);
+		 		 $resultado = json_decode(file_get_contents($requisicao), true);
 
-				if (is_array($resultado)){
+				if (is_array($resultado)) {
 							 $hash = str_ireplace('situacao', 'chats', $hash);
 					$descricao = $redis->get($hash);
 
@@ -42,7 +42,7 @@
 		}
 	}
 
-	if ($minuto%30 == 0){
+	if ($minuto%30 == 0) {
 		if ($redis->exists('rss:atualizando') === false) {
 			$redis->setex('rss:atualizando', 60, 'true');
 
@@ -51,8 +51,7 @@
 					if ($redis->exists('rss:situacao:' . md5($link)) === false) {
 						try {
 							$rss = new SimpleXmlElement(file_get_contents($link));
-						}
-						catch (Exception $e) {
+						} catch (Exception $e) {
 							$rss = [];
 						}
 

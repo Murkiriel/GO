@@ -1,6 +1,6 @@
 <?php
 	if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
-		if (strtolower($texto[0]) == '/rkgdel') {
+		if (strtolower($texto[0]) == 'rkgdel') {
  				 $resultado = getChatAdministrators($mensagens['message']['chat']['id']);
 			$usuarioAdmin = false;
 

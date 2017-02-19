@@ -6,13 +6,15 @@
 		foreach ($resultado['result'] as $adminsGrupo) {
 			if ($adminsGrupo['status'] == 'creator') {
 			 if (isset($adminsGrupo['user']['username'])) {
-				 $mensagem = '👤 <a href="t.me/' . $adminsGrupo['user']['username'] . '">' . strip_tags($adminsGrupo['user']['first_name']) . '</a>' . "\n\n" . $mensagem;
+				 $mensagem = '👤 <a href="t.me/' . $adminsGrupo['user']['username'] . '">' .
+				 						 strip_tags($adminsGrupo['user']['first_name']) . '</a>' . "\n\n" . $mensagem;
 			 } else {
 				 $mensagem = '👤 ' . strip_tags($adminsGrupo['user']['first_name']) . "\n\n" . $mensagem;
 			 }
 		 } else {
 			 if (isset($adminsGrupo['user']['username'])) {
-				 $mensagem = $mensagem . '👥 <a href="t.me/' . $adminsGrupo['user']['username'] . '">' . strip_tags($adminsGrupo['user']['first_name']) . '</a>' . "\n";
+				 $mensagem = $mensagem . '👥 <a href="t.me/' . $adminsGrupo['user']['username'] . '">' .
+				 						 strip_tags($adminsGrupo['user']['first_name']) . '</a>' . "\n";
 			 } else {
 				 $mensagem = $mensagem . '👥 ' . strip_tags($adminsGrupo['user']['first_name']) . "\n";
 			 }
