@@ -67,7 +67,7 @@
 									'/benvenuto - Definire "Benvenuto" per il messaggio di risposta' . "\n\n" .
 									'/benvenuto on - Attivare i messaggi di benvenuto' . "\n" .
 									'/benvenuto off - Disattiva i messaggi di benvenuto' . "\n\n" .
-									'Utilizzare <b>$nome</b>, <b>$usuario</b> e <b>$grupo</b> per personalizzare i messaggi' . "\n\n\" .
+									'Utilizzare <b>$nome</b>, <b>$usuario</b> e <b>$grupo</b> per personalizzare i messaggi' . "\n\n" .
 									'Utilizzare [Example][http://example.com/] creare tastiera'
 		]
 	]);

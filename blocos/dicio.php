@@ -11,7 +11,7 @@
 			// # O @ abaixo é necessário por causa que a API acima não trata palavras desconhecidas
 			@$resultado = json_decode(file_get_contents($requisicao), true);
 
-			if (isset($resultado['entry']['sense'][0]['def'])) {
+			if (isset($resultado['entry']['form']['orth']) and isset($resultado['entry']['sense'][0]['def'])) {
 				$mensagem = '<b>' . $resultado['entry']['form']['orth'] . ':</b> ' .
 										str_ireplace('_', '', str_ireplace('<br/>', ' ', $resultado['entry']['sense'][0]['def']));
 			} else {

@@ -140,7 +140,7 @@
 
 					if ($cont%2 == 0) {
 						$teclado['inline_keyboard'][$linha][0]['text'] = $botao;
-					} else {
+					} else if ($cont%2 == 1) {
 						$tipoBotao = !filter_var($botao, FILTER_VALIDATE_URL) === false ? 'url' : 'callback_data';
 
 						$teclado['inline_keyboard'][$linha][0][$tipoBotao] = $botao;
