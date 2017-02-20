@@ -28,7 +28,7 @@
 			'CRIADA' => 'Mensagem de <b>"Bem-Vindo"</b> criada com sucesso!',
 			'NAO_DEFINIDA' => 'Use /bemvindo para definir uma mensagem primeiro!',
 			'AJUDA' => '<pre>📚 BEM-VINDO</pre>' . "\n\n".
-									'/bemvindo - Define "Bem-Vindo" por resposta de mensagem' . "\n\n" .
+									'/bemvindo - Define mensagem de "Bem-Vindo"' . "\n\n" .
 									'/bemvindo on - Ativa as mensagens de boas-vindas' . "\n" .
 									'/bemvindo off - Desativa as mensagens de boas-vindas' . "\n\n" .
 									'Use <b>$nome</b>, <b>$usuario</b> e <b>$grupo</b> para personalizar mensagens' . "\n\n" .
@@ -40,7 +40,7 @@
 			'CRIADA' => 'Message <b>"Welcome"</b> created successfully!',
 			'NAO_DEFINIDA' => 'Use /welcome to define a message first!',
 			'AJUDA' => '<pre>📚 WELCOME</pre>' . "\n\n".
-									'/welcome - Define "Welcome" for message response' . "\n\n" .
+									'/welcome - Define message of <b>"Welcome"</b>' . "\n\n" .
 									'/welcome on - Activate the welcome messages' . "\n" .
 									'/welcome off - Disables the welcome messages' . "\n\n" .
 									'Use <b>$nome</b>, <b>$usuario</b> and <b>$grupo</b> to customize messages' . "\n\n" .
@@ -52,7 +52,7 @@
 			'CRIADA' => '¡Mensaje de <b>"Bienvenida"</b> creado con éxito!',
 			'NAO_DEFINIDA' => 'Uso /bienvenida para definir un mensaje primero!',
 			'AJUDA' => '<pre>📚 BIENVENIDA</pre>' . "\n\n".
-									'/bienvenida - Definir "Bienvenida" para la respuesta del mensaje' . "\n\n" .
+									'/bienvenida - Definir respuesta de <b>"Bienvenida"</b>' . "\n\n" .
 									'/bienvenida on - Activar los mensajes de bienvenida' . "\n" .
 									'/bienvenida off - Desactiva los mensajes de bienvenida' . "\n\n" .
 									'Use <b>$nome</b>, <b>$usuario</b> y <b>$grupo</b> para personalizar los mensajes' . "\n\n" .
@@ -64,7 +64,7 @@
 			'CRIADA' => 'Messaggio di <b>"Benvenuto"</b> creato con successo!',
 			'NAO_DEFINIDA' => 'Uso /benvenuto per definire un messaggio prima!',
 			'AJUDA' => '<pre>📚 BENVENUTO</pre>' . "\n\n".
-									'/benvenuto - Definire "Benvenuto" per il messaggio di risposta' . "\n\n" .
+									'/benvenuto - Definire messaggio di <b>"Benvenuto"</b>' . "\n\n" .
 									'/benvenuto on - Attivare i messaggi di benvenuto' . "\n" .
 									'/benvenuto off - Disattiva i messaggi di benvenuto' . "\n\n" .
 									'Utilizzare <b>$nome</b>, <b>$usuario</b> e <b>$grupo</b> per personalizzare i messaggi' . "\n\n" .
@@ -241,12 +241,23 @@
 								'/rss del - Elimina il tuo lista di RSS'
 	]);
 
-
 	define('SUPORTE', [
-		'PT' => 'suporte Onde posso melhorar?',
-		'EN' => 'support Where can I improve?',
-		'ES' => 'apoyo ¿Dónde puedo mejorar?',
-		'IT' => 'supporto Dove posso migliorare?'
+		'PT' => [
+			'AJUDA' => 'suporte Onde posso melhorar?',
+			'ENVIADA' => '📬 <b>Mensagem enviada!</b>'
+		],
+		'EN' => [
+			'AJUDA' => 'support Where can I improve?',
+			'ENVIADA' => '📬 <b>Message sent!</b>'
+		],
+		'ES' => [
+			'AJUDA' => 'apoyo ¿Dónde puedo mejorar?',
+			'ENVIADA' => '📬 <b>¡Mensage enviada!</b>'
+		],
+		'IT' => [
+			'AJUDA' => 'supporto Dove posso migliorare?',
+			'ENVIADA' => '📬 <b>Messaggio inviato!</b>'
+		]
 	]);
 
 	define('TECLADO', [

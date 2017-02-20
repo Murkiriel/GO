@@ -30,7 +30,7 @@
 
     public static function verificarComando($comando) {
       foreach (self::$blocos as $bloco => $comandos) {
-        if (in_array($comando, $comandos) === true){
+        if (in_array(strtolower($comando), $comandos) === true){
             return $bloco;
         }
       }

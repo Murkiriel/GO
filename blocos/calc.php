@@ -1,10 +1,10 @@
 <?php
 	if (isset($texto[1])) {
-		$expressao = str_replace('/' . $texto[0] . ' ', '', $mensagens['message']['text']);
-		$expressao = str_replace('x', '*', $expressao);
-		$expressao = str_replace('X', '*', $expressao);
-		$expressao = str_replace('÷', '/', $expressao);
-		$expressao = str_replace(',', '.', $expressao);
+		$expressao = removerComando($texto[0], $mensagens['message']['text']);
+		$expressao = str_ireplace('***', '*', $expressao);
+		$expressao = str_ireplace('x', '*', $expressao);
+		$expressao = str_ireplace('÷', '/', $expressao);
+		$expressao = str_ireplace(',', '.', $expressao);
 
 		$mensagem = '<b>' . shell_exec('calc "' . $expressao . '"') . '</b>';
 	} else {

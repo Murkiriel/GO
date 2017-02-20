@@ -53,7 +53,7 @@
 			$mensagem = $mensagem . "\n" . RANKING[$idioma]['TOTAL'] . $totalGrupo . "\n\n" . '/rkgdel - ' . RANKING[$idioma]['SMT_CRIADOR'];
 		}
 	} else if ($mensagens['message']['chat']['type'] == 'private') {
-		$mensagem = ERROS[$idioma]['SMT_GRUPO'];
+		$mensagem = strip_tags(ERROS[$idioma]['SMT_GRUPO']);
 	}
 
-	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id']);
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);

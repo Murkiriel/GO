@@ -84,8 +84,9 @@
 			}
 		}
 
-		$servicosThread = new ServicosThread();
-		$servicosThread->start();
+		$servicos = [];
+		$servicos[$updateID] = new ServicosThread($updateID);
+		$servicos[$updateID]->start();
 
 		$loop = $redis->get('status_bot:loop');
 	}

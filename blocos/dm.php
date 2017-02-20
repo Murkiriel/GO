@@ -14,9 +14,13 @@
 		if ($cont != 0) {
 			$mensagem = '📹 <b>Dailymotion:</b>' . "\n";
 
-			for ($i=0;$i<$cont;$i++) {
+			$i = 0;
+
+			while (isset($resultado['list'][$i]['id'])){
 				$mensagem = $mensagem . "\n" . ($i+1) . ') <a href="http://www.dailymotion.com/video/' .
 										$resultado['list'][$i]['id'] . '">' . $resultado['list'][$i]['title'] . '</a>' . "\n";
+
+				++$i;
 
 				if ($i>4) {
 					break;

@@ -21,7 +21,7 @@ mkdir -p /etc/php7/etc
 
 rm -rf php-7.0.15
 
-wget http://php.net/distributions/php-7.0.15.tar.gz
+wget http://php.net/distributions/php-7.0.16.tar.gz
 
 tar -xzvf php-7.0.15.tar.gz
 

@@ -133,7 +133,9 @@
 			$cont = 0;
 			$linha = 0;
 
-			foreach (array_filter(explode('[', $montarTeclado)) as $botao) {
+			$botoes = array_filter(explode('[', $montarTeclado));
+
+			foreach ($botoes as $botao) {
 				$botao = str_ireplace(']', '', $botao);
 
 				if ($cont%2 == 0) {

@@ -13,7 +13,7 @@
 		$docs = isset($dados) ? array_keys($dados) : null;
 
 				 $cont = 0;
-		$resultado = [];
+		$resultado[0] = null;
 
 		foreach ($docs as $doc) {
 			$posicao = strripos($doc, $texto[1]);
@@ -24,12 +24,14 @@
 
 					if ($posicao !== false) {
 						$resultado[$cont] = $doc;
+
+						++$cont;
 					}
 				} else {
 					$resultado[$cont] = $doc;
-				}
 
-				++$cont;
+					++$cont;
+				}
 			}
 
 			if ($cont == 99) {
@@ -45,7 +47,7 @@
 			$oneTimeKeyboard = false;
 		}
 
-		if ($resultado[0] != null) {
+		if ($resultado != null) {
 			$teclado = [
 				'resize_keyboard' => true,
 				'one_time_keyboard' => $oneTimeKeyboard,

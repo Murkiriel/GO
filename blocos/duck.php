@@ -14,9 +14,13 @@
 		if ($cont != 0) {
 			$mensagem = '🔎 <b>DuckDuckGO:</b>' . "\n";
 
-			for ($i=0;$i<$cont;$i++) {
+			$i = 0;
+
+			while (isset($resultado['RelatedTopics'][$i]['FirstURL'])){
 				$mensagem = $mensagem . "\n" . ($i+1) . ') ' . '<a href="' . $resultado['RelatedTopics'][$i]['FirstURL'] . '">' .
 										$resultado['RelatedTopics'][$i]['Text'] . '</a>' . "\n";
+
+				++$i;
 
 				if ($i>4) {
 					break;
