@@ -126,41 +126,38 @@
 		$posicao1 = stripos($conteudoMensagem, '[');
 
 		if ($posicao1 !== false) {
-			$montarTeclado = substr($conteudoMensagem, $posicao1+1);
-			$conteudoMensagem = str_ireplace('[' . $montarTeclado, '', $conteudoMensagem);
+			$montarTeclado = substr($conteudoMensagem, $posicao1 + 1);
 			$posicao2 = strripos($montarTeclado, ']');
 			$montarTeclado = str_ireplace(substr($montarTeclado, $posicao2), '', $montarTeclado);
 
 			$cont = 0;
 			$linha = 0;
 
-			foreach (explode('[', $montarTeclado) as $botao) {
-				if (!empty($botao)) {
-					$botao = str_ireplace(']', '', $botao);
+			foreach (array_filter(explode('[', $montarTeclado)) as $botao) {
+				$botao = str_ireplace(']', '', $botao);
 
-					if ($cont%2 == 0) {
-						$teclado['inline_keyboard'][$linha][0]['text'] = $botao;
-					} else if ($cont%2 == 1) {
-						$tipoBotao = !filter_var($botao, FILTER_VALIDATE_URL) === false ? 'url' : 'callback_data';
+				if ($cont%2 == 0) {
+					$teclado['inline_keyboard'][$linha][0]['text'] = $botao;
+				} else if ($cont%2 == 1) {
+					$tipoBotao = !filter_var($botao, FILTER_VALIDATE_URL) === false ? 'url' : 'callback_data';
 
-						$teclado['inline_keyboard'][$linha][0][$tipoBotao] = $botao;
+					$teclado['inline_keyboard'][$linha][0][$tipoBotao] = $botao;
 
-						++$linha;
-					}
-
-					++$cont;
+					++$linha;
 				}
+
+				++$cont;
 			}
 
 			return json_encode($teclado);
-		} else {
-			return null;
 		}
+
+		return null;
 	}
 
 	function removerTeclado($conteudoMensagem) {
 		$posicao = stripos($conteudoMensagem, '[');
-		$teclado = substr($conteudoMensagem, $posicao+1);
+		$teclado = substr($conteudoMensagem, $posicao + 1);
 
 		return str_ireplace('[' . $teclado, '', $conteudoMensagem);
 	}
