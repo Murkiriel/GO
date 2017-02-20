@@ -79,9 +79,9 @@
 	function carregarDados($arquivo) {
 		if (file_exists($arquivo)) {
 			return json_decode(file_get_contents($arquivo), true);
-		} else {
-			return null;
 		}
+
+		return null;
 	}
 
 	/**
