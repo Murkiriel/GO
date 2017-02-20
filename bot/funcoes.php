@@ -166,7 +166,7 @@
 
 	function pingServidor($servidor, $porta = 80) {
 		$inicioTempo = microtime(true);
-		$resultado = @fsockopen($servidor, $porta, $erroCodigo = null, $erroMensagem = null, 10);
+		$resultado = @fsockopen($servidor, $porta, $errno, $errstr, 10);
 		$fimTempo = microtime(true);
 
 		if ($resultado === false) {
