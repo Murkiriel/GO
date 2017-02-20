@@ -134,10 +134,10 @@
 			E_USER_NOTICE => 'USER NOTICE', E_USER_WARNING => 'USER WARNING', E_WARNING => 'WARNING'
   	);
 
+		$erroEncontrado = 'CAUGHT EXCEPTION';
+
     if (array_key_exists($erroCodigo, $erroTipo)) {
       $erroEncontrado = $erroTipo[$erroCodigo];
-    } else {
-      $erroEncontrado = 'CAUGHT EXCEPTION';
     }
 
     $mensagem = '<pre>🐞 ERRO ENCONTRADO</pre>' . "\n\n";
