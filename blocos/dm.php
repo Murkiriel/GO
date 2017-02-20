@@ -17,7 +17,7 @@
 			$i = 0;
 
 			while (isset($resultado['list'][$i]['id'])) {
-				$mensagem = $mensagem . "\n" . ($i+1) . ') <a href="http://www.dailymotion.com/video/' .
+				$mensagem = $mensagem . "\n" . ($i + 1) . ') <a href="http://www.dailymotion.com/video/' .
 										$resultado['list'][$i]['id'] . '">' . $resultado['list'][$i]['title'] . '</a>' . "\n";
 
 				++$i;

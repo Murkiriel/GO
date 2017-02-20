@@ -164,17 +164,18 @@
 		return str_ireplace('[' . $teclado, '', $conteudo);
 	}
 
-	function pingServidor($ip, $porta = 80){
+	function pingServidor($servidor, $porta = 80) {
 		$inicioTempo = microtime(true);
-		$resultado = @fsockopen($ip, $porta, $erroCodigo, $erroMensagem, 10);
+		$resultado = @fsockopen($servidor, $porta, $erroCodigo = null, $erroMensagem = null, 10);
 		$fimTempo = microtime(true);
 
 		if ($resultado === false) {
 			return -1;
-		} else {
-			fclose($resultado);
-			return floor(($fimTempo - $inicioTempo) * 1000);
 		}
+
+		fclose($resultado);
+
+		return floor(($fimTempo - $inicioTempo)*1000);
 	}
 
 	function manipularErros($erroCodigo = null, $erroMensagem = null, $erroArquivo = null, $erroLinha = null) {

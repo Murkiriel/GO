@@ -17,7 +17,7 @@
 			$i = 0;
 
 			while (isset($resultado['RelatedTopics'][$i]['FirstURL'])) {
-				$mensagem = $mensagem . "\n" . ($i+1) . ') ' . '<a href="' . $resultado['RelatedTopics'][$i]['FirstURL'] . '">' .
+				$mensagem = $mensagem . "\n" . ($i + 1) . ') ' . '<a href="' . $resultado['RelatedTopics'][$i]['FirstURL'] . '">' .
 										$resultado['RelatedTopics'][$i]['Text'] . '</a>' . "\n";
 
 				++$i;

@@ -16,7 +16,7 @@
 				$proxy[1] = ['ip' => '186.250.96.1', 'porta' => '8080'];
 				$proxy[2] = ['ip' => '177.55.253.68', 'porta' => '8080'];
 
-				for ($i=0;$i<2;$i++) {
+				for ($i = 0; $i<2; $i++) {
 					try {
 						$veiculo->buscar($placa, $proxy[$i]);
 
@@ -32,7 +32,7 @@
 																			'<b>Data:</b> ' . $veiculo->data;
 							break;
 						} else {
-							$resultado = sendMessage($mensagens['message']['chat']['id'], '<pre>Tentativa ' . ($i+1) . '/3...</pre>',
+							$resultado = sendMessage($mensagens['message']['chat']['id'], '<pre>Tentativa ' . ($i + 1) . '/3...</pre>',
 													$mensagemID, null, true, $editarMensagem);
 
 							$mensagem = 'Desculpe, a sua pesquisa não pôde ser concluída.';
@@ -40,7 +40,7 @@
 							$editarMensagem = true;
 						}
 					} catch (\Exception $e) {
-						echo 'Erro ao tentar conectar com o proxy ' , $proxy[$i]['ip'] , ':' , $proxy[$i]['porta'] . "\n\n";
+						echo 'Erro ao tentar conectar com o proxy ', $proxy[$i]['ip'], ':', $proxy[$i]['porta'], "\n\n";
 					}
 				}
 			}
