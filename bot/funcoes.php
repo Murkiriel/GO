@@ -42,7 +42,7 @@
 		return;
 	}
 
-	function atualizarMensagens ($resultado) {
+	function atualizarMensagens($resultado) {
 		$updateID = 0;
 
 		foreach ($resultado as $mensagens) {
@@ -76,13 +76,13 @@
 	/**
 	 * @param string $arquivo
 	 */
-	function carregarDados($arquivo) {
-		if (file_exists($arquivo)) {
-			return json_decode(file_get_contents($arquivo), true);
-		}
+	 function carregarDados($arquivo) {
+		 if (file_exists($arquivo)) {
+			 return json_decode(file_get_contents($arquivo), true);
+		 }
 
-		return null;
-	}
+		 return null;
+	 }
 
 	/**
 	 * @param string $arquivo
@@ -103,13 +103,66 @@
 			break;
 		}
 
-		$mensagem = $mensagem . "\n\n" . '〰〰〰〰〰〰〰';
-
-		return $mensagem;
+		return $mensagem . "\n\n" . '〰〰〰〰〰〰〰';
 	}
 
 	function removerComando($comando, $mensagem) {
 		return str_ireplace('/' . $comando . ' ', '', $mensagem);
+	}
+
+	function validarAdmin($resultado, $usuarioID) {
+		foreach ($resultado as $adminsGrupo) {
+			if ($adminsGrupo['user']['id'] == $usuarioID) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	function montarTeclado($conteudoMensagem) {
+		$teclado = null;
+
+		$posicao1 = stripos($conteudoMensagem, '[');
+
+		if ($posicao1 !== false) {
+			$montarTeclado = substr($conteudoMensagem, $posicao1+1);
+			$conteudoMensagem = str_ireplace('[' . $montarTeclado, '', $conteudoMensagem);
+			$posicao2 = strripos($montarTeclado, ']');
+			$montarTeclado = str_ireplace(substr($montarTeclado, $posicao2), '', $montarTeclado);
+
+			$cont = 0;
+			$linha = 0;
+
+			foreach (explode('[', $montarTeclado) as $botao) {
+				if (!empty($botao)) {
+					$botao = str_ireplace(']', '', $botao);
+
+					if ($cont%2 == 0) {
+						$teclado['inline_keyboard'][$linha][0]['text'] = $botao;
+					} else {
+						$tipoBotao = !filter_var($botao, FILTER_VALIDATE_URL) === false ? 'url' : 'callback_data';
+
+						$teclado['inline_keyboard'][$linha][0][$tipoBotao] = $botao;
+
+						++$linha;
+					}
+
+					++$cont;
+				}
+			}
+
+			return json_encode($teclado);
+		} else {
+			return null;
+		}
+	}
+
+	function removerTeclado($conteudoMensagem) {
+		$posicao = stripos($conteudoMensagem, '[');
+		$teclado = substr($conteudoMensagem, $posicao+1);
+
+		return str_ireplace('[' . $teclado, '', $conteudoMensagem);
 	}
 
 	function manipularErros($erroCodigo = null, $erroMensagem = null, $erroArquivo = null, $erroLinha = null) {
@@ -134,11 +187,7 @@
 			E_USER_NOTICE => 'USER NOTICE', E_USER_WARNING => 'USER WARNING', E_WARNING => 'WARNING'
   	);
 
-		$erroEncontrado = 'CAUGHT EXCEPTION';
-
-    if (array_key_exists($erroCodigo, $erroTipo)) {
-      $erroEncontrado = $erroTipo[$erroCodigo];
-    }
+		array_key_exists($erroCodigo, $erroTipo) ? $erroEncontrado = $erroTipo[$erroCodigo] : $erroEncontrado = 'CAUGHT EXCEPTION';
 
     $mensagem = '<pre>🐞 ERRO ENCONTRADO</pre>' . "\n\n";
 		$mensagem .= '<b>Tipo:</b> ' . $erroEncontrado . "\n";

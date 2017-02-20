@@ -2,6 +2,7 @@
 	if (in_array($mensagens['message']['from']['id'], SUDOS)) {
 		if (strtolower($texto[0]) == 'sudos') {
 			$mensagem = '<pre>COMANDOS SUDOS</pre>' . "\n\n" .
+									'/html - Gerar texto em HTML' . "\n" .
 									'/promover - Enviar divulgação para usuários' . "\n" .
 									'/postagem - Enviar divulgação para usuários, grupos e canais' . "\n" .
 									'/reiniciar - Reiniciar bot' . "\n" .
@@ -9,6 +10,23 @@
 									'/status - Ver status';
 
 			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
+		} else if (strtolower($texto[0]) == 'html') {
+			if (isset($texto[1])) {
+				$mensagem = removerComando($texto[0], $mensagens['message']['text']);
+
+				$resultado = sendMessage($mensagens['message']['chat']['id'], $mensagem, null, null, true);
+
+				$resultado['ok'] === true ? $mensagem = 'Mensagem HTML gerada com sucesso!' : $mensagem = json_encode($resultado);
+			} else {
+				$mensagem = '📚: /html texto em HTML' . "\n\n".
+															'<b>bold</b>, <strong>bold</strong>' . "\n" .
+															'<i>italic</i>, <em>italic</em>' . "\n" .
+															'<a href="http://www.example.com/">inline URL</a>' . "\n" .
+															'<code>inline fixed-width code</code>' . "\n" .
+															'<pre>pre-formatted fixed-width code block</pre>';
+			}
+
+			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id']);
 		} else if (strtolower($texto[0]) == 'promover') {
 			if (isset($texto[1])) {
 				$mensagensEnviadas = 0;
@@ -152,7 +170,8 @@
 
 			notificarSudos('<pre>Reiniciando...</pre>');
 
-			echo "\n\n";
+			system('clear');
+
 			echo '+-------------+' , "\n";
 			echo '| REINICIANDO |' , "\n";
 			echo '+-------------+' , "\n\n";

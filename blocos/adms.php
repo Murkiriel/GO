@@ -1,7 +1,7 @@
 <?php
 	if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
 		$resultado = getChatAdministrators($mensagens['message']['chat']['id']);
-		 $mensagem = '';
+		$mensagem = '';
 
 		foreach ($resultado['result'] as $adminsGrupo) {
 			if ($adminsGrupo['status'] == 'creator') {

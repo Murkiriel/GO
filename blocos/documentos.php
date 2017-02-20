@@ -10,27 +10,23 @@
 
 		$dados = $redis->hgetall('documentos:' . $texto[0]);
 
-		if (isset($dados)) {
-			$docs = array_keys($dados);
-		} else {
-			$dosc[0] = null;
-		}
+		$docs = isset($dados) ? array_keys($dados) : null;
 
-						 $cont = 0;
-		$resultados[0] = null;
+				 $cont = 0;
+		$resultado = [];
 
-		foreach ($docs as $lista) {
-			$posicao = strripos($lista, $texto[1]);
+		foreach ($docs as $doc) {
+			$posicao = strripos($doc, $texto[1]);
 
 			if ($posicao !== false) {
 				if (isset($texto[2])) {
-					$posicao = strripos($lista, $texto[2]);
+					$posicao = strripos($doc, $texto[2]);
 
 					if ($posicao !== false) {
-						$resultados[$cont] = $lista;
+						$resultado[$cont] = $doc;
 					}
 				} else {
-					$resultados[$cont] = $lista;
+					$resultado[$cont] = $doc;
 				}
 
 				++$cont;
@@ -41,25 +37,25 @@
 			}
 		}
 
-		if ($mensagens['message']['chat']['type'] == 'private') {
-						$selective = false;
-			$oneTimeKeyboard = false;
-		} else {
+		if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
 						$selective = true;
 			$oneTimeKeyboard = true;
+		} else if ($mensagens['message']['chat']['type'] == 'private') {
+						$selective = false;
+			$oneTimeKeyboard = false;
 		}
 
-		if ($resultados[0] != null) {
-			$teclado = array(
-					'resize_keyboard' => true,
+		if ($resultado[0] != null) {
+			$teclado = [
+				'resize_keyboard' => true,
 				'one_time_keyboard' => $oneTimeKeyboard,
-								'selective' => $selective
-			);
+				'selective' => $selective
+			];
 
-			sort($resultados);
+			sort($resultado);
 
 			for ($i = 0; $i<$cont; $i++) {
-				$teclado['keyboard'][$i][0] = $resultados[$i];
+				$teclado['keyboard'][$i][0] = $resultado[$i];
 			}
 
 			$replyMarkup = json_encode($teclado);

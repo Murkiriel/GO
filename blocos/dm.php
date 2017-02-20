@@ -7,19 +7,20 @@
 		$pesquisaDM = urlencode(removerComando($texto[0], $mensagens['message']['text']));
 
 		$requisicao = 'https://api.dailymotion.com/videos?limit=5&search=' . $pesquisaDM;
-		 $resultado = json_decode(file_get_contents($requisicao), true);
+		$resultado = json_decode(file_get_contents($requisicao), true);
 
 		$cont = count($resultado['list']);
 
 		if ($cont != 0) {
 			$mensagem = '📹 <b>Dailymotion:</b>' . "\n";
 
-			for ($i = 0; $i<$cont; $i++) {
-				if ($i > 4) {
+			for ($i=0;$i<$cont;$i++) {
+				$mensagem = $mensagem . "\n" . ($i+1) . ') <a href="http://www.dailymotion.com/video/' .
+										$resultado['list'][$i]['id'] . '">' . $resultado['list'][$i]['title'] . '</a>' . "\n";
+
+				if ($i>4) {
 					break;
 				}
-
-				$mensagem = $mensagem . "\n" . ($i+1) . ') <a href="http://www.dailymotion.com/video/' . $resultado['list'][$i]['id'] . '">' . $resultado['list'][$i]['title'] . '</a>' . "\n";
 			}
 		} else {
 			$mensagem = ERROS[$idioma]['SEM_RSULT'];

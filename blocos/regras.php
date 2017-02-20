@@ -1,17 +1,11 @@
 <?php
+	$tipoMensagem = '';
+
 	if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
-			 $resultado = getChatAdministrators($mensagens['message']['chat']['id']);
-		$usuarioAdmin = false;
+		$resultado = getChatAdministrators($mensagens['message']['chat']['id']);
+		$usuarioAdmin = validarAdmin($resultado['result'], $mensagens['message']['from']['id']);
 
-		foreach ($resultado['result'] as $adminsGrupo) {
-			if ($adminsGrupo['user']['id'] == $mensagens['message']['from']['id']) {
-				$usuarioAdmin = true;
-				break;
-			}
-		}
-
-				$mensagem = REGRAS[$idioma]['AJUDA'];
-		$tipoMensagem = '';
+		$mensagem = REGRAS[$idioma]['AJUDA'];
 
 		if ($usuarioAdmin === true) {
 			if (isset($texto[1]) and strtolower($texto[1]) == 'on') {
@@ -34,8 +28,7 @@
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'tipo', 'texto');
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'conteudo',
-										 $mensagens['message']['reply_to_message']['text']
-				);
+										 $mensagens['message']['reply_to_message']['text']);
 
 				$mensagem = REGRAS[$idioma]['CRIADA'];
 			} else if (isset($mensagens['message']['reply_to_message']['document']['file_id']) and
@@ -64,6 +57,14 @@
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'conteudo',
 										 $mensagens['message']['reply_to_message']['photo'][0]['file_id']
 				);
+
+				$mensagem = REGRAS[$idioma]['CRIADA'];
+			} else if (isset($texto[1])) {
+				$conteudo = removerComando($texto[0], $mensagens['message']['text']);
+
+				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
+				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'tipo', 'texto');
+				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'conteudo', $conteudo);
 
 				$mensagem = REGRAS[$idioma]['CRIADA'];
 			}

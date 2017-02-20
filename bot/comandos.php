@@ -22,7 +22,7 @@
                               'ranking'    => ['ranking', 'rkgdel'],
                               'suporte'    => ['suporte', 'apoyo', 'support', 'supporto'],
                               'wiki'       => ['wiki'],
-                              'sudos'      => ['sudos', 'promover', 'postagem', 'reiniciar', 'removerdocumento', 'status']];
+                              'sudos'      => ['sudos', 'promover', 'postagem', 'reiniciar', 'removerdocumento', 'status', 'html']];
 
     public function __construct($mensagens) {
       $this->mensagens = $mensagens;

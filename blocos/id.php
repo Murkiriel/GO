@@ -20,22 +20,17 @@
 																			 ' (ID: ' . $mensagens['message']['chat']['id'] . ')';
 		}
 
-		if ($mensagens['message']['from']['id'] != DADOS_BOT['result']['id']) {
-			$qntdMensagem = $redis->hget('ranking:' . $mensagens['message']['chat']['id'] . ':' .
-											$mensagens['message']['from']['id'], 'qntd_mensagem');
-		} else {
-			$qntdMensagem = '10^100';
-		}
+		$qntdMensagem = $mensagens['message']['from']['id'] != DADOS_BOT['result']['id'] ?
+			$redis->hget('ranking:' . $mensagens['message']['chat']['id'] . ':' .
+			$mensagens['message']['from']['id'], 'qntd_mensagem') :
+			'10^100';
 
 		$mensagem = $mensagem . "\n" . ID[$idioma]['MSGS'] . ': ' . $qntdMensagem;
 	}
 
 	$resultado = getUserProfilePhotos($mensagens['message']['from']['id']);
 
-	if (isset($resultado['result']['photos'][0][0]['file_id'])) {
+	isset($resultado['result']['photos'][0][0]['file_id']) ?
 		sendPhoto($mensagens['message']['chat']['id'], $resultado['result']['photos'][0][0]['file_id'],
-							$mensagens['message']['message_id'], null, $mensagem
-		);
-	} else {
+							$mensagens['message']['message_id'], null, $mensagem) :
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id']);
-	}

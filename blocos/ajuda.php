@@ -1,9 +1,7 @@
 <?php
-	if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
-		$olaFulano = '<b>' . strip_tags($mensagens['message']['chat']['title']) . '</b>';
-	} else {
-		$olaFulano = '<b>' . strip_tags($mensagens['message']['chat']['first_name']) . '</b>';
-	}
+	$olaFulano = $mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup' ?
+		'<b>' . strip_tags($mensagens['message']['chat']['title']) . '</b>' :
+		'<b>' . strip_tags($mensagens['message']['chat']['first_name']) . '</b>';
 
 	if ($idioma == 'PT') {
 		$mensagem = 'Olá ' . $olaFulano . '! Veja abaixo os comandos disponíveis:
@@ -128,10 +126,10 @@
 																				],
 																				[
 																					['text' => '🌎 ' . $idioma, 'callback_data' => '/idioma'],
-																					['text' => '👥 ' . AJUDA[$idioma]['GRUPO'], 'callback_data' => '/grupo' ]
+																					['text' => '👥 ' . AJUDA[$idioma]['GRUPO'], 'callback_data' => '/grupo']
 																				],
 																				[
-																					['text' => '📖 Info', 'callback_data' => '/info' ]
+																					['text' => '📖 Info', 'callback_data' => '/info']
 																				]
 																			]
 							];
@@ -139,5 +137,4 @@
 	$replyMarkup = json_encode($teclado);
 
 	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'],
-							$replyMarkup, true, $mensagens['edit_message']
-	);
+							$replyMarkup, true, $mensagens['edit_message']);

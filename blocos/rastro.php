@@ -2,8 +2,8 @@
 	if ($idioma == 'PT') {
 		if (isset($texto[1]) and strtolower($texto[1]) == 'del' and isset($texto[2])) {
 			if ($redis->exists('rastro:chats:' . $mensagens['message']['from']['id'] . ':' . $texto[2]) === true) {
-					$redis->del('rastro:chats:' . $mensagens['message']['from']['id'] . ':' . $texto[2]);
-					$redis->del('rastro:situacao:' . $mensagens['message']['from']['id'] . ':' . $texto[2]);
+				$redis->del('rastro:chats:' . $mensagens['message']['from']['id'] . ':' . $texto[2]);
+				$redis->del('rastro:situacao:' . $mensagens['message']['from']['id'] . ':' . $texto[2]);
 
 				$mensagem = 'Código de rastreio apagado.';
 			} else {
@@ -13,7 +13,7 @@
 			$codigo = strtoupper($texto[1]);
 
 			$requisicao = 'http://127.0.0.1:3000/json/' . $codigo;
-			 $resultado = json_decode(file_get_contents($requisicao), true);
+			$resultado = json_decode(file_get_contents($requisicao), true);
 
 			if (is_array($resultado)) {
 				$descricao = removerComando($texto[0], $mensagens['message']['text']);
@@ -49,10 +49,10 @@
 			if (!empty($rastros)) {
 				$mensagem = $mensagem . "\n\n" . '<pre>+---------------+</pre>' . "\n\n" . '<b>Códigos em sua lista:</b>' . "\n\n";
 
-				foreach ($rastros as $codigosUsuario) {
-						 $codigo = str_ireplace('rastro:chats:' . $mensagens['message']['from']['id'] . ':', '', $codigosUsuario);
-					$descricao = $redis->get($codigosUsuario);
-					 $mensagem = $mensagem . $codigo . ' -' . strip_tags($descricao) . "\n";
+				foreach ($rastros as $rastro) {
+					$codigo = str_ireplace('rastro:chats:' . $mensagens['message']['from']['id'] . ':', '', $rastro);
+					$descricao = $redis->get($rastro);
+					$mensagem = $mensagem . $codigo . ' -' . strip_tags($descricao) . "\n";
 				}
 			}
 		}

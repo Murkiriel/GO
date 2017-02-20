@@ -31,7 +31,8 @@
 									'/bemvindo - Define "Bem-Vindo" por resposta de mensagem' . "\n\n" .
 									'/bemvindo on - Ativa as mensagens de boas-vindas' . "\n" .
 									'/bemvindo off - Desativa as mensagens de boas-vindas' . "\n\n" .
-									'Use <b>$nome</b>, <b>$usuario</b> e <b>$grupo</b> para personalizar mensagens'
+									'Use <b>$nome</b>, <b>$usuario</b> e <b>$grupo</b> para personalizar mensagens' . "\n\n" .
+									'Use [Example][http://example.com/] para criar teclado'
 		],
 		'EN' => [
 			'ATIVO' => 'Message <b>"Welcome"</b> enabled!',
@@ -42,7 +43,8 @@
 									'/welcome - Define "Welcome" for message response' . "\n\n" .
 									'/welcome on - Activate the welcome messages' . "\n" .
 									'/welcome off - Disables the welcome messages' . "\n\n" .
-									'Use <b>$nome</b>, <b>$usuario</b> and <b>$grupo</b> to customize messages'
+									'Use <b>$nome</b>, <b>$usuario</b> and <b>$grupo</b> to customize messages' . "\n\n" .
+									'Use [Example][http://example.com/] to create keyboard'
 		],
 		'ES' => [
 			'ATIVO' => '¡Mensaje de <b>"Bienvenida"</b> habilitado!',
@@ -53,7 +55,8 @@
 									'/bienvenida - Definir "Bienvenida" para la respuesta del mensaje' . "\n\n" .
 									'/bienvenida on - Activar los mensajes de bienvenida' . "\n" .
 									'/bienvenida off - Desactiva los mensajes de bienvenida' . "\n\n" .
-									'Use <b>$nome</b>, <b>$usuario</b> y <b>$grupo</b> para personalizar los mensajes'
+									'Use <b>$nome</b>, <b>$usuario</b> y <b>$grupo</b> para personalizar los mensajes' . "\n\n" .
+									'Use [Example][http://example.com/] crear teclado'
 		],
 		'IT' => [
 			'ATIVO' => 'Messaggio di <b>"Benvenuto"</b> attivato!',
@@ -64,7 +67,8 @@
 									'/benvenuto - Definire "Benvenuto" per il messaggio di risposta' . "\n\n" .
 									'/benvenuto on - Attivare i messaggi di benvenuto' . "\n" .
 									'/benvenuto off - Disattiva i messaggi di benvenuto' . "\n\n" .
-									'Utilizzare <b>$nome</b>, <b>$usuario</b> e <b>$grupo</b> per personalizzare i messaggi'
+									'Utilizzare <b>$nome</b>, <b>$usuario</b> e <b>$grupo</b> per personalizzare i messaggi' . "\n\n\" .
+									'Utilizzare [Example][http://example.com/] creare tastiera'
 		]
 	]);
 
@@ -72,22 +76,26 @@
 		'PT' => [
 			'SMT_GRUPO' => 'Somente em <b>grupos</b>!',
 			'SMT_ADMS' => 'Somente /adms!',
-			'SEM_RSULT' => 'Eu não encontrei resultados sobre isso :['
+			'SEM_RSULT' => 'Eu não encontrei resultados sobre isso :[',
+			'SINTAXE' => 'Erro de sintaxe, tente novamente!'
 		],
 		'EN' => [
 			'SMT_GRUPO' => 'Only <b>groups</b>!',
 			'SMT_ADMS' => 'Only /adms!',
-			'SEM_RSULT' => 'I have not found results about it :['
+			'SEM_RSULT' => 'I have not found results about it :[',
+			'SINTAXE' => 'Syntax error, try again!'
 		],
 		'ES' => [
 			'SMT_GRUPO' => 'Sólo los <b>grupos</b>!',
 			'SMT_ADMS' => 'Sólo /adms!',
-			'SEM_RSULT' => 'No he encontrado resultados al respecto :['
+			'SEM_RSULT' => 'No he encontrado resultados al respecto :[',
+			'SINTAXE' => '¡Error de sintaxis, prueba otra vez!'
 		],
 		'IT' => [
 			'SMT_GRUPO' => 'Solo i <b>gruppi</b>!',
 			'SMT_ADMS' => 'Solo i /adms!',
-			'SEM_RSULT' => 'Non ho trovato i risultati su di esso :['
+			'SEM_RSULT' => 'Non ho trovato i risultati su di esso :[',
+			'SINTAXE' => 'Errore di sintassi, prova di nuovo!'
 		]
 	]);
 

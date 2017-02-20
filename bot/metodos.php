@@ -28,8 +28,8 @@
 		];
 
 		$editarMensagem === false ?
-									$requisicao = API_BOT . '/sendMessage'		 and $conteudoRequisicao['reply_to_message_id'] = $replyMessage :
-									$requisicao = API_BOT . '/editMessageText' and $conteudoRequisicao['message_id'] = $replyMessage;
+			$requisicao = API_BOT . '/sendMessage' and $conteudoRequisicao['reply_to_message_id'] = $replyMessage :
+			$requisicao = API_BOT . '/editMessageText' and $conteudoRequisicao['message_id'] = $replyMessage;
 
 		if (isset($replyMarkup)) {
 			$conteudoRequisicao['reply_markup'] = $replyMarkup;

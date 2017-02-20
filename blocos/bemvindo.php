@@ -1,14 +1,7 @@
 <?php
 	if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
 			 $resultado = getChatAdministrators($mensagens['message']['chat']['id']);
-		$usuarioAdmin = false;
-
-		foreach ($resultado['result'] as $adminsGrupo) {
-			if ($adminsGrupo['user']['id'] == $mensagens['message']['from']['id']) {
-				$usuarioAdmin = true;
-				break;
-			}
-		}
+		$usuarioAdmin = validarAdmin($resultado['result'], $mensagens['message']['from']['id']);
 
 		if ($usuarioAdmin === true) {
 			if (isset($texto[1]) and strtolower($texto[1]) == 'on') {
@@ -30,23 +23,22 @@
 			} else if (isset($mensagens['message']['reply_to_message']['text'])) {
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'tipo', 'texto');
-				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo', $mensagens['message']['reply_to_message']['text']);
+				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo',
+										 $mensagens['message']['reply_to_message']['text']);
 
 				$mensagem = BEMVINDO[$idioma]['CRIADA'];
 			} else if (isset($mensagens['message']['reply_to_message']['document']['file_id'])) {
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'tipo', 'documento');
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo',
-										 $mensagens['message']['reply_to_message']['document']['file_id']
-				);
+										 $mensagens['message']['reply_to_message']['document']['file_id']);
 
 				$mensagem = BEMVINDO[$idioma]['CRIADA'];
 			} else if (isset($mensagens['message']['reply_to_message']['sticker']['file_id'])) {
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'tipo', 'documento');
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo',
-										 $mensagens['message']['reply_to_message']['sticker']['file_id']
-				);
+										 $mensagens['message']['reply_to_message']['sticker']['file_id']);
 
 				$mensagem = BEMVINDO[$idioma]['CRIADA'];
 
@@ -54,10 +46,25 @@
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'tipo', 'foto');
 				$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo',
-										 $mensagens['message']['reply_to_message']['photo'][0]['file_id']
-				);
+										 $mensagens['message']['reply_to_message']['photo'][0]['file_id']);
 
 				$mensagem = BEMVINDO[$idioma]['CRIADA'];
+			} else if (isset($texto[1])) {
+				$conteudo = removerComando($texto[0], $mensagens['message']['text']);
+				$replyMarkup = montarTeclado($conteudo);
+				$mensagem = removerTeclado($conteudo);
+
+				$resultado = sendMessage($mensagens['message']['chat']['id'], $mensagem, null, $replyMarkup, true);
+
+				if ($resultado['ok'] === true) {
+					$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
+					$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'tipo', 'texto');
+					$redis->hset('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo', $conteudo);
+
+					$mensagem = BEMVINDO[$idioma]['CRIADA'];
+				} else {
+					$mensagem = ERROS[$idioma]['SINTAXE'] . "\n\n" . '<pre>' . json_encode($resultado) . '</pre>';
+				}
 			} else {
 				$mensagem = BEMVINDO[$idioma]['AJUDA'];
 			}

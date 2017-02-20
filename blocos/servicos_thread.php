@@ -1,5 +1,5 @@
 <?php
-	 $redis = conectarRedis();
+	$redis = conectarRedis();
 	$minuto = date('i');
 
 	// # RASTRO

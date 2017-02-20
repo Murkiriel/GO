@@ -13,6 +13,7 @@
 	use Comandos\BotThread;
 
 	system('clear');
+
 	echo '+------------+' , "\n";
 	echo '| CONECTANDO |' , "\n";
 	echo '+------------+' , "\n\n";
@@ -21,6 +22,7 @@
 
 	if (DADOS_BOT['ok'] === true) {
 		system('clear');
+
 		echo '+-------------+' , "\n";
 		echo '| ATUALIZANDO |' , "\n";
 		echo '+-------------+' , "\n\n";
@@ -29,14 +31,14 @@
 		$rastroJS->start();
 
 		$redis = conectarRedis();
-		 $loop = 'true';
+		$loop = 'true';
 		$redis->set('status_bot:loop', $loop);
 
 		firstUpdate();
 		$updateID = 0;
 
 		$tituloBot = strtoupper(' 🤖 -> ' . DADOS_BOT['result']['first_name'] . '  ( @' . DADOS_BOT['result']['username'] . ' ) ');
-			 $hifens = strlen($tituloBot) - 4;
+		$hifens = strlen($tituloBot) - 4;
 
 		system('clear');
 
@@ -45,6 +47,7 @@
 		for ($i = 0; $i<$hifens; $i++) {
 			echo '-';
 		}
+
 		echo '+' , "\n" , '|' , $tituloBot , '|' , "\n" , '+';
 
 		for ($i = 0; $i<$hifens; $i++) {
@@ -54,6 +57,7 @@
 		echo '+' , "\n\n";
 	} else {
 		system('clear');
+
 		echo '+------------------+' , "\n";
 		echo '| ERRO AO CONECTAR |' , "\n";
 		echo '+------------------+' , "\n\n";
@@ -89,6 +93,7 @@
 	getUpdates($updateID);
 
 	system('clear');
+
 	echo '+-------------+' , "\n";
 	echo '| REINICIADO! |' , "\n";
 	echo '+-------------+' , "\n\n";

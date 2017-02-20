@@ -24,7 +24,7 @@
 
 		unset($mensagens['edited_message']);
 	} else if (empty($mensagens['message']['text'])) {
-		$exit = false;
+		$exit = true;
 	}
 
 	// # IDIOMA
@@ -93,6 +93,7 @@
 									 $mensagens['message']['left_chat_participant']['id'] == DADOS_BOT['result']['id']) {
 		$exit = true;
 	} else if ($mensagens['channel_post']['chat']['type'] == 'channel') {
+		$redis->set('canais:' . $mensagens['channel_post']['chat']['id'], '@' . $mensagens['channel_post']['chat']['username']);
 		$exit = true;
 	} else if ($exit === false) {
 		try {
@@ -111,12 +112,44 @@
 					$mensagens['message']['chat']['type'] == 'private') {
 
 				 	$redis->hset('ranking:' . $mensagens['message']['chat']['id'] . ':' .
-											 $mensagens['message']['from']['id'], 'primeiro_nome', $mensagens['message']['from']['first_name']
-					);
+											 $mensagens['message']['from']['id'], 'primeiro_nome', $mensagens['message']['from']['first_name']);
 
 					$redis->hincrby('ranking:' . $mensagens['message']['chat']['id'] . ':' .
-													$mensagens['message']['from']['id'], 'qntd_mensagem', 1
-					);
+													$mensagens['message']['from']['id'], 'qntd_mensagem', 1);
+			}
+		}
+
+		// # BEM-VINDO
+
+		if (isset($mensagens['message']['new_chat_participant'])) {
+			if ($redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'ativo') === 'true') {
+						$tipoMensagem = $redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'tipo');
+				$conteudoMensagem = $redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo');
+
+				if ($tipoMensagem == 'documento') {
+					sendDocument($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], null, null);
+				} else if ($tipoMensagem == 'foto') {
+					sendPhoto($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], null, null);
+				} else {
+					$replyMarkup = montarTeclado($conteudoMensagem);
+					$conteudoMensagem = removerTeclado($conteudoMensagem);
+
+					$conteudoMensagem = str_ireplace('$nome', $mensagens['message']['new_chat_participant']['first_name'],
+																					 $conteudoMensagem);
+					$conteudoMensagem = str_ireplace('$grupo', $mensagens['message']['chat']['title'],
+																					 $conteudoMensagem);
+
+					if (isset($mensagens['message']['new_chat_participant']['username'])) {
+						$conteudoMensagem = str_ireplace('$usuario', '@' . $mensagens['message']['new_chat_participant']['username'],
+																						 $conteudoMensagem);
+					} else {
+						$conteudoMensagem = str_ireplace('$usuario', $mensagens['message']['new_chat_participant']['first_name'],
+																						 $conteudoMensagem);
+					}
+
+					sendMessage($mensagens['message']['chat']['id'], $conteudoMensagem,
+											$mensagens['message']['message_id'], $replyMarkup, true);
+				}
 			}
 		}
 	}
@@ -127,10 +160,4 @@
 		$redis->set('status_bot:privateorgroup', $mensagens['message']['message_id']);
 	} else if ($mensagens['message']['chat']['type'] == 'supergroup') {
 		$redis->set('status_bot:supergroup', $mensagens['message']['message_id']);
-	}
-
-	// # CANAIS
-
-	if ($mensagens['channel_post']['chat']['type'] == 'channel') {
-		$redis->set('canais:' . $mensagens['channel_post']['chat']['id'], '@' . $mensagens['channel_post']['chat']['username']);
 	}

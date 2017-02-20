@@ -1,30 +1,4 @@
 <?php
-	// # BEM-VINDO
-
-	if (isset($mensagens['message']['new_chat_participant'])) {
-		if ($redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'ativo') === 'true') {
-					$tipoMensagem = $redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'tipo');
-			$conteudoMensagem = $redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo');
-
-			if ($tipoMensagem == 'documento') {
-				sendDocument($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], null, null);
-			} else if ($tipoMensagem == 'foto') {
-				sendPhoto($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], null, null);
-			} else {
-				$conteudoMensagem = str_ireplace('$nome', $mensagens['message']['new_chat_participant']['first_name'], $conteudoMensagem);
-				$conteudoMensagem = str_ireplace('$grupo', $mensagens['message']['chat']['title'], $conteudoMensagem);
-
-				if (isset($mensagens['message']['new_chat_participant']['username'])) {
-					$conteudoMensagem = str_ireplace('$usuario', '@' . $mensagens['message']['new_chat_participant']['username'], $conteudoMensagem);
-				} else {
-					$conteudoMensagem = str_ireplace('$usuario', $mensagens['message']['new_chat_participant']['first_name'], $conteudoMensagem);
-				}
-
-				sendMessage($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id']);
-			}
-		}
-	}
-
 	// # DOCUMENTOS
 
 	foreach ($redis->keys('documentos:*') as $hash) {
@@ -57,7 +31,7 @@
 
 				$mensagem = '<b> 📱 APK/OBB ADICIONADO 📱 </b>' . "\n\n" .
 										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
-											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
+										'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
 
 				notificarSudos($mensagem);
 			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.pdf' or
@@ -67,7 +41,7 @@
 
 				$mensagem = '<b> 📱 LIVRO ADICIONADO 📱 </b>' . "\n\n" .
 										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
-											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
+										'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
 
 				notificarSudos($mensagem);
 			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.mkv' or
@@ -77,7 +51,7 @@
 
 				$mensagem = '<b> 📱 VÍDEO ADICIONADO 📱 </b>' . "\n\n" .
 										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
-											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
+										'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
 
 				notificarSudos($mensagem);
 			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.cso') {
@@ -85,7 +59,7 @@
 
 				$mensagem = '<b> 📱 PSP ADICIONADO 📱 </b>' . "\n\n" .
 										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
-											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
+										'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
 
 				notificarSudos($mensagem);
 			} else if (substr($mensagens['message']['document']['file_name'], -4) == '.smc') {
@@ -93,13 +67,14 @@
 
 				$mensagem = '<b> 📱 SNES ADICIONADO 📱 </b>' . "\n\n" .
 										'<b>Nome:</b> ' . $mensagens['message']['document']['file_name'] . "\n" .
-											'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
+										'<b>ID:</b> ' . $mensagens['message']['document']['file_id'];
 
 				notificarSudos($mensagem);
 			}
 		}
 	}
 
+/*
 	// # RSS SERVICOS
 
 	$link = '';
@@ -341,3 +316,4 @@
 								$replyMarkup, true, $mensagens['edit_message']
 		);
 	}
+*/
