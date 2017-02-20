@@ -4,7 +4,7 @@
 	$teclado = [
 								'inline_keyboard'	=>	[
 																				[
-																					['text' => '🔙', 'callback_data' => '/start']
+																					['text' => '🔙', 'callback_data' => '/start ajuda']
 																				]
 																			]
 							];

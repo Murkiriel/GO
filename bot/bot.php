@@ -6,6 +6,8 @@
 	require('idioma.php');
 	require('comandos.php');
 
+	require(RAIZ . 'lib/sinesp.php');
+
 	use Classes\RastroJS;
 	use Classes\ServicosThread;
 	use Comandos\BotThread;

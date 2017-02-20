@@ -26,8 +26,7 @@ if (isset($mensagens['message']['new_chat_participant'])) {
 				$mensagem = str_ireplace('$usuario', $mensagens['message']['new_chat_participant']['first_name'], $mensagem);
 			}
 
-			sendMessage($mensagens['message']['chat']['id'], $mensagem,
-									$mensagens['message']['message_id'], $replyMarkup, true);
+			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
 		}
 	}
 }

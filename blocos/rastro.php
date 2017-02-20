@@ -13,7 +13,7 @@
 			$codigo = strtoupper($texto[1]);
 
 			$requisicao = 'http://127.0.0.1:3000/json/' . $codigo;
-			$resultado = json_decode(file_get_contents($requisicao), true);
+			@$resultado = json_decode(file_get_contents($requisicao), true);
 
 			if (is_array($resultado)) {
 				$descricao = removerComando($texto[0], $mensagens['message']['text']);
@@ -57,5 +57,6 @@
 			}
 		}
 
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
+		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'],
+								null, true, $mensagens['edit_message']);
 	}

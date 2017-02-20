@@ -8,17 +8,14 @@
 	$mensagens['edit_message'] = false;
 
 	if (isset($mensagens['callback_query'])) {
-		$mensagens['callback_query']['message']['from'] = $mensagens['callback_query']['from'];
+		$from = $mensagens['callback_query']['from'];
 		$mensagens['callback_query']['message']['text'] = $mensagens['callback_query']['data'];
 		$mensagens['message'] = $mensagens['callback_query']['message'];
 
-		if (isset($mensagens['message']['reply_to_message']['from'])) {
-			$mensagens['message']['from'] = $mensagens['message']['reply_to_message']['from'];
-		}
-
-		$mensagens['edit_message'] = true;
-
 		unset($mensagens['callback_query']);
+
+		$mensagens['message']['from'] = $from;
+		$mensagens['edit_message'] = true;
 	} else if (isset($mensagens['edited_message'])) {
 		$mensagens['message'] = $mensagens['edited_message'];
 
@@ -29,8 +26,10 @@
 
 	// # IDIOMA
 
-	$texto = explode(' ', $mensagens['message']['text']);
-	$texto[0] = substr(str_ireplace('@' . DADOS_BOT['result']['username'], '', $texto[0]), 1);
+	$texto = str_ireplace('@' . DADOS_BOT['result']['username'], '', $mensagens['message']['text']);
+	$texto = str_ireplace('_', ' ', $texto);
+	$texto = explode(' ', $texto);
+	$texto[0] = substr($texto[0], 1);
 
 	switch (strtolower($texto[0])) {
 		case 'portugues':
@@ -118,5 +117,13 @@
 
 				$redis->hincrby('ranking:' . $mensagens['message']['chat']['id'] . ':' .
 												$mensagens['message']['from']['id'], 'qntd_mensagem', 1);
+		}
+	}
+
+	// # REGRAS
+
+	if (isset($texto[1])) {
+		if ($texto[0] . ' ' . $texto[1] == 'start regras') {
+			array_shift($texto);
 		}
 	}

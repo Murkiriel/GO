@@ -57,6 +57,8 @@
 
       include(RAIZ . 'blocos/servicos.php');
 
+      include(RAIZ . 'blocos/extras.php');
+
       $redis->close();
     }
 

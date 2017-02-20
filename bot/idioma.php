@@ -6,7 +6,7 @@
 			'TCD_GRUPO' => 'Adicionar ao grupo',
 			'GRUPO' => 'Grupo',
 			'PRIVADO' => 'Privado',
-			'PERGUNTA' => 'Onde você deseja ver a ajuda?'
+			'PERGUNTA' => 'Onde você deseja ver a mensagem?'
 		],
 		'EN' => [
 			'FUNC_GRUPO' => 'Functions for groups',
@@ -14,7 +14,7 @@
 			'TCD_GRUPO' => 'Add to group',
 			'GRUPO' => 'Group',
 			'PRIVADO' => 'Private',
-			'PERGUNTA' => 'Where you want to view the help?'
+			'PERGUNTA' => 'Where you want to view the message?'
 		],
 		'ES' => [
 			'FUNC_GRUPO' => 'Funciones para grupos',
@@ -22,7 +22,7 @@
 			'TCD_GRUPO' => 'Añadir a grupo',
 			'GRUPO' => 'Grupo',
 			'PRIVADO' => 'Privado',
-			'PERGUNTA' => '¿Donde desea ver la ayuda?'
+			'PERGUNTA' => '¿Donde desea ver la mensaje?'
 		],
 		'IT' => [
 			'FUNC_GRUPO' => 'Funzioni per i gruppi',
@@ -30,7 +30,7 @@
 			'TCD_GRUPO' => 'Aggiungere al gruppo',
 			'GRUPO' => 'Gruppo',
 			'PRIVADO' => 'Privato',
-			'PERGUNTA' => 'Cui si desidera visualizzare la guida?'
+			'PERGUNTA' => 'Cui si desidera visualizzare la messaggio?'
 	]]);
 
 	define('BEMVINDO', [
@@ -192,6 +192,7 @@
 
 	define('REGRAS', [
 		'PT' => [
+			'LEGENDA' => 'Regras do grupo',
 			'ATIVO' => 'Mensagem de <b>"Regras"</b> ativada!',
 			'DESATIVO' => 'Mensagem de <b>"Regras"</b> desativada!',
 			'CRIADA' => 'Mensagem de <b>"Regras"</b> criada com sucesso!',
@@ -204,6 +205,7 @@
 									'/regras ? - Exibir essa mensagem'
 		],
 		'EN' => [
+			'LEGENDA' => 'Rules of the group',
 			'ATIVO' => 'Message <b>"Rules"</b> enabled!',
 			'DESATIVO' => 'Message <b>"Rules"</b> disabled!',
 			'CRIADA' => 'Message <b>"Rules"</b> created successfully!',
@@ -216,6 +218,7 @@
 									'/regras ? - Display this message'
 		],
 		'ES' => [
+			'LEGENDA' => 'Reglas del grupo',
 			'ATIVO' => '¡Mensaje de <b>"Reglas"</b> habilitado!',
 			'DESATIVO' => 'Mensaje de <b>"Reglas"</b> desactivado!',
 			'CRIADA' => '¡Mensaje de <b>"Reglas"</b> creado con éxito!',
@@ -228,6 +231,7 @@
 									'/regras ? - Mostrar este mensaje'
 		],
 		'IT' => [
+			'LEGENDA' => 'Regole del gruppo',
 			'ATIVO' => 'Messaggio di <b>"Regole"</b> attivato!',
 			'DESATIVO' => 'Messaggio di <b>"Regole"</b> disabilitato!',
 			'CRIADA' => 'Messaggio di <b>"Regole"</b> creato con successo!',

@@ -1,10 +1,5 @@
 <?php
-	require(RAIZ . 'lib/sinesp.php');
-
 	if ($idioma == 'PT') {
-		$mensagemID = $mensagens['message']['message_id'];
-		$editarMensagem = false;
-
 		if (isset($texto[1])) {
 			$placa = removerComando($texto[0], $mensagens['message']['text']);
 			$placa = strtoupper(str_ireplace(['-', ' '], '', $placa));
@@ -13,7 +8,7 @@
 				$veiculo = new Sinesp;
 
 				$proxy[0] = ['ip' => '201.16.147.193', 'porta' => '80'];
-				$proxy[1] = ['ip' => '186.250.96.1', 'porta' => '8080'];
+				$proxy[1] = ['ip' => '200.195.141.178', 'porta' => '8080'];
 				$proxy[2] = ['ip' => '177.55.253.68', 'porta' => '8080'];
 
 				for ($i = 0; $i<2; $i++) {
@@ -33,11 +28,11 @@
 							break;
 						} else {
 							$resultado = sendMessage($mensagens['message']['chat']['id'], '<pre>Tentativa ' . ($i + 1) . '/3...</pre>',
-													$mensagemID, null, true, $editarMensagem);
+													$mensagens['message']['message_id'], null, true, $mensagens['edit_message']);
 
 							$mensagem = 'Desculpe, a sua pesquisa não pôde ser concluída.';
-							$mensagemID = $resultado['result']['message_id'];
-							$editarMensagem = true;
+							$mensagens['message']['message_id'] = $resultado['result']['message_id'];
+							$mensagens['edit_message'] = true;
 						}
 					} catch (\Exception $e) {
 						echo 'Erro ao tentar conectar com o proxy ', $proxy[$i]['ip'], ':', $proxy[$i]['porta'], "\n\n";
@@ -52,5 +47,6 @@
 			$mensagem = '📚 /placa AAA-0001';
 		}
 
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagemID, null, true, $editarMensagem);
+		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'],
+								null, true, $mensagens['edit_message']);
 	}

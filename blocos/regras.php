@@ -1,7 +1,11 @@
 <?php
 	$tipo = '';
+	$replyMarkup = null;
 
-	if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
+	if (isset($texto[0]) and isset($texto[1]) and $redis->hget($texto[0] . ':' . $texto[1], 'ativo') === 'true') {
+		$mensagem = $redis->hget($texto[0] . ':' . $texto[1], 'conteudo');
+		$tipo = $redis->hget($texto[0] . ':' . $texto[1], 'tipo');
+	} else if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
 		$resultado = getChatAdministrators($mensagens['message']['chat']['id']);
 		$usuarioAdmin = validarAdmin($resultado['result'], $mensagens['message']['from']['id']);
 
@@ -36,8 +40,7 @@
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'tipo', 'documento');
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'conteudo',
-										 $mensagens['message']['reply_to_message']['document']['file_id']
-				);
+										 $mensagens['message']['reply_to_message']['document']['file_id']);
 
 				$mensagem = REGRAS[$idioma]['CRIADA'];
 			} else if (isset($mensagens['message']['reply_to_message']['sticker']['file_id']) and
@@ -45,8 +48,7 @@
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'tipo', 'documento');
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'conteudo',
-										 $mensagens['message']['reply_to_message']['sticker']['file_id']
-				);
+										 $mensagens['message']['reply_to_message']['sticker']['file_id']);
 
 				$mensagem = REGRAS[$idioma]['CRIADA'];
 
@@ -55,8 +57,7 @@
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'tipo', 'foto');
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'conteudo',
-										 $mensagens['message']['reply_to_message']['photo'][0]['file_id']
-				);
+										 $mensagens['message']['reply_to_message']['photo'][0]['file_id']);
 
 				$mensagem = REGRAS[$idioma]['CRIADA'];
 			} else if (isset($texto[1]) and $texto[1] == '?') {
@@ -73,8 +74,25 @@
 		}
 
 		if (empty($texto[1]) and $redis->hget('regras:' . $mensagens['message']['chat']['id'], 'ativo') === 'true') {
-			$mensagem = $redis->hget('regras:' . $mensagens['message']['chat']['id'], 'conteudo');
-			$tipo = $redis->hget('regras:' . $mensagens['message']['chat']['id'], 'tipo');
+			$mensagem = AJUDA[$idioma]['PERGUNTA'];
+
+			$coluna = 0;
+
+			if ($redis->hget('regras:' . $mensagens['message']['chat']['id'], 'tipo') === 'texto') {
+				$botaoGrupo['text'] = '👥 ' . AJUDA[$idioma]['GRUPO'];
+				$botaoGrupo['callback_data'] = '/regras ' .$mensagens['message']['chat']['id'];
+
+				$teclado['inline_keyboard'][0][$coluna] = $botaoGrupo;
+
+				++$coluna;
+			}
+
+			$botaoPrivado['text'] = '👤 ' . AJUDA[$idioma]['PRIVADO'];
+			$botaoPrivado['url'] = 't.me/' . DADOS_BOT['result']['username'] . '?start=regras_' . $mensagens['message']['chat']['id'];
+
+			$teclado['inline_keyboard'][0][$coluna] = $botaoPrivado;
+
+			$replyMarkup = json_encode($teclado);
 		} else if ($usuarioAdmin === false) {
 		 	$mensagem = ERROS[$idioma]['SMT_ADMS'];
 		}
@@ -87,9 +105,12 @@
 	}
 
 	if ($tipo == 'documento') {
-		sendDocument($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, null);
+		sendDocument($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'],
+								 null, REGRAS[$idioma]['LEGENDA']);
 	} else if ($tipo == 'foto') {
-		sendPhoto($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, null);
+		sendPhoto($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'],
+							null, REGRAS[$idioma]['LEGENDA']);
 	} else {
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
+		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'],
+								$replyMarkup, true, $mensagens['edit_message']);
 	}

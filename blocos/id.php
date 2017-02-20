@@ -27,9 +27,15 @@
 		$mensagem = $mensagem . "\n" . ID[$idioma]['MSGS'] . ': ' . $qntdMensagem;
 	}
 
-	$resultado = getUserProfilePhotos($mensagens['message']['from']['id']);
+	if ($mensagens['edit_message'] === true) {
+		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'],
+								null, null, $mensagens['edit_message']);
+	} else {
 
-	isset($resultado['result']['photos'][0][0]['file_id']) ?
-		sendPhoto($mensagens['message']['chat']['id'], $resultado['result']['photos'][0][0]['file_id'],
-							$mensagens['message']['message_id'], null, $mensagem) :
-		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id']);
+		$resultado = getUserProfilePhotos($mensagens['message']['from']['id']);
+
+		isset($resultado['result']['photos'][0][0]['file_id']) ?
+			sendPhoto($mensagens['message']['chat']['id'], $resultado['result']['photos'][0][0]['file_id'],
+								$mensagens['message']['message_id'], null, $mensagem) :
+			sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, null);
+	}

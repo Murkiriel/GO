@@ -9,7 +9,7 @@
 																					['text' => '📢 ' . INFO[$idioma]['CANAL'], 'url' => 'https://t.me/Murkiriel']
 																				],
 																				[
-																					['text' => '🔙', 'callback_data' => '/start']
+																					['text' => '🔙', 'callback_data' => '/start ajuda']
 																				]
 																			]
 							];

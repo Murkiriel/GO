@@ -70,4 +70,5 @@
 		$mensagem = '📚: /' . $texto[0] . ' Telegram';
 	}
 
-	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'],
+							$replyMarkup, true, $mensagens['edit_message']);

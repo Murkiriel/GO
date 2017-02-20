@@ -56,4 +56,5 @@
 		$mensagem = strip_tags(ERROS[$idioma]['SMT_GRUPO']);
 	}
 
-	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, true);
+	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'],
+							null, true, $mensagens['edit_message']);
