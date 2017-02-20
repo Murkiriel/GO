@@ -70,22 +70,22 @@
 
 	define('ERROS', [
 		'PT' => [
-			'SMT_GRUPO' => 'Somente em grupos!',
+			'SMT_GRUPO' => 'Somente em <b>grupos</b>!',
 			'SMT_ADMS' => 'Somente /adms!',
 			'SEM_RSULT' => 'Eu não encontrei resultados sobre isso :['
 		],
 		'EN' => [
-			'SMT_GRUPO' => 'Only groups!',
+			'SMT_GRUPO' => 'Only <b>groups</b>!',
 			'SMT_ADMS' => 'Only /adms!',
 			'SEM_RSULT' => 'I have not found results about it :['
 		],
 		'ES' => [
-			'SMT_GRUPO' => 'Sólo losgrupos!',
+			'SMT_GRUPO' => 'Sólo los <b>grupos</b>!',
 			'SMT_ADMS' => 'Sólo /adms!',
 			'SEM_RSULT' => 'No he encontrado resultados al respecto :['
 		],
 		'IT' => [
-			'SMT_GRUPO' => 'Solo i gruppi!',
+			'SMT_GRUPO' => 'Solo i <b>gruppi</b>!',
 			'SMT_ADMS' => 'Solo i /adms!',
 			'SEM_RSULT' => 'Non ho trovato i risultati su di esso :['
 		]

@@ -1,8 +1,8 @@
 <?php
 	if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
-		$olaFulano = $mensagens['message']['chat']['title'];
+		$olaFulano = '<b>' . strip_tags($mensagens['message']['chat']['title']) . '</b>';
 	} else {
-		$olaFulano = $mensagens['message']['chat']['first_name'];
+		$olaFulano = '<b>' . strip_tags($mensagens['message']['chat']['first_name']) . '</b>';
 	}
 
 	if ($idioma == 'PT') {
@@ -139,5 +139,5 @@
 	$replyMarkup = json_encode($teclado);
 
 	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'],
-							$replyMarkup, false, $mensagens['edit_message']
+							$replyMarkup, true, $mensagens['edit_message']
 	);

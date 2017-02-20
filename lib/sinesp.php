@@ -50,16 +50,16 @@ class Sinesp
             "Content-length: ".strlen($xml),
         );
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $this->url);
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, $this->url);
 
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $xml);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 
-        $this->response = curl_exec($ch);
+        $this->response = curl_exec($curl);
 
-        curl_close($ch);
+        curl_close($curl);
     }
 
     private function tratarResposta()

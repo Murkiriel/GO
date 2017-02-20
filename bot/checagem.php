@@ -120,3 +120,17 @@
 			}
 		}
 	}
+
+	// # STATUS
+
+	if ($mensagens['message']['chat']['type'] == 'private' or $mensagens['message']['chat']['type'] == 'group') {
+		$redis->set('status_bot:privateorgroup', $mensagens['message']['message_id']);
+	} else if ($mensagens['message']['chat']['type'] == 'supergroup') {
+		$redis->set('status_bot:supergroup', $mensagens['message']['message_id']);
+	}
+
+	// # CANAIS
+
+	if ($mensagens['channel_post']['chat']['type'] == 'channel') {
+		$redis->set('canais:' . $mensagens['channel_post']['chat']['id'], '@' . $mensagens['channel_post']['chat']['username']);
+	}

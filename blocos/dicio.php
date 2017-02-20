@@ -5,7 +5,7 @@
 		if ($redis->exists('dicio:' . $chave) === true) {
 			$mensagem = $redis->get('dicio:' . $chave);
 		} else if (isset($texto[1])) {
-			$palavra = str_ireplace(' ', '-', str_ireplace('/' . $texto[0] . ' ', '', $mensagens['message']['text']));
+			$palavra = str_ireplace(' ', '-', removerComando($texto[0], $mensagens['message']['text']));
 
 			$requisicao = 'http://dicionario-aberto.net/search-json/' . $palavra;
 			 $resultado = json_decode(file_get_contents($requisicao), true);

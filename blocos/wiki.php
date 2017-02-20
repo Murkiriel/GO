@@ -4,7 +4,7 @@
 	if ($redis->exists('wiki:' . $chave) === true) {
 		$mensagem = $redis->get('wiki:' . $chave);
 	} else if (isset($texto[1])) {
-		$artigo = urlencode('/' . str_ireplace($texto[0] . ' ', '', $mensagens['message']['text']));
+		$artigo = urlencode(removerComando($texto[0], $mensagens['message']['text']));
 
 		$requisicao = 'https://' . $idioma . '.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&'  .
 																				 'exchars=480&exsectionformat=plain&explaintext=&redirects=&titles=' . $artigo;

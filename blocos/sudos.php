@@ -12,7 +12,7 @@
 		} else if (strtolower($texto[0]) == 'promover') {
 			if (isset($texto[1])) {
 				$mensagensEnviadas = 0;
-						$textoPromocao = str_ireplace('/' . $texto[0] . ' ', '', $mensagens['message']['text']);
+						$textoPromocao = removerComando($texto[0], $mensagens['message']['text']);
 
 				foreach ($redis->keys('idioma:*') as $hash) {
 					$chatID = floatval(str_ireplace('idioma:', '', $hash));
@@ -59,7 +59,7 @@
 		} else if (strtolower($texto[0]) == 'postagem') {
 			if (isset($texto[1])) {
 				$mensagensEnviadas = 0;
-						$textoPostagem = str_ireplace('/' . $texto[0] . ' ', '', $mensagens['message']['text']);
+						$textoPostagem = removerComando($texto[0], $mensagens['message']['text']);
 
 				foreach ($redis->keys('canais:*') as $hash) {
 					$chatID = floatval(str_ireplace('canais:', '', $hash));
@@ -142,7 +142,7 @@
 			if ($mensagens['message']['chat']['type'] != 'private') {
 				$mensagem = 'Apenas no <b>privado!</b>';
 			} else if (isset($texto[1])) {
-				$nomeDocumento = str_ireplace('/' . $texto[0] . ' ', '', $mensagens['message']['text']);
+				$nomeDocumento = removerComando($texto[0], $mensagens['message']['text']);
 
 				foreach ($redis->keys('documentos:*') as $hash) {
 					if ($redis->hexists($hash, $nomeDocumento) === true) {

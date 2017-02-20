@@ -69,7 +69,7 @@
 			$mensagem = ERROS[$idioma]['SEM_RSULT'];
 		}
 	} else {
-		$mensagem = '📚: /' . $texto[0] . 'Telegram';
+		$mensagem = '📚: /' . $texto[0] . ' Telegram';
 	}
 
 	sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], $replyMarkup, true);

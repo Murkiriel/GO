@@ -16,7 +16,7 @@
 			 $resultado = json_decode(file_get_contents($requisicao), true);
 
 			if (is_array($resultado)) {
-				$descricao = str_ireplace('/' . $texto[0] . ' ', '', $mensagens['message']['text']);
+				$descricao = removerComando($texto[0], $mensagens['message']['text']);
 				$descricao = str_ireplace($texto[1], '', $descricao);
 
 				if (empty($descricao)) {

@@ -46,7 +46,7 @@
 		$updateID = 0;
 
 		$requisicao = API_BOT . '/getUpdates';
-		$conteudoRequisicao = ['allowed_updates' => ['message', 'edited_message', 'callback_query', 'channel']];
+		$conteudoRequisicao = ['allowed_updates' => ['message', 'edited_message', 'channel_post', 'callback_query']];
 		$resultado = json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 
 		while (true) {
@@ -100,6 +100,10 @@
 		$mensagem = $mensagem . "\n\n" . '〰〰〰〰〰〰〰';
 
 		return $mensagem;
+	}
+
+	function removerComando($comando, $mensagem) {
+		return str_ireplace('/' . $comando . ' ', '', $mensagem);
 	}
 
 	function manipularErros($erroCodigo = null, $erroMensagem = null, $erroArquivo = null, $erroLinha = null) {
