@@ -29,7 +29,8 @@
 		$rastroJS->start();
 
 		$redis = conectarRedis();
-		$redis->set('status_bot:loop', 'true');
+		 $loop = 'true';
+		$redis->set('status_bot:loop', $loop);
 
 		firstUpdate();
 		$updateID = 0;
@@ -60,7 +61,7 @@
 		die();
 	}
 
-	while ($redis->get('status_bot:loop') === 'true') {
+	while ($loop === 'true') {
 		$resultado = getUpdates($updateID);
 
 		if (!empty($resultado['result'])) {
@@ -81,6 +82,8 @@
 
 		$servicosThread = new ServicosThread();
 		$servicosThread->start();
+
+		$loop = $redis->get('status_bot:loop');
 	}
 
 	getUpdates($updateID);

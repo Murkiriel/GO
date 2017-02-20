@@ -6,7 +6,11 @@
 					$tipoMensagem = $redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'tipo');
 			$conteudoMensagem = $redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo');
 
-			if ($tipoMensagem == 'texto') {
+			if ($tipoMensagem == 'documento') {
+				sendDocument($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], null, null);
+			} else if ($tipoMensagem == 'foto') {
+				sendPhoto($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], null, null);
+			} else {
 				$conteudoMensagem = str_ireplace('$nome', $mensagens['message']['new_chat_participant']['first_name'], $conteudoMensagem);
 				$conteudoMensagem = str_ireplace('$grupo', $mensagens['message']['chat']['title'], $conteudoMensagem);
 
@@ -17,10 +21,6 @@
 				}
 
 				sendMessage($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id']);
-			} else if ($tipoMensagem == 'documento') {
-				sendDocument($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], null, null);
-			} else if ($tipoMensagem == 'foto') {
-				sendPhoto($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], null, null);
 			}
 		}
 	}

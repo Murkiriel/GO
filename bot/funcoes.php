@@ -42,29 +42,35 @@
 		return;
 	}
 
-	function firstUpdate() {
+	function atualizarMensagens ($resultado) {
 		$updateID = 0;
 
+		foreach ($resultado as $mensagens) {
+			if (isset($mensagens['message']['date']) and time() - $mensagens['message']['date']<=5) {
+				getUpdates($updateID);
+
+				return null;
+			}
+
+			$updateID = $mensagens['update_id'];
+		}
+
+		++$updateID;
+
+		return getUpdates($updateID);
+	}
+
+	function firstUpdate() {
+		$loop = true;
 		$requisicao = API_BOT . '/getUpdates';
 		$conteudoRequisicao = ['allowed_updates' => ['message', 'edited_message', 'channel_post', 'callback_query']];
 		$resultado = json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
 
-		while (true) {
-			if (!empty($resultado['result'])) {
-				foreach ($resultado['result'] as $mensagens) {
-					if (isset($mensagens['message']['date']) and time() - $mensagens['message']['date']<=5) {
-						getUpdates($updateID);
-						return notificarSudos('<pre>Iniciando...</pre>');
-					}
-
-					$updateID = $mensagens['update_id'] + 1;
-				}
-
-				$resultado = getUpdates($updateID);
-			} else {
-				return notificarSudos('<pre>Iniciando...</pre>');
-			}
+		while ($loop === true) {
+			$resultado = !empty($resultado['result']) ? atualizarMensagens($resultado['result']) : $loop = false;
 		}
+
+		return notificarSudos('<pre>Iniciando...</pre>');
 	}
 
 	/**
