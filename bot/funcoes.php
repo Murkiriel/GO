@@ -119,7 +119,7 @@
 
     if (func_num_args() == 5) {
       list($erroCodigo, $erroMensagem, $erroArquivo, $erroLinha) = func_get_args();
-    } else {
+    } else if (func_num_args() != 5) {
 			$excecao = func_get_arg(0);
 			$erroCodigo = $excecao->getCode();
 			$erroMensagem = $excecao->getMessage();

@@ -12,34 +12,44 @@
 		} else if (strtolower($texto[0]) == 'promover') {
 			if (isset($texto[1])) {
 				$mensagensEnviadas = 0;
-						$textoPromocao = removerComando($texto[0], $mensagens['message']['text']);
 
-				foreach ($redis->keys('idioma:*') as $hash) {
-					$chatID = floatval(str_ireplace('idioma:', '', $hash));
+				$textoPromocao = removerComando($texto[0], $mensagens['message']['text']);
 
-					if ($chatID>0) {
-						$resultado = sendMessage($chatID, $textoPromocao, null, null, true);
+				$resultado = sendMessage($mensagens['message']['chat']['id'], $textoPromocao, null, null, true);
 
-						if ($resultado['ok'] === true) {
-							++$mensagensEnviadas;
-						}
+				if ($resultado['ok'] === true) {
+					foreach ($redis->keys('idioma:*') as $hash) {
+						$chatID = floatval(str_ireplace('idioma:', '', $hash));
 
-						if ($mensagensEnviadas%30 == 0) {
-							sleep(1);
+						if ($chatID>0) {
+							$resultado = sendMessage($chatID, $textoPromocao, null, null, true);
+
+							if ($resultado['ok'] === true) {
+								++$mensagensEnviadas;
+							}
+
+							if ($mensagensEnviadas%30 == 0) {
+								sleep(1);
+							}
 						}
 					}
-				}
 
-				$mensagem = '<b>Promoção finalizada!</b>' . "\n" . 'Foram enviadas ' . $mensagensEnviadas . ' mensagens.';
+					$mensagem = '<b>Promoção finalizada!</b>' . "\n" . 'Foram enviadas ' . $mensagensEnviadas . ' mensagens.';
+				} else if ($resultado['ok'] === false) {
+					$mensagem = json_encode($resultado);
+				}
 			} else if (isset($mensagens['message']['reply_to_message'])) {
 				$mensagensEnviadas = 0;
+
+				forwardMessage($mensagens['message']['chat']['id'], $mensagens['message']['reply_to_message']['chat']['id'],
+																							 							$mensagens['message']['reply_to_message']['message_id']);
 
 				foreach ($redis->keys('idioma:*') as $hash) {
 					$chatID = floatval(str_ireplace('idioma:', '', $hash));
 
 					if ($chatID>0) {
 						$resultado = forwardMessage($chatID, $mensagens['message']['reply_to_message']['chat']['id'],
-																								 $mensagens['message']['reply_to_message']['message_id']);
+																									 $mensagens['message']['reply_to_message']['message_id']);
 						if ($resultado['ok'] === true) {
 							++$mensagensEnviadas;
 						}
@@ -51,7 +61,7 @@
 				}
 
 				$mensagem = '<b>Promoção finalizada!</b>' . "\n" . 'Foram encaminhadas ' . $mensagensEnviadas . ' mensagens.';
-				} else {
+			} else {
 				$mensagem = '📚: /promover Telegram > WhatsApp' . "\n\n" . 'Responder mensagem com /promover';
 			}
 
@@ -59,45 +69,55 @@
 		} else if (strtolower($texto[0]) == 'postagem') {
 			if (isset($texto[1])) {
 				$mensagensEnviadas = 0;
-						$textoPostagem = removerComando($texto[0], $mensagens['message']['text']);
 
-				foreach ($redis->keys('canais:*') as $hash) {
-					$chatID = floatval(str_ireplace('canais:', '', $hash));
+				$textoPostagem = removerComando($texto[0], $mensagens['message']['text']);
 
-					$resultado = sendMessage($chatID, $textoPostagem, null, null, true);
+				$resultado = sendMessage($mensagens['message']['chat']['id'], $textoPostagem, null, null, true);
 
-					if ($resultado['ok'] === true) {
-						++$mensagensEnviadas;
+				if ($resultado['ok'] === true) {
+					foreach ($redis->keys('canais:*') as $hash) {
+						$chatID = floatval(str_ireplace('canais:', '', $hash));
+
+						$resultado = sendMessage($chatID, $textoPostagem, null, null, true);
+
+						if ($resultado['ok'] === true) {
+							++$mensagensEnviadas;
+						}
+
+						if ($mensagensEnviadas%30 == 0) {
+							sleep(1);
+						}
 					}
 
-					if ($mensagensEnviadas%30 == 0) {
-						sleep(1);
+					foreach ($redis->keys('idioma:*') as $hash) {
+						$chatID = floatval(str_ireplace('idioma:', '', $hash));
+
+						$resultado = sendMessage($chatID, $textoPostagem, null, null, true);
+
+						if ($resultado['ok'] === true) {
+							++$mensagensEnviadas;
+						}
+
+						if ($mensagensEnviadas%30 == 0) {
+							sleep(1);
+						}
 					}
+
+					$mensagem = '<b>Postagem finalizada!</b>' . "\n" . 'Foram enviadas ' . $mensagensEnviadas . ' mensagens.';
+				} else if ($resultado['ok'] === false) {
+					$mensagem = json_encode($resultado);
 				}
-
-				foreach ($redis->keys('idioma:*') as $hash) {
-					$chatID = floatval(str_ireplace('idioma:', '', $hash));
-
-					$resultado = sendMessage($chatID, $textoPostagem, null, null, true);
-
-					if ($resultado['ok'] === true) {
-						++$mensagensEnviadas;
-					}
-
-					if ($mensagensEnviadas%30 == 0) {
-						sleep(1);
-					}
-				}
-
-				$mensagem = '<b>Postagem finalizada!</b>' . "\n" . 'Foram enviadas ' . $mensagensEnviadas . ' mensagens.';
 			} else if (isset($mensagens['message']['reply_to_message'])) {
 				$mensagensEnviadas = 0;
 
+				forwardMessage($mensagens['message']['chat']['id'], $mensagens['message']['reply_to_message']['chat']['id'],
+																							 							$mensagens['message']['reply_to_message']['message_id']);
+
 				foreach ($redis->keys('canais:*') as $hash) {
 					$chatID = floatval(str_ireplace('canais:', '', $hash));
 
 					$resultado = forwardMessage($chatID, $mensagens['message']['reply_to_message']['chat']['id'],
-																							 $mensagens['message']['reply_to_message']['message_id']);
+																								 $mensagens['message']['reply_to_message']['message_id']);
 					if ($resultado['ok'] === true) {
 						++$mensagensEnviadas;
 					}
@@ -111,7 +131,7 @@
 					$chatID = floatval(str_ireplace('idioma:', '', $hash));
 
 					$resultado = forwardMessage($chatID, $mensagens['message']['reply_to_message']['chat']['id'],
-																							 $mensagens['message']['reply_to_message']['message_id']);
+																									 $mensagens['message']['reply_to_message']['message_id']);
 					if ($resultado['ok'] === true) {
 						++$mensagensEnviadas;
 					}
@@ -122,7 +142,7 @@
 				}
 
 				$mensagem = '<b>Postagem finalizada!</b>' . "\n" . 'Foram encaminhadas ' . $mensagensEnviadas . ' mensagens.';
-				} else {
+			} else {
 				$mensagem = '📚: /postagem Telegram > WhatsApp' . "\n\n" . 'Responder mensagem com /postagem';
 			}
 
