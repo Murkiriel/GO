@@ -19,13 +19,13 @@ mkdir -p /etc/php7/etc
 
 # PHP 7.0.X
 
-rm -rf php-7.0.15
+rm -rf php-7.0.16
 
 wget http://php.net/distributions/php-7.0.16.tar.gz
 
-tar -xzvf php-7.0.15.tar.gz
+tar -xzvf php-7.0.16.tar.gz
 
-cd php-7.0.15
+cd php-7.0.16
 
 ./buildconf --force
 

@@ -6,13 +6,18 @@ class Sinesp
 {
     private $secret = 'TRwf1iBwvCoSboSscGne';
     private $url = 'http://sinespcidadao.sinesp.gov.br/sinesp-cidadao/mobile/consultar-placa';
+    private $proxy = null;
 
     private $placa = '';
     private $response = '';
     private $dados = [];
 
-    public function buscar($placa)
+    public function buscar($placa, array $proxy = [])
     {
+        if ($proxy) {
+            $this->proxy($proxy['ip'], $proxy['porta']);
+        }
+
         $this->setUp($placa);
         $this->exec();
     }
@@ -20,6 +25,11 @@ class Sinesp
     public function dados()
     {
         return $this->dados;
+    }
+
+    public function proxy($ip, $porta)
+    {
+        $this->proxy = $ip . ':' . $porta;
     }
 
     public function __get($name)
@@ -34,6 +44,7 @@ class Sinesp
 
     private function exec()
     {
+        $this->verificarRequisitos();
         $this->obterResposta();
         $this->tratarResposta();
     }
@@ -50,16 +61,20 @@ class Sinesp
             "Content-length: ".strlen($xml),
         );
 
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_URL, $this->url);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $this->url);
 
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $xml);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        if ($this->proxy) {
+            curl_setopt($ch, CURLOPT_PROXY, $this->proxy);
+        }
 
-        $this->response = curl_exec($curl);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $xml);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-        curl_close($curl);
+        $this->response = curl_exec($ch);
+
+        curl_close($ch);
     }
 
     private function tratarResposta()
@@ -69,8 +84,23 @@ class Sinesp
         $this->dados = (array) simplexml_load_string($response)->Body->getStatusResponse->return;
     }
 
+    private function verificarRequisitos()
+    {
+        if (! function_exists('curl_init')) {
+            throw new \Exception('Incapaz de processar. PHP requer biblioteca cURL');
+        }
+
+        if (! function_exists('simplexml_load_string')) {
+            throw new \Exception('Incapaz de processar. PHP requer biblioteca libxml');
+        }
+
+        return;
+    }
+
     private function setUp($placa)
     {
+        $placa = $this->ajustar($placa);
+
         if (! $this->validar($placa)) {
             throw new \Exception('Placa do veiculo nao especificada ou em formato invalido!');
         }
@@ -109,5 +139,10 @@ EOX;
     private function validar($placa)
     {
         return preg_match('/^[a-zA-Z]{3}-?\d{4}$/i', $placa);
+    }
+
+    private function ajustar($placa)
+    {
+        return str_replace(['-', ' '], '', $placa);
     }
 }

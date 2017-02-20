@@ -22,8 +22,7 @@
 
 		$qntdMensagem = $mensagens['message']['from']['id'] != DADOS_BOT['result']['id'] ?
 			$redis->hget('ranking:' . $mensagens['message']['chat']['id'] . ':' .
-			$mensagens['message']['from']['id'], 'qntd_mensagem') :
-			'10^100';
+			$mensagens['message']['from']['id'], 'qntd_mensagem') : '10^100';
 
 		$mensagem = $mensagem . "\n" . ID[$idioma]['MSGS'] . ': ' . $qntdMensagem;
 	}

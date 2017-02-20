@@ -1,9 +1,9 @@
 <?php
 	set_error_handler('manipularErros');
 
-	// # MENSAGENS
+	$mensagens = $this->argumentos[0];
 
-	$mensagens = $this->mensagens;
+	// # MENSAGENS
 
 	$mensagens['edit_message'] = false;
 
@@ -89,13 +89,14 @@
 
 	if (strcasecmp($mensagens['message']['text'], '/start' . '@' . DADOS_BOT['result']['username'] . ' new') == 0) {
 		$exit = true;
-	} else if (isset($mensagens['message']['left_chat_participant']['id']) and
-									 $mensagens['message']['left_chat_participant']['id'] == DADOS_BOT['result']['id']) {
+	} else if (isset($mensagens['message']['left_chat_participant']['id'])) {
 		$exit = true;
 	} else if ($mensagens['channel_post']['chat']['type'] == 'channel') {
 		$redis->set('canais:' . $mensagens['channel_post']['chat']['id'], '@' . $mensagens['channel_post']['chat']['username']);
 		$exit = true;
-	} else if ($exit === false) {
+	}
+
+	if ($exit === false) {
 		try {
 			if ($redis->exists('idioma:' . $mensagens['message']['from']['id']) === false and isset($idioma)) {
 				$redis->set('idioma:' . $mensagens['message']['from']['id'], $idioma);
@@ -103,61 +104,19 @@
 		} catch (Exception $e) {
 			$redis->set('idioma:' . $mensagens['message']['chat']['id'], $idioma);
 		}
-
-		// # RANKING
-
-		if ($mensagens['edit_message'] === false) {
-			if ($mensagens['message']['chat']['type'] == 'group' or
-					$mensagens['message']['chat']['type'] == 'supergroup' or
-					$mensagens['message']['chat']['type'] == 'private') {
-
-				 	$redis->hset('ranking:' . $mensagens['message']['chat']['id'] . ':' .
-											 $mensagens['message']['from']['id'], 'primeiro_nome', $mensagens['message']['from']['first_name']);
-
-					$redis->hincrby('ranking:' . $mensagens['message']['chat']['id'] . ':' .
-													$mensagens['message']['from']['id'], 'qntd_mensagem', 1);
-			}
-		}
-
-		// # BEM-VINDO
-
-		if (isset($mensagens['message']['new_chat_participant'])) {
-			if ($redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'ativo') === 'true') {
-						$tipoMensagem = $redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'tipo');
-				$conteudoMensagem = $redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo');
-
-				if ($tipoMensagem == 'documento') {
-					sendDocument($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], null, null);
-				} else if ($tipoMensagem == 'foto') {
-					sendPhoto($mensagens['message']['chat']['id'], $conteudoMensagem, $mensagens['message']['message_id'], null, null);
-				} else {
-					$replyMarkup = montarTeclado($conteudoMensagem);
-					$conteudoMensagem = removerTeclado($conteudoMensagem);
-
-					$conteudoMensagem = str_ireplace('$nome', $mensagens['message']['new_chat_participant']['first_name'],
-																					 $conteudoMensagem);
-					$conteudoMensagem = str_ireplace('$grupo', $mensagens['message']['chat']['title'],
-																					 $conteudoMensagem);
-
-					if (isset($mensagens['message']['new_chat_participant']['username'])) {
-						$conteudoMensagem = str_ireplace('$usuario', '@' . $mensagens['message']['new_chat_participant']['username'],
-																						 $conteudoMensagem);
-					} else {
-						$conteudoMensagem = str_ireplace('$usuario', $mensagens['message']['new_chat_participant']['first_name'],
-																						 $conteudoMensagem);
-					}
-
-					sendMessage($mensagens['message']['chat']['id'], $conteudoMensagem,
-											$mensagens['message']['message_id'], $replyMarkup, true);
-				}
-			}
-		}
 	}
 
-	// # STATUS
+	// # RANKING
 
-	if ($mensagens['message']['chat']['type'] == 'private' or $mensagens['message']['chat']['type'] == 'group') {
-		$redis->set('status_bot:privateorgroup', $mensagens['message']['message_id']);
-	} else if ($mensagens['message']['chat']['type'] == 'supergroup') {
-		$redis->set('status_bot:supergroup', $mensagens['message']['message_id']);
+	if ($mensagens['edit_message'] === false) {
+		if ($mensagens['message']['chat']['type'] == 'group' or
+				$mensagens['message']['chat']['type'] == 'supergroup' or
+				$mensagens['message']['chat']['type'] == 'private') {
+
+				$redis->hset('ranking:' . $mensagens['message']['chat']['id'] . ':' .
+										 $mensagens['message']['from']['id'], 'primeiro_nome', $mensagens['message']['from']['first_name']);
+
+				$redis->hincrby('ranking:' . $mensagens['message']['chat']['id'] . ':' .
+												$mensagens['message']['from']['id'], 'qntd_mensagem', 1);
+		}
 	}

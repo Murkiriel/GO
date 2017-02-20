@@ -1,4 +1,37 @@
 <?php
+
+// # BEM-VINDO
+
+if (isset($mensagens['message']['new_chat_participant'])) {
+	if ($redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'ativo') === 'true') {
+		$tipo = $redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'tipo');
+		$mensagem = $redis->hget('bemvindo:' . $mensagens['message']['chat']['id'], 'conteudo');
+
+		if ($tipo == 'documento') {
+			sendDocument($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, null);
+		} else if ($tipo == 'foto') {
+			sendPhoto($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'], null, null);
+		} else {
+			$replyMarkup = montarTeclado($mensagem);
+			$mensagem = removerTeclado($mensagem);
+
+			$mensagem = str_ireplace('$nome', $mensagens['message']['new_chat_participant']['first_name'],
+																			 $mensagem);
+			$mensagem = str_ireplace('$grupo', $mensagens['message']['chat']['title'],
+																			 $mensagem);
+
+			if (isset($mensagens['message']['new_chat_participant']['username'])) {
+				$mensagem = str_ireplace('$usuario', '@' . $mensagens['message']['new_chat_participant']['username'], $mensagem);
+			} else {
+				$mensagem = str_ireplace('$usuario', $mensagens['message']['new_chat_participant']['first_name'], $mensagem);
+			}
+
+			sendMessage($mensagens['message']['chat']['id'], $mensagem,
+									$mensagens['message']['message_id'], $replyMarkup, true);
+		}
+	}
+}
+
 	// # DOCUMENTOS
 
 	foreach ($redis->keys('documentos:*') as $hash) {
@@ -72,6 +105,14 @@
 				notificarSudos($mensagem);
 			}
 		}
+	}
+
+	// # STATUS
+
+	if ($mensagens['message']['chat']['type'] == 'private' or $mensagens['message']['chat']['type'] == 'group') {
+		$redis->set('status_bot:privateorgroup', $mensagens['message']['message_id']);
+	} else if ($mensagens['message']['chat']['type'] == 'supergroup') {
+		$redis->set('status_bot:supergroup', $mensagens['message']['message_id']);
 	}
 
 /*

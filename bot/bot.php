@@ -6,29 +6,29 @@
 	require('idioma.php');
 	require('comandos.php');
 
-	require(RAIZ . 'lib/sinesp.php');
-
 	use Classes\RastroJS;
 	use Classes\ServicosThread;
 	use Comandos\BotThread;
 
 	system('clear');
 
-	echo '+------------+' , "\n";
-	echo '| CONECTANDO |' , "\n";
-	echo '+------------+' , "\n\n";
+	echo '+------------+', "\n";
+	echo '| CONECTANDO |', "\n";
+	echo '+------------+', "\n\n";
 
 	define('DADOS_BOT', getMe());
 
 	if (DADOS_BOT['ok'] === true) {
 		system('clear');
 
-		echo '+-------------+' , "\n";
-		echo '| ATUALIZANDO |' , "\n";
-		echo '+-------------+' , "\n\n";
+		echo '+-------------+', "\n";
+		echo '| ATUALIZANDO |', "\n";
+		echo '+-------------+', "\n\n";
 
-		$rastroJS = new RastroJS();
-		$rastroJS->start();
+		if (pingServidor('127.0.0.1', '3000') == -1) {
+			$rastroJS = new RastroJS();
+			$rastroJS->start();
+		}
 
 		$redis = conectarRedis();
 		$loop = 'true';
@@ -48,22 +48,26 @@
 			echo '-';
 		}
 
-		echo '+' , "\n" , '|' , $tituloBot , '|' , "\n" , '+';
+		echo '+', "\n", '|', $tituloBot, '|', "\n", '+';
 
 		for ($i = 0; $i<$hifens; $i++) {
 			echo '-';
 		}
 
-		echo '+' , "\n\n";
+		echo '+', "\n\n";
 	} else {
 		system('clear');
 
-		echo '+------------------+' , "\n";
-		echo '| ERRO AO CONECTAR |' , "\n";
-		echo '+------------------+' , "\n\n";
+		echo '+------------------+', "\n";
+		echo '| ERRO AO CONECTAR |', "\n";
+		echo '+------------------+', "\n\n";
 
 		die();
 	}
+
+	$closure = function($argumentos) {
+		return $argumentos;
+	};
 
 	while ($loop === 'true') {
 		$resultado = getUpdates($updateID);
@@ -77,15 +81,13 @@
 				if ($redis->exists('status_bot:msg_atendidas:' . $updateID) === false) {
 					$redis->setex('status_bot:msg_atendidas:' . $updateID, 60, 'OK');
 
-					$threads[$updateID] = new BotThread($updateID);
-					$threads[$updateID]->mensagens = $mensagens;
-					$threads[$updateID]->start();
+					$threads[$updateID] = BotThread::processo($closure, [0 => $mensagens]);
 				}
 			}
 		}
 
 		$servicos = [];
-		$servicos[$updateID] = new ServicosThread($updateID);
+		$servicos[$updateID] = new ServicosThread();
 		$servicos[$updateID]->start();
 
 		$loop = $redis->get('status_bot:loop');
@@ -95,8 +97,8 @@
 
 	system('clear');
 
-	echo '+-------------+' , "\n";
-	echo '| REINICIADO! |' , "\n";
-	echo '+-------------+' , "\n\n";
+	echo '+-------------+', "\n";
+	echo '| REINICIADO! |', "\n";
+	echo '+-------------+', "\n\n";
 
 	$redis->close() && die();

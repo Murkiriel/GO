@@ -1,24 +1,36 @@
 <?php
 	define('AJUDA', [
 		'PT' => [
-			'GRUPO' => 'Funções pra grupos',
+			'FUNC_GRUPO' => 'Funções pra grupos',
 			'TCD_AVALR' => 'Avaliar',
-			'TCD_GRUPO' => 'Adicionar ao grupo'
+			'TCD_GRUPO' => 'Adicionar ao grupo',
+			'GRUPO' => 'Grupo',
+			'PRIVADO' => 'Privado',
+			'PERGUNTA' => 'Onde você deseja ver a ajuda?'
 		],
 		'EN' => [
-			'GRUPO' => 'Functions for groups',
+			'FUNC_GRUPO' => 'Functions for groups',
 			'TCD_AVALR' => 'Rate',
-			'TCD_GRUPO' => 'Add to group'
+			'TCD_GRUPO' => 'Add to group',
+			'GRUPO' => 'Group',
+			'PRIVADO' => 'Private',
+			'PERGUNTA' => 'Where you want to view the help?'
 		],
 		'ES' => [
-			'GRUPO' => 'Funciones para grupos',
+			'FUNC_GRUPO' => 'Funciones para grupos',
 			'TCD_AVALR' => 'Tasa',
-			'TCD_GRUPO' => 'Añadir a grupo'
+			'TCD_GRUPO' => 'Añadir a grupo',
+			'GRUPO' => 'Grupo',
+			'PRIVADO' => 'Privado',
+			'PERGUNTA' => '¿Donde desea ver la ayuda?'
 		],
 		'IT' => [
-			'GRUPO' => 'Funzioni per i gruppi',
+			'FUNC_GRUPO' => 'Funzioni per i gruppi',
 			'TCD_AVALR' => 'Tasso',
-			'TCD_GRUPO' => 'Aggiungere al gruppo'
+			'TCD_GRUPO' => 'Aggiungere al gruppo',
+			'GRUPO' => 'Gruppo',
+			'PRIVADO' => 'Privato',
+			'PERGUNTA' => 'Cui si desidera visualizzare la guida?'
 	]]);
 
 	define('BEMVINDO', [
@@ -32,7 +44,7 @@
 									'/bemvindo on - Ativa as mensagens de boas-vindas' . "\n" .
 									'/bemvindo off - Desativa as mensagens de boas-vindas' . "\n\n" .
 									'Use <b>$nome</b>, <b>$usuario</b> e <b>$grupo</b> para personalizar mensagens' . "\n\n" .
-									'Use [Example][http://example.com/] para criar teclado'
+									'Para criar teclado use [Example][http://example.com/] '
 		],
 		'EN' => [
 			'ATIVO' => 'Message <b>"Welcome"</b> enabled!',
@@ -44,7 +56,7 @@
 									'/welcome on - Activate the welcome messages' . "\n" .
 									'/welcome off - Disables the welcome messages' . "\n\n" .
 									'Use <b>$nome</b>, <b>$usuario</b> and <b>$grupo</b> to customize messages' . "\n\n" .
-									'Use [Example][http://example.com/] to create keyboard'
+									'To create keyboard use [Example][http://example.com/] '
 		],
 		'ES' => [
 			'ATIVO' => '¡Mensaje de <b>"Bienvenida"</b> habilitado!',
@@ -56,7 +68,7 @@
 									'/bienvenida on - Activar los mensajes de bienvenida' . "\n" .
 									'/bienvenida off - Desactiva los mensajes de bienvenida' . "\n\n" .
 									'Use <b>$nome</b>, <b>$usuario</b> y <b>$grupo</b> para personalizar los mensajes' . "\n\n" .
-									'Use [Example][http://example.com/] crear teclado'
+									'Hacer uso del teclado [Example][http://example.com/]'
 		],
 		'IT' => [
 			'ATIVO' => 'Messaggio di <b>"Benvenuto"</b> attivato!',
@@ -68,7 +80,7 @@
 									'/benvenuto on - Attivare i messaggi di benvenuto' . "\n" .
 									'/benvenuto off - Disattiva i messaggi di benvenuto' . "\n\n" .
 									'Utilizzare <b>$nome</b>, <b>$usuario</b> e <b>$grupo</b> per personalizzare i messaggi' . "\n\n" .
-									'Utilizzare [Example][http://example.com/] creare tastiera'
+									'Per creare un utilizzo della tastiera [Example][http://example.com/]'
 		]
 	]);
 
@@ -188,7 +200,8 @@
 									'/regras - Exibir as regras do grupo' . "\n\n" .
 									'/regras set - Define as regras por resposta de mensagem' . "\n" .
 									'/regras on - Ativa as mensagens de regras' . "\n" .
-									'/regras off - Desativa as mensagens de regras'
+									'/regras off - Desativa as mensagens de regras' . "\n" .
+									'/regras ? - Exibir essa mensagem'
 		],
 		'EN' => [
 			'ATIVO' => 'Message <b>"Rules"</b> enabled!',
@@ -199,7 +212,8 @@
 									'/rules - View the rules of the group' . "\n\n" .
 									'/rules set - Define the rules for message response' . "\n" .
 									'/rules on - Activate the rules messages' . "\n" .
-									'/rules off - Disables the rules messages'
+									'/rules off - Disables the rules messages' . "\n" .
+									'/regras ? - Display this message'
 		],
 		'ES' => [
 			'ATIVO' => '¡Mensaje de <b>"Reglas"</b> habilitado!',
@@ -210,7 +224,8 @@
 									'/reglas - Ver las reglas del grupo' . "\n\n" .
 									'/reglas set - Definir las reglas para la respuesta del mensaje' . "\n" .
 									'/reglas on - Activar los mensajes de reglas' . "\n" .
-									'/reglas off - Desactiva los mensajes de reglas'
+									'/reglas off - Desactiva los mensajes de reglas' . "\n" .
+									'/regras ? - Mostrar este mensaje'
 		],
 		'IT' => [
 			'ATIVO' => 'Messaggio di <b>"Regole"</b> attivato!',
@@ -221,7 +236,8 @@
 									'/regole - Visualizzare le regole del gruppo' . "\n\n" .
 									'/regole set - Definire le regole per il messaggio di risposta' . "\n" .
 									'/regole on - Attivare i messaggi di regole' . "\n" .
-									'/regole off - Disattiva i messaggi di regole'
+									'/regole off - Disattiva i messaggi di regole' . "\n" .
+									'/regras ? - Visualizzare questo messaggio'
 		]
 	]);
 

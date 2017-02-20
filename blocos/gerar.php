@@ -1,5 +1,5 @@
 <?php
-	if (isset($texto[1]) and is_numeric($texto[1]) and $texto[1]>1) {
+	if (isset($texto[1]) and is_numeric($texto[1]) and $texto[1]>1 and $texto[1]<1000000000000000000) {
 		$mensagem = '<b>' . mt_rand(1, $texto[1]) . '</b>';
 	} else {
 		$mensagem = '📚: /' . GERAR[$idioma] . ' ' . mt_rand(1, 100);

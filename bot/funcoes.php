@@ -120,13 +120,13 @@
 		return false;
 	}
 
-	function montarTeclado($conteudoMensagem) {
+	function montarTeclado($conteudo) {
 		$teclado = null;
 
-		$posicao1 = stripos($conteudoMensagem, '[');
+		$posicao1 = stripos($conteudo, '[');
 
 		if ($posicao1 !== false) {
-			$montarTeclado = substr($conteudoMensagem, $posicao1 + 1);
+			$montarTeclado = substr($conteudo, $posicao1 + 1);
 			$posicao2 = strripos($montarTeclado, ']');
 			$montarTeclado = str_ireplace(substr($montarTeclado, $posicao2), '', $montarTeclado);
 
@@ -157,11 +157,24 @@
 		return null;
 	}
 
-	function removerTeclado($conteudoMensagem) {
-		$posicao = stripos($conteudoMensagem, '[');
-		$teclado = substr($conteudoMensagem, $posicao + 1);
+	function removerTeclado($conteudo) {
+		$posicao = stripos($conteudo, '[');
+		$teclado = substr($conteudo, $posicao + 1);
 
-		return str_ireplace('[' . $teclado, '', $conteudoMensagem);
+		return str_ireplace('[' . $teclado, '', $conteudo);
+	}
+
+	function pingServidor($ip, $porta = 80){
+		$inicioTempo = microtime(true);
+		$resultado = @fsockopen($ip, $porta, $erroCodigo, $erroMensagem, 10);
+		$fimTempo = microtime(true);
+
+		if ($resultado === false) {
+			return -1;
+		} else {
+			fclose($resultado);
+			return floor(($fimTempo - $inicioTempo) * 1000);
+		}
 	}
 
 	function manipularErros($erroCodigo = null, $erroMensagem = null, $erroArquivo = null, $erroLinha = null) {
