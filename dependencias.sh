@@ -31,6 +31,7 @@ libssl-dev \
 libxml2-dev \
 libxslt1-dev \
 pkg-config \
+python-pip \
 redis-server
 
 # SUBMODULES
@@ -50,3 +51,7 @@ cd rastrojs
 npm install express
 
 npm install
+
+# SINESP CLIENTE
+
+pip install sinesp-client

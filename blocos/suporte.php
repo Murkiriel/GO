@@ -8,11 +8,17 @@
 			$mensagemID = $mensagens['message']['reply_to_message']['message_id'];
 		}
 
-		foreach (SUDOS as $sudo) {
-			sendMessage($sudo, '📬 <b>Mensagem recebida:</b>', null, null, true);
-			forwardMessage($sudo, $chatID, $mensagemID);
-			$mensagem = SUPORTE[$idioma]['ENVIADA'];
+		if ($mensagens['message']['chat']['type'] == 'private') {
+			$origem = $mensagens['message']['from']['id'];
+		} else {
+			$origem = $mensagens['message']['from']['id'] . ' do grupo ' . $mensagens['message']['chat']['id'];
 		}
+
+		sendMessage(SUDOS[0], '📬 <b>Mensagem recebida de ' . $origem . ':</b>', null, null, true);
+
+		forwardMessage(SUDOS[0], $chatID, $mensagemID);
+
+		$mensagem = SUPORTE[$idioma]['ENVIADA'];
 	} else {
 		$mensagem = '📚: /' . SUPORTE[$idioma]['AJUDA'];
 	}

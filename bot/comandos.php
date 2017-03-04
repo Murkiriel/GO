@@ -22,12 +22,12 @@
                              'ranking'    => ['ranking', 'rkgdel'],
                              'suporte'    => ['suporte', 'apoyo', 'support', 'supporto'],
                              'wiki'       => ['wiki'],
+                             'yt'         => ['yt'],
                              'sudos'      => ['sudos', 'promover', 'postagem', 'reiniciar',
-                                              'removerdocumento', 'status', 'html']];
+                                              'removerdocumento', 'status', 'html', 'sms']];
 
-    private function __construct(\Closure $closure, array $argumentos = []) {
-      $this->closure = $closure;
-      $this->argumentos = $argumentos;
+    public function __construct($mensagens) {
+      $this->mensagens = $mensagens;
     }
 
     public static function verificarComando($comando) {
@@ -57,18 +57,8 @@
 
       include(RAIZ . 'blocos/servicos.php');
 
-      include(RAIZ . 'blocos/extras.php');
+      unset($mensagens);
 
       $redis->close();
     }
-
-    public static function processo(\Closure $closure, array $argumentos = []) {
-      $processo = new self($closure, $argumentos);
-      $processo->start();
-
-      return $processo;
-    }
-
-    protected $closure;
-    protected $argumentos;
   }

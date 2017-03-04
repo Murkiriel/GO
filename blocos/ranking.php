@@ -4,17 +4,19 @@
  				 $resultado = getChatAdministrators($mensagens['message']['chat']['id']);
 			$usuarioAdmin = false;
 
- 			foreach ($resultado['result'] as $adminsGrupo) {
- 				if ($adminsGrupo['user']['id'] == $mensagens['message']['from']['id'] and $adminsGrupo['status'] == 'creator') {
-					foreach ($redis->keys('ranking:' . $mensagens['message']['chat']['id'] . ':*') as $hash) {
-						$redis->del($hash);
-					}
+			if (isset($resultado['result'])) {
+	 			foreach ($resultado['result'] as $adminsGrupo) {
+	 				if ($adminsGrupo['user']['id'] == $mensagens['message']['from']['id'] and $adminsGrupo['status'] == 'creator') {
+						foreach ($redis->keys('ranking:' . $mensagens['message']['chat']['id'] . ':*') as $hash) {
+							$redis->del($hash);
+						}
 
- 					$usuarioAdmin = true;
- 							$mensagem = 'O.K!';
+	 					$usuarioAdmin = true;
+	 							$mensagem = 'O.K!';
 
- 					break;
- 				}
+	 					break;
+	 				}
+				}
  			}
 
  			if ($usuarioAdmin === false) {

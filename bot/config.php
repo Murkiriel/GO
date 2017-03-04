@@ -10,3 +10,5 @@
 	define('API_BOT', $api . $bot);
 	define('RAIZ', system('pwd') . '/');
 	define('VERSAO', '4.0.0 (SGF)');
+
+	define('YT_KEY', ''); //YOUTUBE KEY

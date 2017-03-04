@@ -7,7 +7,7 @@
 			if ($adminsGrupo['status'] == 'creator') {
 			 if (isset($adminsGrupo['user']['username'])) {
 				 $mensagem = '👤 <a href="t.me/' . $adminsGrupo['user']['username'] . '">' .
-				 						 strip_tags($adminsGrupo['user']['first_name']) . '</a>' . "\n\n" . $mensagem;
+				 						 strip_tags($adminsGrupo['user']['first_name']) . '</a> <b>(' . ADMS[$idioma] . ')</b>' . "\n\n" . $mensagem;
 			 } else {
 				 $mensagem = '👤 ' . strip_tags($adminsGrupo['user']['first_name']) . "\n\n" . $mensagem;
 			 }

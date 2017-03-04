@@ -4,43 +4,40 @@
 			$placa = removerComando($texto[0], $mensagens['message']['text']);
 			$placa = strtoupper(str_ireplace(['-', ' '], '', $placa));
 
-			if (preg_match('/[A-Z]{3}[0-9]{4}/', $placa)) {
-				$veiculo = new Sinesp;
-
+			if (preg_match('/^[A-Z]{3}[0-9]{4}$/', $placa)) {
 				$proxy[0] = ['ip' => '201.16.147.193', 'porta' => '80'];
-				$proxy[1] = ['ip' => '200.195.141.178', 'porta' => '8080'];
+				$proxy[1] = ['ip' => '177.190.209.10', 'porta' => '8080'];
 				$proxy[2] = ['ip' => '177.55.253.68', 'porta' => '8080'];
 
 				for ($i = 0; $i<2; $i++) {
-					try {
-						$veiculo->buscar($placa, $proxy[$i]);
+					$veiculo = json_decode(shell_exec('python ' . RAIZ . 'py/placa.py ' .
+										 $proxy[$i]['ip'] . ' ' . $proxy[$i]['porta'] . ' ' . escapeshellarg($placa)), true);
 
-						if ($veiculo->existe()) {
-							$mensagem = '<b>Placa:</b> ' . substr($placa, 0, 3) . '-' . substr($placa, 3) . "\n";
+					if (!empty($veiculo['model'])) {
+						$mensagem = '<b>Placa:</b> ' . substr($placa, 0, 3) . '-' . substr($placa, 3) . "\n";
 
-							$mensagem = $mensagem . '<b>Veículo:</b> ' . $veiculo->modelo . "\n" .
-																			'<b>Ano/Modelo:</b> ' . $veiculo->ano . '/' . $veiculo->anoModelo . "\n" .
-																			'<b>Cor:</b> ' . ucfirst(strtolower($veiculo->cor)) . "\n" .
-																			'<b>Município-UF:</b> ' . ucfirst(strtolower($veiculo->municipio)) . '-' . $veiculo->uf . "\n" .
-																			'<b>Chassi:</b> ' . str_ireplace('************', 'Final ', $veiculo->chassi) . "\n" .
-																			'<b>Situação:</b> ' . $veiculo->situacao . "\n\n" .
-																			'<b>Data:</b> ' . $veiculo->data;
-							break;
-						} else {
-							$resultado = sendMessage($mensagens['message']['chat']['id'], '<pre>Tentativa ' . ($i + 1) . '/3...</pre>',
-													$mensagens['message']['message_id'], null, true, $mensagens['edit_message']);
+						$mensagem = $mensagem . '<b>Veículo:</b> ' . $veiculo['model'] . "\n" .
+														'<b>Ano/Modelo:</b> ' . $veiculo['year'] . '/' . $veiculo['model_year'] . "\n" .
+														'<b>Cor:</b> ' . ucfirst(strtolower($veiculo['color'])) . "\n" .
+														'<b>Município-UF:</b> ' . ucfirst(strtolower($veiculo['city'])) . '-' . $veiculo['state'] . "\n" .
+														'<b>Chassi:</b> ' . str_ireplace('************', 'Final ', $veiculo['chassis']) . "\n" .
+														'<b>Situação:</b> ' . $veiculo['status_message'] . "\n\n" .
+														'<b>Data:</b> ' . $veiculo['date'];
+						break;
+					} else {
+						$resultado = sendMessage($mensagens['message']['chat']['id'], '<pre>Tentativa ' . ($i + 1) . '/3...</pre>',
+												$mensagens['message']['message_id'], null, true, $mensagens['edit_message']);
 
-							$mensagem = 'Desculpe, a sua pesquisa não pôde ser concluída.';
+						$mensagem = 'Desculpe, a sua pesquisa não pôde ser concluída.';
+
+						if (isset($resultado['result'])) {
 							$mensagens['message']['message_id'] = $resultado['result']['message_id'];
-							$mensagens['edit_message'] = true;
 						}
-					} catch (\Exception $e) {
-						echo 'Erro ao tentar conectar com o proxy ', $proxy[$i]['ip'], ':', $proxy[$i]['porta'], "\n\n";
+
+						$mensagens['edit_message'] = true;
 					}
 				}
-			}
-
-			if (empty($mensagem)) {
+			} else {
 				$mensagem = 'Placa informada não é válida!';
 			}
 		} else {

@@ -1,4 +1,11 @@
 <?php
+	define('ADMS', [
+		'PT' => 'Criador',
+		'EN' => 'Creator',
+		'ES' => 'Creador',
+		'IT' => 'Creator'
+	]);
+
 	define('AJUDA', [
 		'PT' => [
 			'FUNC_GRUPO' => 'Funções pra grupos',

@@ -28,7 +28,8 @@
 				} else {
 					$mensagem = REGRAS[$idioma]['NAO_DEFINIDA'];
 				}
-			} else if (isset($mensagens['message']['reply_to_message']['text']) and strtolower($texto[1]) == 'set') {
+			} else if (isset($mensagens['message']['reply_to_message']['text']) and
+								 isset($texto[1]) and strtolower($texto[1]) == 'set') {
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'ativo', 'true');
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'tipo', 'texto');
 				$redis->hset('regras:' . $mensagens['message']['chat']['id'], 'conteudo',

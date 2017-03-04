@@ -46,6 +46,8 @@ if (isset($mensagens['message']['new_chat_participant'])) {
 			if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
 				sendDocument($mensagens['message']['chat']['id'], $idDocumento,
 										 $mensagens['message']['message_id'], $replyMarkup);
+
+				$mensagens['message']['message_id'] = null;
 			}
 
 			sendDocument($mensagens['message']['from']['id'], $idDocumento,
@@ -110,8 +112,6 @@ if (isset($mensagens['message']['new_chat_participant'])) {
 
 	if ($mensagens['message']['chat']['type'] == 'private' or $mensagens['message']['chat']['type'] == 'group') {
 		$redis->set('status_bot:privateorgroup', $mensagens['message']['message_id']);
-	} else if ($mensagens['message']['chat']['type'] == 'supergroup') {
-		$redis->set('status_bot:supergroup', $mensagens['message']['message_id']);
 	}
 
 /*

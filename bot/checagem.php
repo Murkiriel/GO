@@ -1,7 +1,7 @@
 <?php
 	set_error_handler('manipularErros');
 
-	$mensagens = $this->argumentos[0];
+	$mensagens = $this->mensagens;
 
 	// # MENSAGENS
 
@@ -80,8 +80,7 @@
 			'<b>IT:</b> ' . TECLADO['IT'];
 
 		sendMessage($mensagens['message']['chat']['id'], $mensagem,
-								$mensagens['message']['message_id'], $replyMarkup, true, $mensagens['edit_message']
-		);
+								$mensagens['message']['message_id'], $replyMarkup, true, $mensagens['edit_message']);
 
 		$exit = true;
 	}
@@ -120,10 +119,8 @@
 		}
 	}
 
-	// # REGRAS
+	// # PARA DEEP LINKS
 
-	if (isset($texto[1])) {
-		if ($texto[0] . ' ' . $texto[1] == 'start regras') {
-			array_shift($texto);
-		}
+	if (strtolower($texto[0]) == 'start' and isset($texto[1])) {
+		array_shift($texto);
 	}

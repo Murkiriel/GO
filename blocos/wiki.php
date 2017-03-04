@@ -9,7 +9,7 @@
 		$requisicao = 'https://' . $idioma . '.wikipedia.org/w/api.php?action=query&prop=extracts&format=json&' .
 									'exchars=480&exsectionformat=plain&explaintext=&redirects=&titles=' . strtolower($artigo);
 
-		$resultado = json_decode(enviarRequisicao($requisicao), true);
+		$resultado = json_decode(file_get_contents($requisicao), true);
 
 		$idPagina = array_keys($resultado['query']['pages']);
 

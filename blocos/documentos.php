@@ -47,7 +47,7 @@
 			$oneTimeKeyboard = false;
 		}
 
-		if ($resultado != null) {
+		if ($resultado[0] != null) {
 			$teclado = [
 				'resize_keyboard' => true,
 				'one_time_keyboard' => $oneTimeKeyboard,

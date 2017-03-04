@@ -8,13 +8,19 @@
 			$palavra = str_ireplace(' ', '-', removerComando($texto[0], $mensagens['message']['text']));
 
 			$requisicao = 'http://dicionario-aberto.net/search-json/' . $palavra;
-			// # O @ abaixo é necessário por causa que a API acima não trata palavras desconhecidas
-			@$resultado = json_decode(file_get_contents($requisicao), true);
 
-			if (!empty($resultado['entry']['form']['orth']) and !empty($resultado['entry']['sense'][0]['def'])) {
-				$mensagem = '<b>' . $resultado['entry']['form']['orth'] . ':</b> ' .
-										str_ireplace('_', '', str_ireplace('<br/>', ' ', $resultado['entry']['sense'][0]['def']));
-			} else {
+			try{
+				@$resultado = json_decode(file_get_contents($requisicao), true);
+
+				if (!empty($resultado['entry']['form']['orth']) and !empty($resultado['entry']['sense'][0]['def'])) {
+					$mensagem = '<b>' . $resultado['entry']['form']['orth'] . ':</b> ' .
+											str_ireplace('_', '', str_ireplace('<br/>', ' ', $resultado['entry']['sense'][0]['def']));
+				}
+			} catch(Exception $e){
+				echo 'Exceção capturada: ',  $e->getMessage(), "\n";
+			}
+
+			if (empty($mensagem)) {
 				$mensagem = ERROS[$idioma]['SEM_RSULT'];
 			}
 

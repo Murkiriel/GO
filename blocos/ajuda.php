@@ -1,5 +1,5 @@
 <?php
-	if (strtolower($mensagens['message']['text']) == '/start ajuda' or $mensagens['message']['chat']['type'] == 'private') {
+	if ($mensagens['message']['chat']['type'] == 'private') {
 		if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
 			$olaFulano = '<b>' . strip_tags($mensagens['message']['chat']['title']) . '</b>';
 		} else if ($mensagens['message']['chat']['type'] == 'private') {
@@ -21,7 +21,7 @@
 	/tv - Pesquisar filmes e séries
 	/psp - Pesquisar PSP
 	/snes - Pesquisar SNES
-	/store - Pesquisar apps
+	/store - Pesquisar apps e jogos
 
 	#Utilidades
 	/calc - Calcular expressão matemática
@@ -49,7 +49,7 @@
 	/tv - Search movies and series
 	/psp - Search PSP
 	/snes - Search SNES
-	/store - Search apps
+	/store - Search apps and games
 
 	#Utilities
 	/calc - Calculate mathematical expression
@@ -76,7 +76,7 @@
 	/tv - Buscar películas y series
 	/psp - Buscar PSP
 	/snes - Buscar SNES
-	/store - Buscar apps
+	/store - Buscar apps y juegos
 
 	#Utilidades
 	/calc - Calcular la expresión matemática
@@ -103,7 +103,7 @@
 	/tv - Ricerca film e serie
 	/psp - Ricerca PSP
 	/snes - Ricerca SNES
-	/store - Ricerca apps
+	/store - Ricerca apps e giochi
 
 	#Utilita
 	/calc - Calcola espressione matematica

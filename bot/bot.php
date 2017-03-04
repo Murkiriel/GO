@@ -6,8 +6,7 @@
 	require('idioma.php');
 	require('comandos.php');
 
-	require(RAIZ . 'lib/sinesp.php');
-
+	use Classes\ColetorLixo;
 	use Classes\RastroJS;
 	use Classes\ServicosThread;
 	use Comandos\BotThread;
@@ -27,20 +26,28 @@
 		echo '| ATUALIZANDO |', "\n";
 		echo '+-------------+', "\n\n";
 
+		ini_set("memory_limit", -1);
+
+		$worker = new ColetorLixo();
+		$worker->start();
+
 		if (pingServidor('127.0.0.1', '3000') == -1) {
 			$rastroJS = new RastroJS();
 			$rastroJS->start();
+
+			$servicos = new ServicosThread();
+			$servicos->start();
 		}
 
 		$redis = conectarRedis();
 		$loop = 'true';
-		$redis->set('status_bot:loop', $loop);
+		$redis->setex('status_bot:loop', 43200, $loop);
 
 		firstUpdate();
 		$updateID = 0;
 
 		$tituloBot = strtoupper(' 🤖 -> ' . DADOS_BOT['result']['first_name'] . '  ( @' . DADOS_BOT['result']['username'] . ' ) ');
-		$hifens = strlen($tituloBot) - 4;
+		$hifens = strlen($tituloBot) - 2;
 
 		system('clear');
 
@@ -67,40 +74,40 @@
 		die();
 	}
 
-	$closure = function($argumentos) {
-		return $argumentos;
-	};
-
 	while ($loop === 'true') {
 		$resultado = getUpdates($updateID);
 
 		if (!empty($resultado['result'])) {
-			$threads = [];
-
 			foreach ($resultado['result'] as $mensagens) {
 				$updateID = $mensagens['update_id'] + 1;
 
 				if ($redis->exists('status_bot:msg_atendidas:' . $updateID) === false) {
 					$redis->setex('status_bot:msg_atendidas:' . $updateID, 60, 'OK');
 
-					$threads[$updateID] = BotThread::processo($closure, [0 => $mensagens]);
+					$worker->stack(new BotThread($mensagens));
 				}
+			}
+
+			while ($worker->collect()) {
+				continue;
 			}
 		}
 
-		$servicos = [];
-		$servicos[$updateID] = new ServicosThread();
-		$servicos[$updateID]->start();
+		if ($redis->exists('status_bot:loop') === false) {
+			system('clear');
 
-		$loop = $redis->get('status_bot:loop');
+			echo '+-------------+' , "\n";
+			echo '| REINICIANDO |' , "\n";
+			echo '+-------------+' , "\n\n";
+
+			notificarSudos('<pre>Reiniciando e liberando memória...</pre>');
+
+			getUpdates($updateID);
+
+			$redis->close();
+
+			$worker->shutdown();
+
+			exec('ps -ef | grep bot.php | grep -v grep | awk \'{print $2}\' | xargs kill -9');
+		}
 	}
-
-	getUpdates($updateID);
-
-	system('clear');
-
-	echo '+-------------+', "\n";
-	echo '| REINICIADO! |', "\n";
-	echo '+-------------+', "\n\n";
-
-	$redis->close() && die();

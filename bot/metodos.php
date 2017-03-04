@@ -113,6 +113,27 @@
 
 	/**
 	 * @param string $chatID
+	 * @param string $voice
+	 */
+	function sendVoice($chatID, $voice, $replyMessage = null, $caption = '@' . DADOS_BOT['result']['username']) {
+		$requisicao = API_BOT . '/sendVoice';
+
+		$conteudoRequisicao = [
+			'chat_id' => $chatID,
+				'voice' => $voice
+		];
+
+		if (isset($replyMessage)) {
+			$conteudoRequisicao['reply_to_message_id'] = $replyMessage;
+		}
+
+		$conteudoRequisicao['caption'] = $caption;
+
+		return json_decode(enviarRequisicao($requisicao, $conteudoRequisicao), true);
+	}
+
+	/**
+	 * @param string $chatID
 	 * @param string $action
 	 */
 	function sendChatAction($chatID, $action) {

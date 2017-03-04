@@ -7,10 +7,11 @@
 		$expressao = str_ireplace('x', '*', $expressao);
 		$expressao = str_ireplace('÷', '/', $expressao);
 		$expressao = str_ireplace(',', '.', $expressao);
+		$expressao = str_ireplace(' ', '', $expressao);
 
-		$resultado = shell_exec('calc "' . $expressao . '"');
+		$resultado = shell_exec('calc ' . escapeshellarg($expressao));
 
-		if ($resultado == '\'\'') {
+		if ($resultado !== null) {
 			$mensagem = '<b>' . $resultado . '</b>';
 		}
 	}

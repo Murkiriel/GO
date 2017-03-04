@@ -33,8 +33,8 @@
 
 				$mensagem = $mensagem . '<i>Você será notificado quando este status mudar</i>';
 
-				$redis->setex('rastro:chats:' . $mensagens['message']['from']['id'] . ':' . $codigo, 1814400, $descricao);
-				$redis->setex('rastro:situacao:' . $mensagens['message']['from']['id'] . ':' . $codigo, 1814400, md5($mensagem));
+				$redis->setex('rastro:chats:' . $mensagens['message']['from']['id'] . ':' . $codigo, 2592000, $descricao);
+				$redis->setex('rastro:situacao:' . $mensagens['message']['from']['id'] . ':' . $codigo, 2592000, md5($mensagem));
 			} else {
 				$mensagem = 'Código de rastreio informado não é válido!';
 			}
