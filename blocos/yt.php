@@ -40,5 +40,5 @@
 		sendMessage($mensagens['message']['chat']['id'], $mensagem, $mensagens['message']['message_id'],
 								null, true, $mensagens['edit_message']);
 	} else {
-		echo 'Inserir chave de acesso para o YouTube!' . "\n\n".
+		echo 'Inserir chave de acesso para o YouTube!' . "\n\n";
 	}

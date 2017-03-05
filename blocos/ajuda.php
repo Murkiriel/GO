@@ -1,5 +1,5 @@
 <?php
-	if ($mensagens['message']['chat']['type'] == 'private') {
+	if (strtolower($mensagens['message']['text']) == '/start ajuda' or $mensagens['message']['chat']['type'] == 'private') {
 		if ($mensagens['message']['chat']['type'] == 'group' or $mensagens['message']['chat']['type'] == 'supergroup') {
 			$olaFulano = '<b>' . strip_tags($mensagens['message']['chat']['title']) . '</b>';
 		} else if ($mensagens['message']['chat']['type'] == 'private') {

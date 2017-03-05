@@ -119,7 +119,7 @@
 		}
 	}
 
-	// # PARA DEEP LINKS
+	// # PARA LINKS
 
 	if (strtolower($texto[0]) == 'start' and isset($texto[1])) {
 		array_shift($texto);

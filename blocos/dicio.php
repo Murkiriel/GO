@@ -9,14 +9,14 @@
 
 			$requisicao = 'http://dicionario-aberto.net/search-json/' . $palavra;
 
-			try{
+			try {
 				@$resultado = json_decode(file_get_contents($requisicao), true);
 
 				if (!empty($resultado['entry']['form']['orth']) and !empty($resultado['entry']['sense'][0]['def'])) {
 					$mensagem = '<b>' . $resultado['entry']['form']['orth'] . ':</b> ' .
 											str_ireplace('_', '', str_ireplace('<br/>', ' ', $resultado['entry']['sense'][0]['def']));
 				}
-			} catch(Exception $e){
+			} catch (Exception $e) {
 				echo 'Exceção capturada: ',  $e->getMessage(), "\n";
 			}
 

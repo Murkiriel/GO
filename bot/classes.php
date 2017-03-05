@@ -2,7 +2,7 @@
 	namespace Classes;
 
 	class ColetorLixo extends \Worker {
-		public function run(){
+		public function run() {
 			gc_enable();
 			ini_set("memory_limit", -1);
 		}
