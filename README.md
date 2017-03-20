@@ -1,4 +1,4 @@
-﻿#GO
+#GO
 Telegram Bot API [@GO_Robot](https://telegram.me/GO_Robot)
 
 ##News
