@@ -98,9 +98,9 @@
 		if ($redis->exists('status_bot:loop') === false) {
 			system('clear');
 
-			echo '+-------------+' , "\n";
-			echo '| REINICIANDO |' , "\n";
-			echo '+-------------+' , "\n\n";
+			echo '+-------------+', "\n";
+			echo '| REINICIANDO |', "\n";
+			echo '+-------------+', "\n\n";
 
 			enviarLog('<pre>Reiniciando e liberando memória...</pre>');
 

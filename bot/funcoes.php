@@ -33,7 +33,7 @@
 
 	  curl_close($handle);
 
-	  if ($httpCodigo >= 500) {
+	  if ($httpCodigo>=500) {
 	    sleep(10);
 	  } else if ($httpCodigo != 200) {
 	    enviarLog($requisicao . json_encode($conteudoRequisicao) . "\n\n" . '<pre>' . $resultado . '</pre>');
