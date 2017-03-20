@@ -13,11 +13,11 @@
 	/dicio - Pesquisar no dicionário
 	/dm - Pesquisar no Dailymotion
 	/duck - Pesquisar no DuckDuckGO
-	/placa - Pesquisar placas de carros
 	/wiki - Pesquisar na Wikipédia
 
 	#Arquivos
 	/livros - Pesquisar livros
+	/mp3 - Pesquisar músicas
 	/tv - Pesquisar filmes e séries
 	/psp - Pesquisar PSP
 	/snes - Pesquisar SNES
@@ -46,6 +46,7 @@
 
 	#Files
 	/books - Search books
+	/mp3 - Search songs
 	/tv - Search movies and series
 	/psp - Search PSP
 	/snes - Search SNES
@@ -73,6 +74,7 @@
 
 	#Archivos
 	/libros - Buscar libros
+	/mp3 - Buscar canciones
 	/tv - Buscar películas y series
 	/psp - Buscar PSP
 	/snes - Buscar SNES
@@ -100,6 +102,7 @@
 
 	#Archivos
 	/libri - Ricerca libri
+	/mp3 - Ricerca canzoni
 	/tv - Ricerca film e serie
 	/psp - Ricerca PSP
 	/snes - Ricerca SNES

@@ -203,7 +203,7 @@
 												'<b>Nome:</b> ' . $nomeDocumento . "\n" .
 													'<b>ID: </b>' . $idDocumento;
 
-						notificarSudos($mensagem);
+						enviarLog($mensagem);
 					}
 				}
 

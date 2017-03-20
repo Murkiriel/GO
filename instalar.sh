@@ -17,15 +17,15 @@ mkdir -p /etc/php7
 mkdir -p /etc/php7/cli
 mkdir -p /etc/php7/etc
 
-# PHP 7.0.X
+# PHP 7.1.X
 
-rm -rf php-7.1.2
+rm -rf php-7.1.3
 
-wget http://php.net/distributions/php-7.1.2.tar.gz
+wget http://php.net/distributions/php-7.1.3.tar.gz
 
-tar -xzvf php-7.1.2.tar.gz
+tar -xzvf php-7.1.3.tar.gz
 
-cd php-7.1.2
+cd php-7.1.3
 
 ./buildconf --force
 

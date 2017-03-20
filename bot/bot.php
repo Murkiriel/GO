@@ -86,10 +86,12 @@
 
 					$worker->stack(new BotThread($mensagens));
 				}
-			}
 
-			while ($worker->collect()) {
-				continue;
+				if ($updateID%1000 == 0) {
+					while ($worker->collect()) {
+						continue;
+					}
+				}
 			}
 		}
 
@@ -100,7 +102,7 @@
 			echo '| REINICIANDO |' , "\n";
 			echo '+-------------+' , "\n\n";
 
-			notificarSudos('<pre>Reiniciando e liberando memória...</pre>');
+			enviarLog('<pre>Reiniciando e liberando memória...</pre>');
 
 			getUpdates($updateID);
 

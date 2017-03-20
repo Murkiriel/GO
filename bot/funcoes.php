@@ -10,25 +10,53 @@
 	/**
 	 * @param string $requisicao
 	 */
-	function enviarRequisicao($requisicao, $conteudoRequisicao = null, $cabecalho = null) {
-		$curl = curl_init();
-		curl_setopt($curl, CURLOPT_POST, true);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($curl, CURLOPT_URL, $requisicao);
+	function enviarRequisicao($requisicao, $conteudoRequisicao = []) {
+		$handle = curl_init($requisicao);
+		curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($handle, CURLOPT_CONNECTTIMEOUT, 5);
+		curl_setopt($handle, CURLOPT_TIMEOUT, 60);
+		curl_setopt($handle, CURLOPT_POSTFIELDS, json_encode($conteudoRequisicao));
+		curl_setopt($handle, CURLOPT_HTTPHEADER, array("Content-Type: application/json"));
 
-		if ($conteudoRequisicao != null) {
-			curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($conteudoRequisicao));
-		}
+		$resultado = curl_exec($handle);
 
-		if ($cabecalho != null) {
-			curl_setopt($curl, CURLOPT_HTTPHEADER, $cabecalho);
-		}
+		if ($resultado === false) {
+	    $errno = curl_errno($handle);
+	    $error = curl_error($handle);
 
-		$resultado = curl_exec($curl);
+	    enviarLog('Curl retornou o erro <b>' . $errno . ':</b> <i>' . $error . '</i>');
 
-		curl_close($curl);
+	    curl_close($handle);
+	  }
+
+	  $httpCodigo = intval(curl_getinfo($handle, CURLINFO_HTTP_CODE));
+
+	  curl_close($handle);
+
+	  if ($httpCodigo >= 500) {
+	    sleep(10);
+	  } else if ($httpCodigo != 200) {
+	    enviarLog($requisicao . json_encode($conteudoRequisicao) . "\n\n" . '<pre>' . $resultado . '</pre>');
+
+	    if ($httpCodigo == 401) {
+	      throw new Exception('Token de acesso fornecido é inválido!');
+	    }
+	  }
 
 		return $resultado;
+	}
+
+	/**
+	 * @param string $mensagem
+	 */
+	function enviarLog($mensagem) {
+		if (GRUPO_LOG !== null) {
+			sendMessage(GRUPO_LOG, $mensagem, null, null, true);
+
+			return true;
+		}
+
+		return notificarSudos($mensagem);
 	}
 
 	/**
@@ -37,9 +65,11 @@
 	function notificarSudos($mensagem) {
 		foreach (SUDOS as $sudo) {
 			sendMessage($sudo, $mensagem, null, null, true);
+
+			return true;
 		}
 
-		return;
+		return false;
 	}
 
 	function atualizarMensagens($resultado) {
@@ -211,7 +241,7 @@
 
     echo '🐞  ERRO: ' , $erroMensagem , ' no arquivo ' , $erroArquivo , ' (Linha ' , $erroLinha , ')' , "\n\n";
 
-		notificarSudos($mensagem);
+		enviarLog($mensagem);
   }
 
 	set_error_handler('manipularErros');

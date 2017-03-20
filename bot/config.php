@@ -7,6 +7,8 @@
 		1 => '111111'
 	]);
 
+	define('GRUPO_LOG', -100100100100); //GRUPO LOG
+
 	define('API_BOT', $api . $bot);
 	define('RAIZ', system('pwd') . '/');
 	define('VERSAO', '4.0.0 (SGF)');
