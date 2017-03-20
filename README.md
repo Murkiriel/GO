@@ -1,9 +1,9 @@
 ﻿#GO
-Renewal of [@GO_Robot](https://telegram.me/GO_Robot)
+Telegram Bot API [@GO_Robot](https://telegram.me/GO_Robot)
 
 ##News
 
-Telegram [@Murkiriel](https://telegram.me/Murkiriel)
+Telegram Channel [@Murkiriel](https://telegram.me/Murkiriel)
 
 ##Setup
 
